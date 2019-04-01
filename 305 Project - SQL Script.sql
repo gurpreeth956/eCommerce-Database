@@ -6,3 +6,6 @@ CREATE TABLE Person(
     Address VARCHAR(30),
     PRIMARY KEY(Email))
     
+CREATE TABLE Test(
+	Test INT())
+
