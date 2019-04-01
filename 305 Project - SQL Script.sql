@@ -30,12 +30,7 @@ CREATE TABLE WishList(
 	PRIMARY KEY(CustomerID, ItemID),
 	FOREIGN KEY(CustomerID) REFERENCES Customer(CustomerID),
 	FOREIGN KEY(ItemID) REFERENCES Item(ItemID));
-                                      
-CREATE TABLE Orders(
-	OrderNum INT,
-    OrderDt DATE, 
-    PRIMARY KEY(OrderNum));
-
+	
 CREATE TABLE Customer(
 	CustomerID INT,
     Username VARCHAR(20),
@@ -47,7 +42,7 @@ CREATE TABLE Employee(
     DateJoined DATE,
     PRIMARY KEY(EmployeeID),
     FOREIGN KEY(Supervisor) REFERENCES Employee(EmployeeID));
-    
+                                                
 CREATE TABLE Payment(
 	CardNum INT,
     CVS INT(3),
@@ -62,3 +57,16 @@ CREATE TABLE Shipment(
     Company VarChar(10),
     PRIMARY KEY(OrderNum),
     FOREIGN KEY(OrderNum) REFERENCES Orders(OrderNum));
+                                            
+CREATE TABLE Orders(
+	OrderNum INT,
+    OrderDate DATE,
+    Completed CHAR(1),
+    PRIMARY KEY(OrderNum),
+    CHECK (Completed IN('Y', 'N')));
+    
+CREATE TABLE REVIEWS(
+	Ratings INT,
+	PRIMARY KEY(OrderID),
+	FOREIGN KEY(CustomerID) REFERENCES Customer(CustomerID),
+	FOREIGN KEY(OrderID) REFERENCES Orders(OrderNum));
