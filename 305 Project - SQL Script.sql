@@ -6,7 +6,9 @@ CREATE TABLE Person(
     Address VARCHAR(30),
     PRIMARY KEY(Email));
     
-CREATE TABLE Tenzin(
-	Awesome CHAR(20)
-)
+CREATE TABLE Orders(
+	OrderNum INT,
+    OrderDt DATE, 
+    PRIMARY KEY(OrderNum)
+    );
     
