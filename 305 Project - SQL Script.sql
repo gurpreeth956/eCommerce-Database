@@ -4,8 +4,4 @@ CREATE TABLE Person(
     Dob DATE,
     Phone VARCHAR(10),
     Address VARCHAR(30),
-    PRIMARY KEY(Email))
-    
-CREATE TABLE Test(
-	Test INT())
-
+    PRIMARY KEY(Email));
