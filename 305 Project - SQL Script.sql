@@ -5,7 +5,7 @@ CREATE TABLE Person(
     Phone VARCHAR(10),
     Address VARCHAR(30),
     PRIMARY KEY(Email));
-
+                
 CREATE TABLE Item(
 	ItemID INT,
 	Price DEC(5,3),
@@ -30,9 +30,20 @@ CREATE TABLE WishList(
 	PRIMARY KEY(CustomerID, ItemID),
 	FOREIGN KEY(CustomerID) REFERENCES Customer(CustomerID),
 	FOREIGN KEY(ItemID) REFERENCES Item(ItemID));
+                                      
+CREATE TABLE Orders(
+	OrderNum INT,
+    OrderDt DATE, 
+    PRIMARY KEY(OrderNum));
 
-CREATE TABLE Ray(
-	Id VARCHAR(20));
-
-
-
+CREATE TABLE Customer(
+	CustomerID INT,
+    Username VARCHAR(20),
+    Userpass VARCHAR(20),
+    PRIMARY KEY(CustomerID));
+    
+CREATE TABLE Employee(
+	EmployeeID INT,
+    DateJoined DATE,
+    PRIMARY KEY(EmployeeID),
+    FOREIGN KEY(Supervisor) REFERENCES Employee(EmployeeID));
