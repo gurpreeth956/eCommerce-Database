@@ -5,6 +5,11 @@ CREATE TABLE Person(
     Phone VARCHAR(10),
     Address VARCHAR(30),
     PRIMARY KEY(Email));
+                
+CREATE TABLE Orders(
+	OrderNum INT,
+    OrderDt DATE, 
+    PRIMARY KEY(OrderNum));
 
 CREATE TABLE Customer(
 	CustomerID INT,
@@ -17,4 +22,3 @@ CREATE TABLE Employee(
     DateJoined DATE,
     PRIMARY KEY(EmployeeID),
     FOREIGN KEY(Supervisor) REFERENCES Employee(EmployeeID));
-    
