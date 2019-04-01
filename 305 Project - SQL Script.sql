@@ -5,7 +5,3 @@ CREATE TABLE Person(
     Phone VARCHAR(10),
     Address VARCHAR(30),
     PRIMARY KEY(Email));
-    
-CREATE TABLE Time(
-	Name DATE)
-    
