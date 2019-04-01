@@ -42,7 +42,22 @@ CREATE TABLE Employee(
     DateJoined DATE,
     PRIMARY KEY(EmployeeID),
     FOREIGN KEY(Supervisor) REFERENCES Employee(EmployeeID));
-                                      
+                                                
+CREATE TABLE Payment(
+	CardNum INT,
+    CVS INT(3),
+    CardType VarChar(10),
+    CardExp DATE,
+    PRIMARY KEY(CarNum));
+    
+CREATE TABLE Shipment(
+	Address VarChar(30),
+    Details VarChar(30),
+    Fee INT,
+    Company VarChar(10),
+    PRIMARY KEY(OrderNum),
+    FOREIGN KEY(OrderNum) REFERENCES Orders(OrderNum));
+                                            
 CREATE TABLE Orders(
 	OrderNum INT,
     OrderDate DATE,
