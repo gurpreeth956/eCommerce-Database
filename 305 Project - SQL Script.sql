@@ -1,6 +1,5 @@
 
 #TABLETION
-
 CREATE TABLE Person (
     ID INT,
     Email VARCHAR(30) NOT NULL,
@@ -119,7 +118,7 @@ CREATE TABLE Returnment (
 CREATE TABLE Reviews (
     CustomerID INT,
     OrderID INT,
-    Ratings VARCHAR(1) NOT NULL,
+    Ratings INT NOT NULL,
     Comments VARCHAR(100) NOT NULL,
     PRIMARY KEY (OrderID),
     FOREIGN KEY (CustomerID)
@@ -128,6 +127,7 @@ CREATE TABLE Reviews (
         REFERENCES Orders (OrderNum),
 	CHECK(Ratings IN('1', '2', '3', '4', '5'))
 );
+
 
 #INSERTIONS
 INSERT INTO	Person VALUES('368192', 'bob.builder@gmail.com', 'Bobby', '1998-11-30', '9179179170', 'Linden', '2018-11-23', 'N');
@@ -173,3 +173,4 @@ INSERT INTO Shipment VALUES('332', '102 Circle Rd', NULL, '3', 'FEDEX');
 INSERT INTO Returnment VALUES('4444', 'Phones are broken');
 
 INSERT INTO Reviews VALUES('368192', '4444', '2', 'It would not turn on');
+INSERT INTO Reviews VALUES('592134', '332', '6', 'It\'s pretty good');
