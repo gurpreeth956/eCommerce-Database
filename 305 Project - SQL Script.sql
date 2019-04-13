@@ -174,3 +174,4 @@ INSERT INTO Returnment VALUES('4444', 'Phones are broken');
 
 INSERT INTO Reviews VALUES('368192', '4444', '2', 'It would not turn on');
 INSERT INTO Reviews VALUES('592134', '332', '6', 'It\'s pretty good');
+#need script
