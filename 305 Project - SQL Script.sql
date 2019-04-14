@@ -9,8 +9,7 @@ CREATE TABLE Person (
     Address VARCHAR(30) NOT NULL,
     DateJoined DATE NOT NULL,
     IsEmployee CHAR(1) DEFAULT 'N',
-    PRIMARY KEY (ID),
-    CHECK (IsEmployee IN ('Y' , 'N'))
+    PRIMARY KEY (ID)
 );
 
 CREATE TABLE Customer (
@@ -21,8 +20,7 @@ CREATE TABLE Customer (
     PRIMARY KEY (CustomerID),
     FOREIGN KEY (CustomerID)
         REFERENCES Person (ID)
-        ON DELETE NO ACTION ON UPDATE CASCADE,
-    CHECK (HasMembership IN ('Y' , 'N'))
+        ON DELETE NO ACTION ON UPDATE CASCADE
 );
     
 CREATE TABLE Employee (
@@ -58,8 +56,7 @@ CREATE TABLE ShoppingCart (
         ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (ItemID)
         REFERENCES Item (ItemID)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CHECK (Quantity < Item.Quantity)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE WishList (
@@ -82,9 +79,9 @@ CREATE TABLE Orders (
     PRIMARY KEY (OrderNum),
     FOREIGN KEY (CustomerID)
         REFERENCES Customer (CustomerID)
-        ON DELETE NO ACTION ON UPDATE CASCADE,
-    CHECK (Completed IN ('Y' , 'N'))
+        ON DELETE NO ACTION ON UPDATE CASCADE
 );
+
 
 CREATE TABLE OrderedItems (
 	OrderID INT,
@@ -129,16 +126,15 @@ CREATE TABLE Returnment (
     ItemID INT,
     Quantity INT,
     Comments VARCHAR(100) NOT NULL,
-    PRIMARY KEY (OrderID, ItemID, Quantity),
+    PRIMARY KEY (OrderID , ItemID , Quantity),
     FOREIGN KEY (OrderID)
-        REFERENCES Orders (OrderNum)
+        REFERENCES OrderedItems (OrderID)
         ON DELETE NO ACTION ON UPDATE CASCADE,
-	FOREIGN KEY (ItemID)
-		REFERENCES OrderedItems (ItemID)
-        ON DELETE NO ACTION ON UPDATE CASCADE,
-	CHECK (Quantity < OrderedItems.Quantity)
+    FOREIGN KEY (ItemID)
+        REFERENCES OrderedItems (ItemID)
+        ON DELETE NO ACTION ON UPDATE CASCADE
 );
-                
+
 CREATE TABLE Reviews (
     CustomerID INT,
     ItemID INT,
@@ -150,9 +146,133 @@ CREATE TABLE Reviews (
         ON DELETE NO ACTION ON UPDATE CASCADE,
     FOREIGN KEY (ItemID)
         REFERENCES OrderedItems (ItemID)
-        ON DELETE NO ACTION ON UPDATE CASCADE,
-	CHECK(Ratings IN('1', '2', '3', '4', '5'))
+        ON DELETE NO ACTION ON UPDATE CASCADE
 );
+
+#Triggers For Check Constraints
+DELIMITER $
+#Person IsEmployee
+CREATE TRIGGER Insert_IsEmployee_Y_Or_N BEFORE INSERT ON Person 
+FOR EACH ROW
+BEGIN
+    IF NEW.IsEmployee NOT IN ('Y', 'N')
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'IsEmployee must be Y or N';
+    END IF;
+END$
+
+CREATE TRIGGER UPDATE_IsEmployee_Y_Or_N BEFORE UPDATE ON Person 
+FOR EACH ROW
+BEGIN
+    IF NEW.IsEmployee NOT IN ('Y', 'N')
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'IsEmployee must be Y or N';
+    END IF;
+END$
+
+#Customer HasMembership
+CREATE TRIGGER Insert_HasMembership_Y_Or_N BEFORE INSERT ON Customer 
+FOR EACH ROW
+BEGIN
+    IF NEW.HasMembership NOT IN ('Y', 'N')
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'HasMembership must be Y or N';
+    END IF;
+END$
+
+CREATE TRIGGER Update_HasMembership_Y_Or_N BEFORE UPDATE ON Customer 
+FOR EACH ROW
+BEGIN
+    IF NEW.HasMembership NOT IN ('Y', 'N')
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'HasMembership must be Y or N';
+    END IF;
+END$
+
+#ShoppingCart Quantity
+CREATE TRIGGER Insert_Quantity_ShoppingCart BEFORE INSERT ON ShoppingCart 
+FOR EACH ROW
+BEGIN
+	DECLARE x INT;
+	SET x = (SELECT i.Quantity From ITEM i WHERE i.ItemID = New.ItemID);
+    IF NEW.Quantity > x
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'The quantity must be less than the quantity of the item';
+    END IF;
+END$
+
+CREATE TRIGGER Update_Quantity_ShoppingCart BEFORE UPDATE ON ShoppingCart 
+FOR EACH ROW
+BEGIN
+	DECLARE x INT;
+	SET x = (SELECT i.Quantity From ITEM i WHERE i.ItemID = New.ItemID);
+    IF NEW.Quantity > x
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'The quantity must be less than the quantity of the item';
+    END IF;
+END$
+
+#Orders Completed
+CREATE TRIGGER Insert_Completed_Y_Or_N BEFORE INSERT ON Orders
+FOR EACH ROW
+BEGIN
+    IF NEW.Completed NOT IN ('Y', 'N')
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'Completed must be Y or N';
+    END IF;
+END$
+
+CREATE TRIGGER Update_Completed_Y_Or_N BEFORE UPDATE ON Orders
+FOR EACH ROW
+BEGIN
+    IF NEW.Completed NOT IN ('Y', 'N')
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'Completed must be Y or N';
+    END IF;
+END$
+
+#Returnment Quantity
+CREATE TRIGGER Insert_Quantity_Returnment BEFORE INSERT ON Returnment 
+FOR EACH ROW
+BEGIN
+	DECLARE x INT;
+	SET x = (SELECT o.Quantity From OrderedItems o WHERE o.OrderID = New.OrderID AND o.ItemID = NEW.ItemID);
+    IF NEW.Quantity > x
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'The quantity must be less than the quantity of the ordered item';
+    END IF;
+END$
+
+CREATE TRIGGER Update_Quantity_Returnment BEFORE UPDATE ON Returnment 
+FOR EACH ROW
+BEGIN
+	DECLARE x INT;
+	SET x = (SELECT o.Quantity From OrderedItems o WHERE o.OrderID = New.OrderID AND o.ItemID = NEW.ItemID);
+    IF NEW.Quantity > x
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'The quantity must be less than the quantity of the ordered item';
+    END IF;
+END$
+
+#Review Ratings
+CREATE TRIGGER Insert_Ratings_1_to_5 BEFORE INSERT ON Reviews
+FOR EACH ROW
+BEGIN
+    IF NEW.Ratings NOT IN ('1', '2', '3', '4', '5')
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'Rating not 1-5';
+    END IF;
+END$
+
+CREATE TRIGGER Update_Ratings_1_to_5 BEFORE UPDATE ON Reviews
+FOR EACH ROW
+BEGIN
+    IF NEW.Ratings NOT IN ('1', '2', '3', '4', '5')
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'Rating not 1-5';
+    END IF;
+END$
+DELIMITER ;
 
 
 #INSERTIONS
@@ -162,6 +282,7 @@ INSERT INTO	Person VALUES('592134', 'sam.televi@gmail.com', 'James', '1992-05-14
 INSERT INTO	Person VALUES('845523', 'mars.nasa@gmail.com', 'Tenmond', '2001-11-25', '9179179173', 'Stony', '2017-03-26', 'Y');
 INSERT INTO	Person VALUES('359803', 'plane.wire@gmail.com', 'Rayzin', '1967-10-12', '9179179174', 'Ithaca', '2018-01-27', 'Y');
 INSERT INTO	Person VALUES('432591', 'thom.sanjr@gmail.com', 'Thomsan', '1912-02-07', '4545454545', 'Hurst', '2015-05-15', 'Y');
+
 
 INSERT INTO Customer VALUES('368192', 'Bob999', 'password', 'N');
 INSERT INTO Customer VALUES('251059', 'Billy899', 'wordpass', 'N');
@@ -175,8 +296,8 @@ INSERT INTO Item VALUES('1233', '500', '123.00', 'IPhone X', 'Apple', 'A fancy p
 INSERT INTO Item VALUES('18332', '90', '90.00', 'Soccer Ball', 'Tottenham', 'A ball that wins nothing');
 INSERT INTO Item VALUES('81234', '200', '10.00', 'Diamond', 'PewDiePie', NULL);
 
-INSERT INTO ShoppingCart VALUES('368192', '1233', '400');
-INSERT INTO ShoppingCart VALUES('251059', '18332', '10');
+INSERT INTO ShoppingCart VALUES('368192', '1233', '5');
+INSERT INTO ShoppingCart VALUES('251059', '18332', '2');
 INSERT INTO ShoppingCart VALUES('592134', '81234', '50');
 
 INSERT INTO WishList VALUES('368192', '1233');
@@ -200,7 +321,7 @@ INSERT INTO Shipment VALUES('4444', '100 Circle Rd', 'Fragile', '10', 'USPS');
 INSERT INTO Shipment VALUES('21344', '101 Circle Rd', 'Fragile', '5', 'UPS');
 INSERT INTO Shipment VALUES('332', '102 Circle Rd', NULL, '3', 'FEDEX');
 
-INSERT INTO Returnment VALUES('4444', '18332', '5', 'Balls are broken');
+INSERT INTO Returnment VALUES('4444', '1233', '4', 'Balls are broken');
 
 INSERT INTO Reviews VALUES('368192', '1233', '2', 'It would not turn on');
 INSERT INTO Reviews VALUES('592134', '18332', '5', 'It\'s pretty good');
