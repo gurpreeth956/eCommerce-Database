@@ -58,8 +58,8 @@ CREATE TABLE ShoppingCart (
         ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (ItemID)
         REFERENCES Item (ItemID)
-        ON DELETE CASCADE ON UPDATE CASCADE
-    #CHECK (Quantity < Item.Quantity)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CHECK (Quantity < Item.Quantity)
 );
 
 CREATE TABLE WishList (
@@ -129,14 +129,14 @@ CREATE TABLE Returnment (
     ItemID INT,
     Quantity INT,
     Comments VARCHAR(100) NOT NULL,
-    PRIMARY KEY (OrderID),
+    PRIMARY KEY (OrderID, ItemID, Quantity),
     FOREIGN KEY (OrderID)
         REFERENCES Orders (OrderNum)
         ON DELETE NO ACTION ON UPDATE CASCADE,
 	FOREIGN KEY (ItemID)
 		REFERENCES OrderedItems (ItemID)
-        ON DELETE NO ACTION ON UPDATE CASCADE
-	#CHECK (Quantity < OrderedItems.Quantity)
+        ON DELETE NO ACTION ON UPDATE CASCADE,
+	CHECK (Quantity < OrderedItems.Quantity)
 );
                 
 CREATE TABLE Reviews (
