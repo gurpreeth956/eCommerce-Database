@@ -87,22 +87,10 @@ CREATE TABLE Orders (
     PRIMARY KEY (OrderNum),
     FOREIGN KEY (CustomerID)
         REFERENCES Customer (CustomerID)
-<<<<<<< HEAD
-<<<<<<< HEAD
-        ON DELETE NO ACTION ON UPDATE CASCADE
-=======
-=======
->>>>>>> 418cc1d00e07638e911b7b102f286f58342e66d4
         ON DELETE NO ACTION ON UPDATE CASCADE,
-	  FOREIGN KEY (DiscountID)
-		REFERENCES Discount (DiscountID)
-<<<<<<< HEAD
-        ON DELETE SET NULL ON UPDATE CASCADE,
-    CHECK (Completed IN ('Y' , 'N'))
->>>>>>> 392e42a233e3a6d5c9d89bf964e97d6d5b53a7d5
-=======
+    FOREIGN KEY (DiscountID)
+        REFERENCES Discount (DiscountID)
         ON DELETE SET NULL ON UPDATE CASCADE
->>>>>>> 418cc1d00e07638e911b7b102f286f58342e66d4
 );
 
 CREATE TABLE OrderedItems (
