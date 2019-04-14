@@ -71,6 +71,13 @@ CREATE TABLE WishList (
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE Discount (
+	DiscountID INT,
+    DiscountPrice DEC(5, 2),
+    ExpDate DATE,
+    PRIMARY KEY (DiscountID)
+);
+
 CREATE TABLE Orders (
     OrderNum INT,
     CustomerID INT,
@@ -83,9 +90,8 @@ CREATE TABLE Orders (
         ON DELETE NO ACTION ON UPDATE CASCADE,
 	  FOREIGN KEY (DiscountID)
 		REFERENCES Discount (DiscountID)
-        ON DELETE SET NULL ON UPDATE CASCADE,
+        ON DELETE SET NULL ON UPDATE CASCADE
 );
-
 
 CREATE TABLE OrderedItems (
 	OrderID INT,
@@ -111,13 +117,6 @@ CREATE TABLE Payment (
     FOREIGN KEY (OrderID)
         REFERENCES Orders (OrderNum)
         ON DELETE NO ACTION ON UPDATE CASCADE
-);
-
-CREATE TABLE Discount (
-	DiscountID INT,
-    DiscountPrice DEC(5, 2),
-    ExpDate DATE,
-    PRIMARY KEY (DiscountID)
 );
 
 CREATE TABLE Shipment (
@@ -160,7 +159,8 @@ CREATE TABLE Reviews (
         ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
-#Triggers For Check Constraints
+
+#Constraints
 DELIMITER $
 #Person IsEmployee
 CREATE TRIGGER Insert_IsEmployee_Y_Or_N BEFORE INSERT ON Person 
@@ -294,7 +294,6 @@ INSERT INTO	Person VALUES('845523', 'mars.nasa@gmail.com', 'Tenmond', '2001-11-2
 INSERT INTO	Person VALUES('359803', 'plane.wire@gmail.com', 'Rayzin', '1967-10-12', '9179179174', 'Ithaca', '2018-01-27', 'Y');
 INSERT INTO	Person VALUES('432591', 'thom.sanjr@gmail.com', 'Thomsan', '1912-02-07', '4545454545', 'Hurst', '2015-05-15', 'Y');
 
-
 INSERT INTO Customer VALUES('368192', 'Bob999', 'password', 'N');
 INSERT INTO Customer VALUES('251059', 'Billy899', 'wordpass', 'N');
 INSERT INTO Customer VALUES('592134', 'Samm333', 'secretive', 'Y');
@@ -315,6 +314,9 @@ INSERT INTO WishList VALUES('368192', '1233');
 INSERT INTO WishList VALUES('251059', '18332');
 INSERT INTO WishList VALUES('592134', '81234');
 
+INSERT INTO Discount VALUES('7878', '9.00', '2019-11-25');
+INSERT INTO Discount VALUES('5454', '4.90', '2019-10-25');
+
 INSERT INTO Orders VALUES('4444', '368192', '2018-11-25', 'Y', '7878');
 INSERT INTO Orders VALUES('21344', '251059', '2019-04-08', 'N', NULL);
 INSERT INTO Orders VALUES('332', '592134', '2012-08-10', 'Y', NULL);
@@ -327,9 +329,6 @@ INSERT INTO OrderedItems VALUES('332', '18332', '20');
 INSERT INTO Payment VALUES('4444', '1234567891235674', '315', 'Chase', 'Debit', '2018-11-25');
 INSERT INTO Payment VALUES('21344', '1234567891234567', '474', 'MasterCard', 'Credit', '2018-11-25');
 INSERT INTO Payment VALUES('332', '6123456789123456', '908', 'Discover', 'Credit', '2018-11-25');
-
-INSERT INTO Discount VALUES('7878', '9.00', '2019-11-25');
-INSERT INTO Discount VALUES('5454', '4.90', '2019-10-25');
 
 INSERT INTO Shipment VALUES('4444', '100 Circle Rd', 'Fragile', '10', 'USPS');
 INSERT INTO Shipment VALUES('21344', '101 Circle Rd', 'Fragile', '5', 'UPS');
