@@ -1,4 +1,4 @@
-#!"/Users/Gurpreeth/Desktop/305 Project/eCommerce-Database/venv/bin/python"
+#!"/Users/Gurpreeth/Desktop/305 Project/eCommerce-Database/Python/venv/bin/python"
 # EASY-INSTALL-ENTRY-SCRIPT: 'pip==19.0.3','console_scripts','pip'
 __requires__ = 'pip==19.0.3'
 import re
