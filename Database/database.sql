@@ -87,8 +87,8 @@ CREATE TABLE Orders (
     FOREIGN KEY (CustomerID)
         REFERENCES Customer (CustomerID)
         ON DELETE NO ACTION ON UPDATE CASCADE,
-	  FOREIGN KEY (DiscountID)
-		REFERENCES Discount (DiscountID)
+    FOREIGN KEY (DiscountID)
+        REFERENCES Discount (DiscountID)
         ON DELETE SET NULL ON UPDATE CASCADE
 );
 
