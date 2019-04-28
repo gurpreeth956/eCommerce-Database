@@ -1,4 +1,3 @@
-
 #TABLETION
 CREATE TABLE Person (
     ID INT,
