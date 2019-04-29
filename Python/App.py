@@ -18,5 +18,6 @@ def login():
 def checkout():
     return render_template('checkout.html', styles= 'form-validation.css', bodyclass= 'bg-light')
 
+# to run in python
 if __name__ == '__main__':
     app.run(debug = True)
