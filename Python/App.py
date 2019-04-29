@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 
+# do hard refresh on web page if something not loading
 app = Flask(__name__)
 
 @app.route("/")
