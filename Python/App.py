@@ -26,5 +26,6 @@ def shop():
 def item():
     return render_template('item.html', styles= '', bodyclass= 'bg-light')
 
+# to run in python
 if __name__ == '__main__':
     app.run(debug = True)
