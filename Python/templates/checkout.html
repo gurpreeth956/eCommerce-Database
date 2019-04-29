@@ -3,18 +3,28 @@
 {% block content %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-      <a class="navbar-brand" href="/">Navbar</a>
+      <a class="navbar-brand" href="#">Navbar</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
           <div class="navbar-nav navbar">
-            <a class="nav-item nav-link" href="/">Home</a>
-            <a class="nav-item nav-link" href="#">Shop</a>
-            <a class="nav-item nav-link active" href="/checkout.html">Shopping Cart</a>
+            <a class="nav-item nav-link active" href="/">Home</a>
+            <a class="nav-item nav-link" href="/shop.html">Shop</a>
+            <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
           </div>
           <ul class="navbar-nav navbar-right">
-            <li><a href="signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="signin.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li><a href="signup.html"> Sign Up</a></li>
+            <li><a href="signin.html"> Login</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                User Name
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="#">Profile</a>
+                <a class="dropdown-item" href="#">Order History</a>
+                <a class="dropdown-item" href="#">Wish List</a>
+              </div>
+            </li>
           </ul>
       </div>
     </nav>
