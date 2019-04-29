@@ -18,6 +18,14 @@ def login():
 def checkout():
     return render_template('checkout.html', styles= 'form-validation.css', bodyclass= 'bg-light')
 
+@app.route("/shop.html")
+def shop():
+    return render_template('shop.html', styles= '', bodyclass= 'bg-light')
+
+@app.route("/item.html")
+def item():
+    return render_template('item.html', styles= '', bodyclass= 'bg-light')
+
 # to run in python
 if __name__ == '__main__':
     app.run(debug = True)
