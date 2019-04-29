@@ -2,19 +2,19 @@ import pymysql
 
 
 def insert():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Person(ID, Email, Named, DateOfBirth, Phone, Address, DateJoined, IsEmployee)\
-                values(\"11111\", \"111.sanjr@gmail.com\", \"BILL\", \"1912-02-07\", \"4545454545\", \"Hurst\",\
-                \"2015-05-15\", \"N\")"
-        cursor.execute(query)
+                values(%s, %s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (123, 'asdf@gmail.com', 'Te', '1998-11-25', 6072165029, 'Ithaca', '1998-11-25', 'N'))
         client.commit()
     except Exception:
         print(Exception)
         client.rollback()
     finally:
         client.close()
+    print('done')
 
 
 def select():
@@ -33,5 +33,5 @@ def select():
 
 
 # To test methods:
-# insert()
+insert()
 # select()
