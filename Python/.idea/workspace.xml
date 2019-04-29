@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="defce291-ec12-4d54-bf2c-ea8dff32885f" name="Default Changelist" comment="">
 <<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -12,6 +13,9 @@
       <change beforePath="$PROJECT_DIR$/dbConnect.py" beforeDir="false" afterPath="$PROJECT_DIR$/dbConnect.py" afterDir="false" />
 >>>>>>> ade8d5f70f956757c57ec8d05383be0dc802f957
     </list>
+=======
+    <list default="true" id="defce291-ec12-4d54-bf2c-ea8dff32885f" name="Default Changelist" comment="" />
+>>>>>>> 288d4341e7f97830c92bf830f1672ece042c2e86
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,19 +27,25 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dbConnect.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="75">
 <<<<<<< HEAD
               <caret line="5" column="66" lean-forward="true" selection-start-line="5" selection-start-column="66" selection-end-line="5" selection-end-column="66" />
 =======
               <caret line="5" column="59" selection-start-line="5" selection-start-column="59" selection-end-line="5" selection-end-column="59" />
 >>>>>>> ade8d5f70f956757c57ec8d05383be0dc802f957
+=======
+            <state relative-caret-position="240">
+              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+>>>>>>> 288d4341e7f97830c92bf830f1672ece042c2e86
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/dbBasics.py">
+        <entry file="file://$PROJECT_DIR$/App.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
 <<<<<<< HEAD
             <state relative-caret-position="375">
               <caret line="25" column="56" lean-forward="true" selection-start-line="25" selection-start-column="56" selection-end-line="25" selection-end-column="56" />
@@ -52,13 +62,18 @@
             <state relative-caret-position="164">
               <caret line="15" column="12" lean-forward="true" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
 >>>>>>> ade8d5f70f956757c57ec8d05383be0dc802f957
+=======
+            <state relative-caret-position="30">
+              <caret line="2" column="54" lean-forward="true" selection-start-line="2" selection-start-column="54" selection-end-line="2" selection-end-column="54" />
+>>>>>>> 288d4341e7f97830c92bf830f1672ece042c2e86
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/App.py">
+        <entry file="file://$PROJECT_DIR$/dbBasics.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
 <<<<<<< HEAD
             <state relative-caret-position="135">
               <caret line="9" column="13" lean-forward="true" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
@@ -66,6 +81,10 @@
             <state relative-caret-position="240">
               <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
 >>>>>>> ade8d5f70f956757c57ec8d05383be0dc802f957
+=======
+            <state relative-caret-position="495">
+              <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+>>>>>>> 288d4341e7f97830c92bf830f1672ece042c2e86
             </state>
           </provider>
         </entry>
@@ -80,6 +99,11 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>shop.css</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -89,22 +113,29 @@
         <option value="$PROJECT_DIR$/templates/layout.html" />
         <option value="$PROJECT_DIR$/templates/signin.html" />
         <option value="$PROJECT_DIR$/templates/signup.html" />
-        <option value="$PROJECT_DIR$/templates/checkout.html" />
+        <option value="$PROJECT_DIR$/static/css/album.css" />
         <option value="$PROJECT_DIR$/templates/index.html" />
+        <option value="$PROJECT_DIR$/templates/checkout.html" />
         <option value="$PROJECT_DIR$/templates/layouts.html" />
-        <option value="$PROJECT_DIR$/App.py" />
+        <option value="$PROJECT_DIR$/static/css/shop.css" />
+        <option value="$PROJECT_DIR$/templates/shop.html" />
+        <option value="$PROJECT_DIR$/templates/item.html" />
         <option value="$PROJECT_DIR$/dbConnect.py" />
 <<<<<<< HEAD
         <option value="$PROJECT_DIR$/static/css/album.css" />
 =======
         <option value="$PROJECT_DIR$/dbBasics.py" />
+<<<<<<< HEAD
 >>>>>>> ade8d5f70f956757c57ec8d05383be0dc802f957
+=======
+        <option value="$PROJECT_DIR$/App.py" />
+>>>>>>> 288d4341e7f97830c92bf830f1672ece042c2e86
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1280" />
-    <option name="height" value="800" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -129,14 +160,22 @@
               <item name="Python" type="b2602c69:ProjectViewProjectNode" />
               <item name="Python" type="462c0819:PsiDirectoryNode" />
 <<<<<<< HEAD
+<<<<<<< HEAD
               <item name="static" type="462c0819:PsiDirectoryNode" />
               <item name="css" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="jquery" type="462c0819:PsiDirectoryNode" />
+>>>>>>> 288d4341e7f97830c92bf830f1672ece042c2e86
             </path>
             <path>
               <item name="Python" type="b2602c69:ProjectViewProjectNode" />
               <item name="Python" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
 =======
 >>>>>>> ade8d5f70f956757c57ec8d05383be0dc802f957
+=======
+>>>>>>> 288d4341e7f97830c92bf830f1672ece042c2e86
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -175,9 +214,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.7" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/App.py" />
@@ -196,9 +235,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.7" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dbBasics.py" />
@@ -217,9 +256,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.7" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dbConnect.py" />
@@ -254,14 +293,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2494043" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2494043" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32876712" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32876712" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -274,6 +312,9 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.css" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/HTML/checkout.html" />
@@ -290,20 +331,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/signup.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
-          <folding>
-            <element signature="e#3704#3710#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="2" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/checkout.html">
+    <entry file="file://$PROJECT_DIR$/templates/signin.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1520" />
+        <state relative-caret-position="68">
+          <caret line="4" column="52" selection-start-line="4" selection-start-column="52" selection-end-line="4" selection-end-column="52" />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/signin.html">
+    <entry file="file://$PROJECT_DIR$/static/css/shop.css" />
+    <entry file="file://$PROJECT_DIR$/templates/checkout.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="657">
+          <caret line="246" selection-start-line="246" selection-end-line="246" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/shop.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="52" selection-start-line="4" selection-start-column="52" selection-end-line="4" selection-end-column="52" />
@@ -329,8 +377,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App.py">
+    <entry file="file://$PROJECT_DIR$/static/css/album.css">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
 <<<<<<< HEAD
         <state relative-caret-position="135">
           <caret line="9" column="13" lean-forward="true" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
@@ -338,6 +387,17 @@
         <state relative-caret-position="240">
           <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
 >>>>>>> ade8d5f70f956757c57ec8d05383be0dc802f957
+=======
+        <state relative-caret-position="75">
+          <caret line="5" column="13" lean-forward="true" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dbBasics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+>>>>>>> 288d4341e7f97830c92bf830f1672ece042c2e86
         </state>
       </provider>
     </entry>
@@ -350,19 +410,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/css/album.css">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="75">
 <<<<<<< HEAD
           <caret line="5" selection-start-line="5" selection-end-line="5" />
 =======
           <caret line="5" column="59" selection-start-line="5" selection-start-column="59" selection-end-line="5" selection-end-column="59" />
+=======
+        <state relative-caret-position="240">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+>>>>>>> 288d4341e7f97830c92bf830f1672ece042c2e86
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dbBasics.py">
+    <entry file="file://$PROJECT_DIR$/static/jquery/jquery.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="164">
           <caret line="15" column="12" lean-forward="true" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
 >>>>>>> ade8d5f70f956757c57ec8d05383be0dc802f957
+=======
+        <state relative-caret-position="30">
+          <caret line="2" column="54" lean-forward="true" selection-start-line="2" selection-start-column="54" selection-end-line="2" selection-end-column="54" />
+>>>>>>> 288d4341e7f97830c92bf830f1672ece042c2e86
         </state>
       </provider>
     </entry>
