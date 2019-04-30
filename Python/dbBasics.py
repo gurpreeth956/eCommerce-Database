@@ -141,12 +141,13 @@ def getEmployee(employeeid):
 
 
 # Item Table
-def insertItem(itemid, quantity, price, itemtype, seller, itemdesc):
+def insertItem(itemid, quantity, price, itemtype, seller, itemdesc, category, url):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO Item(ItemID, Quantity, Price, ItemType, Seller, ItemDesc) values(%s, %s, %s, %s, %s, %s)"
-        cursor.execute(query, (itemid, quantity, price, itemtype, seller, itemdesc))
+        query = "INSERT INTO Item(ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category, URL) \
+            values(%s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (itemid, quantity, price, itemtype, seller, itemdesc, category, url))
         client.commit()
     except Exception:
         print("Could not add entity to Item table")
@@ -159,7 +160,7 @@ def getItem(itemid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT ItemID, Quantity, Price, ItemType, Seller, ItemDesc FROM Item WHERE ItemID = %s"
+        query = "SELECT ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category, URL FROM Item WHERE ItemID = %s"
         cursor.execute(query, itemid)
         result = cursor.fetchall()
         return result
