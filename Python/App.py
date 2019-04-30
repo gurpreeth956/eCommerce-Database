@@ -14,7 +14,7 @@ def home():
     return render_template('index.html', loggedin= loggedin, title= 'Home', styles = 'album.css', bodyclass = 'bg-light')
 
 
-@app.route("/signup.html", methods = ['GET', 'POST'])
+@app.route("/signup.html", methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         #NEED A UNIQUE GLOBAL NUM
@@ -44,7 +44,7 @@ def signup():
     return render_template('signup.html', title='Sign Up',  styles='signin.css', bodyclass='text-center')
 
 
-@app.route("/signin.html", methods= ['GET', 'POST'])
+@app.route("/signin.html", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
@@ -68,7 +68,7 @@ def login():
             print("Can not retrieve specified Customer Entity")
         finally:
             client.close()
-    return render_template('signin.html', title= 'Log In', styles= 'signin.css', bodyclass= 'text-center')
+    return render_template('signin.html', title='Log In', styles='signin.css', bodyclass='text-center')
 
 
 @app.route("/checkout.html")
@@ -76,13 +76,12 @@ def checkout():
     return render_template('checkout.html', title= 'Shopping Cart', styles= 'checkout.css', bodyclass= 'bg-light')
 
 
-
-@app.route("/shop.html")
+@app.route("/shop.html", methods=['GET', 'POST'])
 def shop():
     # Example of how to get data from database to html file
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
-        word = "mmom"
+        word = None
         price = 0
         itemid = 1233
         cursor = client.cursor()
@@ -129,11 +128,6 @@ def shop():
             'type': '6'
         }
     ]
-
-    if request.method == 'POST':
-        type = request.form.getlist['type']
-        print(type)
-
     return render_template('shop.html', title='Shop', data=data, styles='', bodyclass='bg-light')
 
 
