@@ -18,7 +18,7 @@
                             {{ loggedin }}
                         </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="profile.html">Profile</a>
+                        <a class="dropdown-item" href="profile.html">Profile</a>
                         <a class="dropdown-item" href="history.html">Order History</a>
                         <a class="dropdown-item" href="wishlist.html">Wish List</a>
                     </div>
@@ -83,10 +83,10 @@
               <a href="/item.html"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
               <div class="card-body">
                 <h4 class="card-title">
-                  <a href="/item.html">{{item.name}}</a>
+                  <a href="/item.html?type={{ item[0] }}&price={{ item[1] }}&desc={{ item[2] }}">{{ item[0] }}</a>
                 </h4>
-                <h5>{{item.price}}</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+                <h5>${{ item[1] }}</h5>
+                <p class="card-text">{{ item[2] }}</p>
               </div>
               <div class="card-footer">
                 <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>

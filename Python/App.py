@@ -5,7 +5,7 @@ import pymysql.cursors
 # do hard refresh on web page if something not loading
 app = Flask(__name__)
 
-loggedin = "Sfasd"
+loggedin = None
 
 @app.route("/")
 def home():
@@ -24,7 +24,6 @@ def signup():
         email = request.form['email']
         password = request.form['password']
         phone = request.form['phone']
-        #print(name, email, password, phone)
 
         try:
             idn += 1
@@ -82,74 +81,39 @@ def shop():
     # Example of how to get data from database to html file
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
-        word = None
-        price = 0
-        itemid = 1233
         cursor = client.cursor()
-        query = "SELECT ItemID, Quantity, Price, ItemType, Seller, ItemDesc FROM Item WHERE ItemID = %s"
-        cursor.execute(query, itemid)
+        query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item"
+        cursor.execute(query)
         result = cursor.fetchall()
-        for row in result:
-            word = row[3]
-            price = row[2]
+
     except Exception:
         print("Can not retrieve specified Item Entity")
     finally:
         client.close()
-
-    data = [
-        {
-            'name': word,
-            'price': price,
-            'type': '1'
-        },
-        {
-            'name': word,
-            'price': price,
-            'type': '2'
-        },
-        {
-            'name': word,
-            'price': price,
-            'type': '3'
-        },
-        {
-            'name': word,
-            'price': price,
-            'type': '4'
-        },
-        {
-            'name': word,
-            'price': '9',
-            'type': '5'
-        },
-        {
-            'name': word,
-            'price': price,
-            'type': '6'
-        }
-    ]
-    return render_template('shop.html', loggedin= loggedin, title='Shop', data=data, styles='', bodyclass='bg-light')
+    return render_template('shop.html', loggedin= loggedin, title='Shop', data=result, styles='', bodyclass='bg-light')
 
 
 @app.route("/item.html", methods=['GET', 'POST'])
 def item():
-    return render_template('item.html', title='[Item Name]', styles= '', bodyclass= 'bg-light')
-
+    if 'type' and 'price' and 'desc' in request.args:
+        return render_template('item.html', type= request.args['type'], price= request.args['price'],
+                               desc= request.args['desc'], loggedin= loggedin, title='[Item Name]', styles= '', bodyclass= 'bg-light')
+    else:
+        return render_template('item.html', loggedin= loggedin, title='[Item Name]', styles= '', bodyclass= 'bg-light')
 
 @app.route("/profile.html")
 def profile():
-    return render_template('profile.html', title='Profile', styles='', bodyclass='bg-light')
+    return render_template('profile.html', loggedin= loggedin, title='Profile', styles='', bodyclass='bg-light')
 
 
 @app.route("/history.html")
 def history():
-    return render_template('history.html', title='Order History', styles='history.css', bodyclass='bg-light')
+    return render_template('history.html', loggedin= loggedin, title='Order History', styles='history.css', bodyclass='bg-light')
 
 
 @app.route("/wishlist.html")
 def wishlist():
-    return render_template('wishlist.html', title='Wish List', styles='wishlist.css', bodyclass='bg-light')
+    return render_template('wishlist.html', loggedin= loggedin, title='Wish List', styles='wishlist.css', bodyclass='bg-light')
 
 
 # to run in python
