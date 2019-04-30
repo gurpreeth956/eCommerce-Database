@@ -1,0 +1,18 @@
+footer{
+   margin-top:3rem;
+}
+
+h2 {
+    margin-top:1rem;
+}
+
+.dropdown-date {
+    margin-top:3rem;
+    margin-left:1rem;
+    width:150px;
+}
+
+.jumbotron {
+    width:100%;
+    margin:0;
+}

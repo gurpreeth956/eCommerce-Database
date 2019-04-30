@@ -1,0 +1,14 @@
+.card mt-4{
+        margin: 0 auto; /* Added */
+        float: none; /* Added */
+        margin-bottom: 10px; /* Added */
+}
+
+footer{
+   margin-top:3rem;
+}
+
+.jumbotron {
+    width:100%;
+    margin:0;
+}
