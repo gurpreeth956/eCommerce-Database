@@ -13,9 +13,10 @@
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" id="inputPassword" class="form-control" placeholder="Password"  name = "password" value = "{{ request.form.password }}" required>
       <label for="verifyPassword" class="sr-only">Verify Password</label>
-      <input type="verify" id="verifyPassword" class="form-control" placeholder="Verify Password" required>
+      <input type="verify" id="verifyPassword" class="form-control" placeholder="Verify Password" name = "verifyPassword" value = "{{ request.form.verifyPassword }}" required>
       <label for="inputPhone" class="sr-only">Phone Number</label>
-      <input type="phone" id="inputPhone" class="form-control" placeholder="Phone Number" name = "phone" value = "{{ request.form.phone }}" required>
+      <input type="phone" id="inputPhone" class="form-control" placeholder="Phone Number" name = "phone" value = "{{ request.form.phone }}" required/>
+      <input type= "birthday" class="form-control" id="date" name="date" placeholder="Birthday" type="text" value = "{{ request.form.birthday }}" required/>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2019</p>
     </form>
