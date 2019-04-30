@@ -10,7 +10,6 @@ loggedin = None
 @app.route("/")
 def home():
     global loggedin
-    #print(loggedin)
     return render_template('index.html', loggedin= loggedin, title= 'Home', styles = 'album.css', bodyclass = 'bg-light')
 
 
@@ -73,12 +72,14 @@ def login():
 
 @app.route("/checkout.html")
 def checkout():
-    return render_template('checkout.html', title= 'Shopping Cart', styles= 'checkout.css', bodyclass= 'bg-light')
+    global loggedin
+    return render_template('checkout.html', loggedin= loggedin, title= 'Shopping Cart', styles= 'checkout.css', bodyclass= 'bg-light')
 
 
 
 @app.route("/shop.html")
 def shop():
+    global loggedin
     # Example of how to get data from database to html file
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
@@ -134,7 +135,7 @@ def shop():
         type = request.form.getlist['type']
         print(type)
 
-    return render_template('shop.html', title='Shop', data=data, styles='', bodyclass='bg-light')
+    return render_template('shop.html', loggedin= loggedin, title='Shop', data=data, styles='', bodyclass='bg-light')
 
 
 @app.route("/item.html", methods=['GET', 'POST'])
