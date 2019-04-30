@@ -75,34 +75,45 @@ def shop():
 
     data = [
         {
-            'name':word,
-            'price':price
+            'name': word,
+            'price': price,
+            'type': '1'
         },
         {
             'name': word,
-            'price': price
+            'price': price,
+            'type': '2'
         },
         {
             'name': word,
-            'price': price
+            'price': price,
+            'type': '3'
         },
         {
             'name': word,
-            'price': price
+            'price': price,
+            'type': '4'
         },
         {
             'name': word,
-            'price': price
+            'price': price,
+            'type': '5'
         },
         {
             'name': word,
-            'price': price
+            'price': price,
+            'type': '6'
         }
     ]
+
+    if request.method == 'POST':
+        type = request.form['type']
+        print(type)
+
     return render_template('shop.html', data=data, styles='', bodyclass='bg-light')
 
 
-@app.route("/item.html")
+@app.route("/item.html", methods=['GET', 'POST'])
 def item():
     return render_template('item.html', styles= '', bodyclass= 'bg-light')
 
