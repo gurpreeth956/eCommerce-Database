@@ -20,10 +20,11 @@ def insert():
 def select():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
+        idvar = 123
         cursor = client.cursor()
         query = "SELECT ID, Email, Named, DateOfBirth, Phone, Address, DateJoined, IsEmployee FROM Person \
-                WHERE ID = 251059"
-        cursor.execute(query)
+                WHERE ID = %s"
+        cursor.execute(query, idvar)
         results = cursor.fetchall()
         for row in results:
             idnum = row[0]
@@ -61,23 +62,36 @@ def insertPerson(idvar, email, name, birthdate, phone, address, datejoined, isem
         elif isEmployeeVar == 'Y':
             insertEmployee(idVar, employeeid, supervisor)
     except Exception:
-        print("Could not add entity to Person table")
+        print("Could not add entity to Person Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getPerson(idvar):
+def getPersonTuple(idvar):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT ID, Email, Named, DateOfBirth, Phone, Address, DateJoined, IsEmployee FROM Person \
-            WHERE ID = %s"
+        query = "SELECT ID, Email, Named, DateOfBirth, Phone, Address, DateJoined, IsEmployee FROM Person WHERE ID = %s"
         cursor.execute(query, idvar)
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified Person Entity")
+        print("Could not retrieve specified Person Entity")
+    finally:
+        client.close()
+
+
+def getPersonTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT ID, Email, Named, DateOfBirth, Phone, Address, DateJoined, IsEmployee FROM Person"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve Person Table data")
     finally:
         client.close()
 
@@ -91,13 +105,13 @@ def insertCustomer(idvar, username, userpass, hasmembership):
         cursor.execute(query, (idvar, username, userpass, hasmembership))
         client.commit()
     except Exception:
-        print("Could not add entity to Customer table")
+        print("Could not add entity to Customer Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getCustomer(idvar):
+def getCustomerTuple(idvar):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -106,7 +120,21 @@ def getCustomer(idvar):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified Customer Entity")
+        print("Could not retrieve specified Customer Entity")
+    finally:
+        client.close()
+
+
+def getCustomerTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT ID, Username, Userpass, HasMembership FROM Customer"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve Customer Table data")
     finally:
         client.close()
 
@@ -120,13 +148,13 @@ def insertEmployee(idvar, employeeid, supervisor):
         cursor.execute(query, (idvar, employeeid, supervisor))
         client.commit()
     except Exception:
-        print("Could not add entity to Employee table")
+        print("Could not add entity to Employee Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getEmployee(employeeid):
+def getEmployeeTuple(employeeid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -135,7 +163,21 @@ def getEmployee(employeeid):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified Employee Entity")
+        print("Could not retrieve specified Employee Entity")
+    finally:
+        client.close()
+
+
+def getEmployeeTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT ID, EmployeeID, Supervisor FROM Employee"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve Employee Table data")
     finally:
         client.close()
 
@@ -150,13 +192,13 @@ def insertItem(itemid, quantity, price, itemtype, seller, itemdesc, category, ur
         cursor.execute(query, (itemid, quantity, price, itemtype, seller, itemdesc, category, url))
         client.commit()
     except Exception:
-        print("Could not add entity to Item table")
+        print("Could not add entity to Item Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getItem(itemid):
+def getItemTuple(itemid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -165,7 +207,21 @@ def getItem(itemid):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified Item Entity")
+        print("Could not retrieve specified Item Entity")
+    finally:
+        client.close()
+
+
+def getItemTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category, URL FROM Item"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve Item Table data")
     finally:
         client.close()
 
@@ -179,13 +235,13 @@ def insertShoppingCart(customerid, itemid, quantity):
         cursor.execute(query, (customerid, itemid, quantity))
         client.commit()
     except Exception:
-        print("Could not add entity to ShoppingCart table")
+        print("Could not add entity to ShoppingCart Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getShoppingCart(customerid, itemid):
+def getShoppingCartTuple(customerid, itemid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -194,7 +250,21 @@ def getShoppingCart(customerid, itemid):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified ShoppingCart Entity")
+        print("Could not retrieve specified ShoppingCart Entity")
+    finally:
+        client.close()
+
+
+def getShoppingCartTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT CustomerID, ItemID, Quantity FROM Customer"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve ShoppingCart Table data")
     finally:
         client.close()
 
@@ -208,13 +278,13 @@ def insertWishList(customerid, itemid):
         cursor.execute(query, (customerid, itemid))
         client.commit()
     except Exception:
-        print("Could not add entity to WishList table")
+        print("Could not add entity to WishList Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getWishList(customerid, itemid):
+def getWishListTuple(customerid, itemid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -223,7 +293,21 @@ def getWishList(customerid, itemid):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified WishList Entity")
+        print("Could not retrieve specified WishList Entity")
+    finally:
+        client.close()
+
+
+def getWishListTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT CustomerID, ItemID FROM WishList"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve WishList Table data")
     finally:
         client.close()
 
@@ -237,13 +321,13 @@ def insertDiscount(discountid, discountprice, excdate):
         cursor.execute(query, (discountid, discountprice, excdate))
         client.commit()
     except Exception:
-        print("Could not add entity to Discount table")
+        print("Could not add entity to Discount Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getDiscount(discountid):
+def getDiscountTuple(discountid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -252,13 +336,27 @@ def getDiscount(discountid):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified Discount Entity")
+        print("Could not retrieve specified Discount Entity")
+    finally:
+        client.close()
+
+
+def getDiscountTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT DiscountID, DiscountPrice, ExpDate"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve Discount Table data")
     finally:
         client.close()
 
 
 # Orders Table
-def insertOrder(orderid, customerid, orderdate, completed, discountid):
+def insertOrders(orderid, customerid, orderdate, completed, discountid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -266,13 +364,13 @@ def insertOrder(orderid, customerid, orderdate, completed, discountid):
         cursor.execute(query, (orderid, customerid, orderdate, completed, discountid))
         client.commit()
     except Exception:
-        print("Could not add entity to Orders table")
+        print("Could not add entity to Orders Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getOrder(orderid):
+def getOrdersTuple(orderid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -281,7 +379,21 @@ def getOrder(orderid):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified Orders Entity")
+        print("Could not retrieve specified Orders Entity")
+    finally:
+        client.close()
+
+
+def getOrdersTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT OrderNum, CustomerID, OrderDate, Completed, DiscountID"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve Orders Table data")
     finally:
         client.close()
 
@@ -295,13 +407,13 @@ def insertOrderedItems(orderid, itemid, quantity):
         cursor.execute(query, (orderid, itemid, quantity))
         client.commit()
     except Exception:
-        print("Could not add entity to OrderedItems table")
+        print("Could not add entity to OrderedItems Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getOrderedItems(orderid, itemid):
+def getOrderedItemsTuple(orderid, itemid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -310,7 +422,21 @@ def getOrderedItems(orderid, itemid):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified OrderedItems Entity")
+        print("Could not retrieve specified OrderedItems Entity")
+    finally:
+        client.close()
+
+
+def getOrderedItemsTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT OrderID, ItemID, Quantity FROM OrderedItems"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve specified OrderedItems Table data")
     finally:
         client.close()
 
@@ -324,13 +450,13 @@ def insertPayment(orderid, cardnum, cvs, cardcomp, cardtype, cardexp):
         cursor.execute(query, (orderid, cardnum, cvs, cardcomp, cardtype, cardexp))
         client.commit()
     except Exception:
-        print("Could not add entity to Payment table")
+        print("Could not add entity to Payment Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getPayments(orderid):
+def getPaymentTuple(orderid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -339,7 +465,21 @@ def getPayments(orderid):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified Payment Entity")
+        print("Could not retrieve specified Payment Entity")
+    finally:
+        client.close()
+
+
+def getPaymentTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT OrderID, CardNum, CVS, CardComp, CardType, CardExp"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve Payment Table data")
     finally:
         client.close()
 
@@ -353,13 +493,13 @@ def insertShipment(orderid, address, details, fee, company):
         cursor.execute(query, (orderid, address, details, fee, company))
         client.commit()
     except Exception:
-        print("Could not add entity to Shipment table")
+        print("Could not add entity to Shipment Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getShipment(orderid):
+def getShipmentTuple(orderid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -368,7 +508,21 @@ def getShipment(orderid):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified Shipment Entity")
+        print("Could not retrieve specified Shipment Entity")
+    finally:
+        client.close()
+
+
+def getShipmentTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT OrderID, Address, Details, Fee, Company"
+        cursor.execute(query, orderid)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve Shipment Table data")
     finally:
         client.close()
 
@@ -382,13 +536,13 @@ def insertReturnment(orderid, itemid, quantity, comments):
         cursor.execute(query, (orderid, itemid, quantity, comments))
         client.commit()
     except Exception:
-        print("Could not add entity to Returnment table")
+        print("Could not add entity to Returnment Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getReturnment(orderid, itemid, quantity):
+def getReturnmentTuple(orderid, itemid, quantity):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -398,13 +552,27 @@ def getReturnment(orderid, itemid, quantity):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified Returnment Entity")
+        print("Could not retrieve specified Returnment Entity")
+    finally:
+        client.close()
+
+
+def getReturnmentTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT OrderID, ItemID, Quantity, Comments FROM Returnment"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve Returnment Table data")
     finally:
         client.close()
 
 
 # Reviews Table
-def insertReviews(customerid, itemid, ratings, comments):
+def insertReview(customerid, itemid, ratings, comments):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -412,13 +580,13 @@ def insertReviews(customerid, itemid, ratings, comments):
         cursor.execute(query, (customerid, itemid, ratings, comments))
         client.commit()
     except Exception:
-        print("Could not add entity to Reviews table")
+        print("Could not add entity to Reviews Table")
         client.rollback()
     finally:
         client.close()
 
 
-def getReviews(customerid, itemid):
+def getReviewTuple(customerid, itemid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -427,6 +595,20 @@ def getReviews(customerid, itemid):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Can not retrieve specified Reviews Entity")
+        print("Could not retrieve specified Reviews Entity")
+    finally:
+        client.close()
+
+
+def getReviewTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT CustomerID, ItemID, Ratings, Comments FROM Reviews"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve Reviews Table data")
     finally:
         client.close()
