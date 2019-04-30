@@ -50,7 +50,7 @@ def login():
 
 @app.route("/checkout.html")
 def checkout():
-    return render_template('checkout.html', styles= 'form-validation.css', bodyclass= 'bg-light')
+    return render_template('checkout.html', styles= 'checkout.css', bodyclass= 'bg-light')
 
 
 @app.route("/shop.html")
@@ -117,6 +117,9 @@ def shop():
 def item():
     return render_template('item.html', styles= '', bodyclass= 'bg-light')
 
+@app.route("/profile.html")
+def profile():
+    return render_template('profile.html', styles= '', bodyclass= 'bg-light')
 
 # to run in python
 if __name__ == '__main__':
