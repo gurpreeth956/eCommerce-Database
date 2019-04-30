@@ -55,7 +55,51 @@ def checkout():
 
 @app.route("/shop.html")
 def shop():
-    return render_template('shop.html', styles= '', bodyclass= 'bg-light')
+    # Example of how to get data from database to html file
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        word = None
+        price = 0
+        itemid = 1233
+        cursor = client.cursor()
+        query = "SELECT ItemID, Quantity, Price, ItemType, Seller, ItemDesc FROM Item WHERE ItemID = %s"
+        cursor.execute(query, itemid)
+        result = cursor.fetchall()
+        for row in result:
+            word = row[3]
+            price = row[2]
+    except Exception:
+        print("Can not retrieve specified Item Entity")
+    finally:
+        client.close()
+
+    data = [
+        {
+            'name':word,
+            'price':price
+        },
+        {
+            'name': word,
+            'price': price
+        },
+        {
+            'name': word,
+            'price': price
+        },
+        {
+            'name': word,
+            'price': price
+        },
+        {
+            'name': word,
+            'price': price
+        },
+        {
+            'name': word,
+            'price': price
+        }
+    ]
+    return render_template('shop.html', data=data, styles='', bodyclass='bg-light')
 
 
 @app.route("/item.html")

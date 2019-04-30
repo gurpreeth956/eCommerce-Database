@@ -42,6 +42,8 @@ CREATE TABLE Item (
     ItemType VARCHAR(15) NOT NULL,
     Seller VARCHAR(15) NOT NULL,
     ItemDesc VARCHAR(100),
+    Category VARCHAR(15) NOT NULL,
+    URL VARCHAR(50),
     PRIMARY KEY (ItemID)
 );
 
@@ -301,9 +303,9 @@ INSERT INTO Employee VALUES('432591', '7645', NULL);
 INSERT INTO Employee VALUES('845523', '1265', '7645');
 INSERT INTO Employee VALUES('359803', '4552', '7645');
 
-INSERT INTO Item VALUES('1233', '500', '123.00', 'IPhone X', 'Apple', 'A fancy phone');
-INSERT INTO Item VALUES('18332', '90', '90.00', 'Soccer Ball', 'Tottenham', 'A ball that wins nothing');
-INSERT INTO Item VALUES('81234', '200', '10.00', 'Diamond', 'PewDiePie', NULL);
+INSERT INTO Item VALUES('1233', '500', '123.00', 'IPhone X', 'Apple', 'A fancy phone', 'Phone', 'Link3');
+INSERT INTO Item VALUES('18332', '90', '90.00', 'Soccer Ball', 'Tottenham', 'A ball that wins nothing', 'Sports', 'Link2');
+INSERT INTO Item VALUES('81234', '200', '10.00', 'Diamond', 'PewDiePie', NULL, 'Gamnig', 'Link3');
 
 INSERT INTO ShoppingCart VALUES('368192', '1233', '5');
 INSERT INTO ShoppingCart VALUES('251059', '18332', '2');
