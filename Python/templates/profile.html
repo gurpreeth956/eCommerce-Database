@@ -1,4 +1,5 @@
 {% extends "layouts.html" %}
+{% from "macros.html" import nav_right with context %}
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
@@ -11,23 +12,7 @@
             <a class="nav-item nav-link" href="/shop.html">Shop</a>
             <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
           </div>
-          <ul class="navbar-nav navbar-right">
-            {% if loggedin %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ loggedin }}
-                        </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item active" href="profile.html">Profile</a>
-                        <a class="dropdown-item" href="history.html">Order History</a>
-                        <a class="dropdown-item" href="wishlist.html">Wish List</a>
-                    </div>
-                    </li>
-              {% else %}
-                    <li><a href="signup.html"> Sign Up</a></li>
-                    <li><a href="signin.html"> Login</a></li>
-              {% endif %}
-          </ul>
+          {{ nav_right('profile') }}
       </div>
     </nav>
 
@@ -35,7 +20,7 @@
 
   <section class="jumbotron text-center">
     <div class="container">
-      <h1 class="jumbotron-heading">Thanos Purpleman</h1>
+      <h1 class="jumbotron-heading">{{ name[0][0] }}</h1>
       <img src="static/images/thanos.jpg" class="rounded-circle" alt="Cinque Terre" width="296" height="236">
     </div>
   </section>

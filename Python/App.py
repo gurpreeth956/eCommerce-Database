@@ -13,6 +13,8 @@ loggedin = None
 @app.route("/")
 def home():
     global loggedin
+    if 'logoff' in request.args:
+        loggedin = None
     return render_template('index.html', loggedin= loggedin, title= 'Home', styles = 'album.css', bodyclass = 'bg-light')
 
 
@@ -91,7 +93,20 @@ def item():
 
 @app.route("/profile.html")
 def profile():
-    return render_template('profile.html', loggedin= loggedin, title='Profile', styles='', bodyclass='bg-light')
+    if loggedin != None:
+        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        try:
+            cursor = client.cursor()
+            query = "SELECT P.Named FROM Person P, Customer C WHERE C.CustomerID = P.ID AND C.Username = %s"
+            cursor.execute(query, loggedin)
+            result = cursor.fetchall()
+        except Exception:
+            print("Can not retrieve specified name Entity")
+        finally:
+            client.close()
+    else:
+        return redirect('/')
+    return render_template('profile.html', name= result, loggedin= loggedin, title='Profile', styles='', bodyclass='bg-light')
 
 
 @app.route("/history.html")
