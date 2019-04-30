@@ -40,7 +40,7 @@ def signup():
             client.close()
     else:
         print("error")
-    return render_template('signup.html', title= 'Sign Up',  styles= 'signin.css', bodyclass= 'text-center')
+    return render_template('signup.html', title='Sign Up',  styles='signin.css', bodyclass='text-center')
 
 
 @app.route("/signin.html", methods= ['GET', 'POST'])
@@ -51,7 +51,8 @@ def login():
         client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
         try:
             cursor = client.cursor()
-            query = "SELECT P.Email, C.Userpass, C.Username, C.CustomerID, P.ID FROM Customer C, Person P WHERE C.CustomerID = P.ID"
+            query = "SELECT P.Email, C.Userpass, C.Username, C.CustomerID, P.ID FROM Customer C, Person P WHERE \
+                C.CustomerID = P.ID"
             cursor.execute(query)
             result = cursor.fetchall()
             for customer in result:
@@ -82,7 +83,7 @@ def shop():
     # Example of how to get data from database to html file
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
-        word = None
+        word = "mmom"
         price = 0
         itemid = 1233
         cursor = client.cursor()
@@ -99,40 +100,51 @@ def shop():
 
     data = [
         {
-            'name':word,
-            'price':price
+            'name': word,
+            'price': price,
+            'type': '1'
         },
         {
             'name': word,
-            'price': price
+            'price': price,
+            'type': '2'
         },
         {
             'name': word,
-            'price': price
+            'price': price,
+            'type': '3'
         },
         {
             'name': word,
-            'price': price
+            'price': price,
+            'type': '4'
         },
         {
             'name': word,
-            'price': price
+            'price': '9',
+            'type': '5'
         },
         {
             'name': word,
-            'price': price
+            'price': price,
+            'type': '6'
         }
     ]
-    return render_template('shop.html', loggedin= loggedin, title= 'Shop', data=data, styles='', bodyclass='bg-light')
+
+    if request.method == 'POST':
+        type = request.form.getlist['type']
+        print(type)
+
+    return render_template('shop.html', loggedin= loggedin, title='Shop', data=data, styles='', bodyclass='bg-light')
 
 
-@app.route("/item.html")
+@app.route("/item.html", methods=['GET', 'POST'])
 def item():
-    return render_template('item.html', title= '[Item Name]', styles= '', bodyclass= 'bg-light')
+    return render_template('item.html', title='[Item Name]', styles= '', bodyclass= 'bg-light')
 
 @app.route("/profile.html")
 def profile():
-    return render_template('profile.html', styles= '', bodyclass= 'bg-light')
+    return render_template('profile.html', title='Profile', styles='', bodyclass='bg-light')
 
 # to run in python
 if __name__ == '__main__':
