@@ -7,20 +7,20 @@
         <span class="navbar-toggler-icon"></span>
       </button>
           <div class="navbar-nav navbar">
-            <a class="nav-item nav-link active" href="/">Home</a>
-            <a class="nav-item nav-link" href="/shop.html">Shop</a>
+            <a class="nav-item nav-link" href="/">Home</a>
+            <a class="nav-item nav-link active" href="/shop.html">Shop</a>
             <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
           </div>
           <ul class="navbar-nav navbar-right">
-            {% if loggedin %}
+              {% if loggedin %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ loggedin }}
                         </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="profile.html">Profile</a>
-                        <a class="dropdown-item" href="#">Order History</a>
-                        <a class="dropdown-item" href="#">Wish List</a>
+                        <a class="dropdown-item" href="history.html">Order History</a>
+                        <a class="dropdown-item" href="wishlist.html">Wish List</a>
                     </div>
                     </li>
               {% else %}
