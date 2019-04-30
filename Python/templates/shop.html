@@ -12,18 +12,21 @@
             <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
           </div>
           <ul class="navbar-nav navbar-right">
-            <li><a href="signup.html"> Sign Up</a></li>
-            <li><a href="signin.html"> Login</a></li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                User Name
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="profile.html">Profile</a>
-                <a class="dropdown-item" href="#">Order History</a>
-                <a class="dropdown-item" href="#">Wish List</a>
-              </div>
-            </li>
+            {% if loggedin %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ loggedin }}
+                        </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="profile.html">Profile</a>
+                        <a class="dropdown-item" href="#">Order History</a>
+                        <a class="dropdown-item" href="#">Wish List</a>
+                    </div>
+                    </li>
+              {% else %}
+                    <li><a href="signup.html"> Sign Up</a></li>
+                    <li><a href="signin.html"> Login</a></li>
+              {% endif %}
           </ul>
       </div>
     </nav>
