@@ -1,0 +1,37 @@
+{% macro nav_right(active) %}
+<ul class="navbar-nav navbar-right">
+            {% if loggedin %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ loggedin }}
+                        </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        {% if active == 'profile' %}
+                            <a class="dropdown-item active" href="profile.html">Profile</a>
+                            <a class="dropdown-item" href="history.html">Order History</a>
+                            <a class="dropdown-item" href="wishlist.html">Wish List</a>
+                            <a class="dropdown-item" href="/?logoff=true">Log Off</a>
+                        {% elif active == 'history' %}
+                            <a class="dropdown-item" href="profile.html">Profile</a>
+                            <a class="dropdown-item active" href="history.html">Order History</a>
+                            <a class="dropdown-item" href="wishlist.html">Wish List</a>
+                            <a class="dropdown-item" href="/?logoff=true">Log Off</a>
+                        {% elif active == 'wishlist' %}
+                            <a class="dropdown-item" href="profile.html">Profile</a>
+                            <a class="dropdown-item" href="history.html">Order History</a>
+                            <a class="dropdown-item active" href="wishlist.html">Wish List</a>
+                            <a class="dropdown-item" href="/?logoff=true">Log Off</a>
+                        {% else %}
+                            <a class="dropdown-item" href="profile.html">Profile</a>
+                            <a class="dropdown-item" href="history.html">Order History</a>
+                            <a class="dropdown-item" href="wishlist.html">Wish List</a>
+                            <a class="dropdown-item" href="/?logoff=true">Log Off</a>
+                        {% endif %}
+                    </div>
+                    </li>
+              {% else %}
+                    <li><a href="signup.html"> Sign Up</a></li>
+                    <li><a href="signin.html"> Login</a></li>
+              {% endif %}
+          </ul>
+{% endmacro %}
