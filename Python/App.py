@@ -5,7 +5,7 @@ import pymysql.cursors
 # do hard refresh on web page if something not loading
 app = Flask(__name__)
 
-loggedin = "Sfasd"
+loggedin = None
 
 @app.route("/")
 def home():
@@ -134,19 +134,19 @@ def shop():
 
 @app.route("/item.html", methods=['GET', 'POST'])
 def item():
-    return render_template('item.html', title='[Item Name]', styles= '', bodyclass= 'bg-light')
+    return render_template('item.html', loggedin= loggedin, title='[Item Name]', styles= '', bodyclass= 'bg-light')
 
 @app.route("/profile.html")
 def profile():
-    return render_template('profile.html', title='Profile', styles='', bodyclass='bg-light')
+    return render_template('profile.html', loggedin= loggedin, title='Profile', styles='', bodyclass='bg-light')
 
 @app.route("/history.html")
 def history():
-    return render_template('history.html', title='Order History', styles='history.css', bodyclass='bg-light')
+    return render_template('history.html', loggedin= loggedin, title='Order History', styles='history.css', bodyclass='bg-light')
 
 @app.route("/wishlist.html")
 def wishlist():
-    return render_template('wishlist.html', title='Wish List', styles='wishlist.css', bodyclass='bg-light')
+    return render_template('wishlist.html', loggedin= loggedin, title='Wish List', styles='wishlist.css', bodyclass='bg-light')
 
 # to run in python
 if __name__ == '__main__':
