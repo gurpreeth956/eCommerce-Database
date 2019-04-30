@@ -13,7 +13,6 @@ CREATE TABLE Person (
 
 CREATE TABLE Customer (
     CustomerID INT,
-    Username VARCHAR(20) NOT NULL,
     Userpass VARCHAR(20) NOT NULL,
     HasMembership CHAR(1) DEFAULT 'N',
     PRIMARY KEY (CustomerID),
@@ -295,9 +294,9 @@ INSERT INTO	Person VALUES('845523', 'mars.nasa@gmail.com', 'Tenmond', '2001-11-2
 INSERT INTO	Person VALUES('359803', 'plane.wire@gmail.com', 'Rayzin', '1967-10-12', '9179179174', 'Ithaca', '2018-01-27', 'Y');
 INSERT INTO	Person VALUES('432591', 'thom.sanjr@gmail.com', 'Thomsan', '1912-02-07', '4545454545', 'Hurst', '2015-05-15', 'Y');
 
-INSERT INTO Customer VALUES('368192', 'Bob999', 'password', 'N');
-INSERT INTO Customer VALUES('251059', 'Billy899', 'wordpass', 'N');
-INSERT INTO Customer VALUES('592134', 'Samm333', 'secretive', 'Y');
+INSERT INTO Customer VALUES('368192', 'password', 'N');
+INSERT INTO Customer VALUES('251059', 'wordpass', 'N');
+INSERT INTO Customer VALUES('592134', 'secretive', 'Y');
 
 INSERT INTO Employee VALUES('432591', '7645', NULL);
 INSERT INTO Employee VALUES('845523', '1265', '7645');
