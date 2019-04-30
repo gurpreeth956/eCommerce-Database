@@ -5,12 +5,11 @@ import pymysql.cursors
 # do hard refresh on web page if something not loading
 app = Flask(__name__)
 
-loggedin = None
+loggedin = "Sfasd"
 
 @app.route("/")
 def home():
     global loggedin
-    #print(loggedin)
     return render_template('index.html', loggedin= loggedin, title= 'Home', styles = 'album.css', bodyclass = 'bg-light')
 
 
@@ -73,11 +72,13 @@ def login():
 
 @app.route("/checkout.html")
 def checkout():
-    return render_template('checkout.html', title= 'Shopping Cart', styles= 'checkout.css', bodyclass= 'bg-light')
+    global loggedin
+    return render_template('checkout.html', loggedin= loggedin, title= 'Shopping Cart', styles= 'checkout.css', bodyclass= 'bg-light')
 
 
 @app.route("/shop.html", methods=['GET', 'POST'])
 def shop():
+    global loggedin
     # Example of how to get data from database to html file
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
@@ -128,7 +129,7 @@ def shop():
             'type': '6'
         }
     ]
-    return render_template('shop.html', title='Shop', data=data, styles='', bodyclass='bg-light')
+    return render_template('shop.html', loggedin= loggedin, title='Shop', data=data, styles='', bodyclass='bg-light')
 
 
 @app.route("/item.html", methods=['GET', 'POST'])
@@ -138,6 +139,14 @@ def item():
 @app.route("/profile.html")
 def profile():
     return render_template('profile.html', title='Profile', styles='', bodyclass='bg-light')
+
+@app.route("/history.html")
+def history():
+    return render_template('history.html', title='Order History', styles='history.css', bodyclass='bg-light')
+
+@app.route("/wishlist.html")
+def wishlist():
+    return render_template('wishlist.html', title='Wish List', styles='wishlist.css', bodyclass='bg-light')
 
 # to run in python
 if __name__ == '__main__':
