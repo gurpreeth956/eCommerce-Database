@@ -90,10 +90,10 @@ def shop():
 
 @app.route("/item.html", methods=['GET', 'POST'])
 def item():
-    if 'type' and 'price' and 'desc' in request.args:
+    if 'type' and 'price' and 'desc' and 'id' in request.args:
         return render_template('item.html', type=request.args['type'], price=request.args['price'],
-                               desc=request.args['desc'], loggedin=loggedinname, title='[Item Name]', styles='',
-                               bodyclass='bg-light')
+                               desc=request.args['desc'], id=request.args['id'], loggedin=loggedinname,
+                               title='[Item Name]', styles='', bodyclass='bg-light')
     else:
         return render_template('item.html', loggedin=loggedinname, title='[Item Name]', styles='', bodyclass='bg-light')
 
@@ -123,19 +123,19 @@ def wishlist():
 
 @app.route("/premium.html")
 def premium():
-    return render_template('premium.html', loggedin= loggedin, title='Premium', styles='wishlist.css', bodyclass='bg-light')
+    return render_template('premium.html', loggedin=loggedinname, title='Premium', styles='wishlist.css', bodyclass='bg-light')
 
 @app.route("/address.html")
 def address():
-    return render_template('address.html', loggedin= loggedin, title='Address', styles='wishlist.css', bodyclass='bg-light')
+    return render_template('address.html', loggedin=loggedinname, title='Address', styles='wishlist.css', bodyclass='bg-light')
 
 @app.route("/payment.html")
 def payment():
-    return render_template('payment.html', loggedin= loggedin, title='Payment', styles='wishlist.css', bodyclass='bg-light')
+    return render_template('payment.html', loggedin=loggedinname, title='Payment', styles='wishlist.css', bodyclass='bg-light')
 
 @app.route("/settings.html")
 def settings():
-    return render_template('settings.html', loggedin= loggedin, title='Settings', styles='settings.css', bodyclass='bg-light')
+    return render_template('settings.html', loggedin=loggedinname, title='Settings', styles='settings.css', bodyclass='bg-light')
 
 '''
 BELOW ARE ALL THE METHODS FOR GETTING AND SETTING DATA FROM THE DATABASE

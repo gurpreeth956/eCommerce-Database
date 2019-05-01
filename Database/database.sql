@@ -15,7 +15,6 @@ CREATE TABLE Customer (
     CustomerID INT,
     Userpass VARCHAR(20) NOT NULL,
     HasMembership CHAR(1) DEFAULT 'N',
-    UserImage VARCHAR(30),
     PRIMARY KEY (CustomerID),
     FOREIGN KEY (CustomerID)
         REFERENCES Person (ID)
@@ -38,7 +37,7 @@ CREATE TABLE Employee (
 CREATE TABLE Item (
     ItemID INT,
     Quantity INT NOT NULL,
-    Price DEC(9 , 2 ) NOT NULL,
+    Price DEC(9 , 2) NOT NULL,
     ItemType VARCHAR(15) NOT NULL,
     Seller VARCHAR(15) NOT NULL,
     ItemDesc VARCHAR(100),
@@ -304,6 +303,13 @@ INSERT INTO Employee VALUES('359803', '4552', '7645');
 INSERT INTO Item VALUES('1233', '500', '123.00', 'IPhone X', 'Apple', 'A fancy phone', 'Phone');
 INSERT INTO Item VALUES('18332', '90', '90.00', 'Soccer Ball', 'Tottenham', 'A ball that wins nothing', 'Sports');
 INSERT INTO Item VALUES('81234', '200', '10.00', 'Diamond', 'PewDiePie', NULL, 'Gamnig');
+INSERT INTO Item VALUES('1', '20', '50.00', 'Sweater', 'Adidas', 'A gray sweater that will keep you warm and stylish', 'Sweater');
+INSERT INTO Item VALUES('2', '8', '80.00', 'Bayern Jersey', 'Adidas', 'A Bayern Munich home jersey from 2017-2018 season', 'Sports');
+INSERT INTO Item VALUES('3', '5', '120.00', 'Soccer Cleets', 'Nike', 'Black and gold soccer cleets that are durable', 'Sports');
+INSERT INTO Item VALUES('4', '30', '30.00', 'Jeans', 'Calvin Klein', 'Awesome light blue jeans from an awesome company', 'Pants');
+INSERT INTO Item VALUES('5', '20', '40.00', 'Shirt', 'Nike', 'A nice white shirt with a black logo, just do it.', 'Shirt');
+INSERT INTO Item VALUES('6', '3', '180.00', 'Ultra Boost', 'Adidas', 'Gray ultraboost that are good for running and style', 'Shoes');
+
 
 
 INSERT INTO ShoppingCart VALUES('368192', '1233', '5');
