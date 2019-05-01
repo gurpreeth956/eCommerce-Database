@@ -1,0 +1,85 @@
+{% extends "layouts.html" %}
+{% from "macros.html" import nav_right with context %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+      <a class="navbar-brand" href="/">Navbar</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+          <div class="navbar-nav navbar">
+            <a class="nav-item nav-link" href="/">Home</a>
+            <a class="nav-item nav-link" href="/shop.html">Shop</a>
+            <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
+          </div>
+          {{ nav_right('history') }}
+      </div>
+    </nav>
+
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">Order History</h1>
+      </div>
+    </div>
+
+<div class="container">
+    <div class="row">
+
+      <div class="dropdown-date">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Last 6 Months
+          </a>
+
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="#">Last 6 Months</a>
+            <a class="dropdown-item" href="#">Last Year</a>
+            <a class="dropdown-item" href="#">Last 2 Years</a>
+          </div>
+        </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+        <h2>Delivered on Insert Date here</h2>
+        <div class="card mt-4">
+          <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
+          <div class="card-body">
+            <h3 class="card-title">Product Name</h3>
+            <h4>$24.99</h4>
+            <p>
+                <button type="button" class="btn btn-primary">Buy it Again</button>
+                <button type="button" class="btn btn-secondary">Leave a Review</button>
+                <button type="button" class="btn btn-danger">Return Item</button>
+            </p>
+          </div>
+        </div>
+        <!-- /.card -->
+          <h2>Delivered on Insert Date here</h2>
+          <div class="card mt-4">
+          <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
+          <div class="card-body">
+            <h3 class="card-title">Product Name</h3>
+            <h4>$24.99</h4>
+            <p>
+                <button type="button" class="btn btn-primary">Buy it Again</button>
+                <button type="button" class="btn btn-secondary">Leave a Review</button>
+                <button type="button" class="btn btn-danger">Return Item</button>
+            </p>
+          </div>
+        </div>
+
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+{% endblock content %}

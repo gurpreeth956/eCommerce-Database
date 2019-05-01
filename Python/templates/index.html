@@ -1,8 +1,9 @@
 {% extends "layouts.html" %}
+{% from "macros.html" import nav_right with context %}
 {% block content %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="/">Navbar</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -11,20 +12,7 @@
             <a class="nav-item nav-link" href="/shop.html">Shop</a>
             <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
           </div>
-          <ul class="navbar-nav navbar-right">
-            <li><a href="signup.html"> Sign Up</a></li>
-            <li><a href="signin.html"> Login</a></li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                User Name
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Profile</a>
-                <a class="dropdown-item" href="#">Order History</a>
-                <a class="dropdown-item" href="#">Wish List</a>
-              </div>
-            </li>
-          </ul>
+          {{ nav_right('') }}
       </div>
     </nav>
 
@@ -33,18 +21,19 @@
       <h1 class="cover-heading">Welcome to the Shop</h1>
       <p class="lead text-muted">We sell stuff.</p>
           <p>
-            <a href="#" class="btn btn-primary my-2">Buy Something?</a>
-            <a href="signup.html" class="btn btn-secondary my-2">Sign Up</a>
+            <a href="shop.html" class="btn btn-primary my-2">Buy Something?</a>
+            {% if not loggedin %}
+                <a href="signup.html" class="btn btn-secondary my-2">Sign Up</a>
+            {% endif %}
           </p>
       </div>
     </main>
 
-    <footer class="text-muted">
-      <div class="container">
-        <p class="float-right">
-          <a href="#">Back to top</a>
-        </p>
-        <p>Raymond's shop</p>
-      </div>
-    </footer>
+    <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
 {% endblock content %}
+

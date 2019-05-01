@@ -1,30 +1,18 @@
 {% extends "layouts.html" %}
+{% from "macros.html" import nav_right with context %}
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="/">Navbar</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
           <div class="navbar-nav navbar">
-            <a class="nav-item nav-link active" href="/">Home</a>
+            <a class="nav-item nav-link" href="/">Home</a>
             <a class="nav-item nav-link" href="/shop.html">Shop</a>
             <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
           </div>
-          <ul class="navbar-nav navbar-right">
-            <li><a href="signup.html"> Sign Up</a></li>
-            <li><a href="signin.html"> Login</a></li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                User Name
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Profile</a>
-                <a class="dropdown-item" href="#">Order History</a>
-                <a class="dropdown-item" href="#">Wish List</a>
-              </div>
-            </li>
-          </ul>
+          {{ nav_right('') }}
       </div>
     </nav>
 
@@ -45,11 +33,25 @@
       <div class="col-lg-9">
 
         <div class="card mt-4">
-          <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
+          <img class="card-img-top img-fluid" src="static/images/items/{{ id }}.png" alt="">
           <div class="card-body">
-            <h3 class="card-title">Product Name</h3>
-            <h4>$24.99</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente dicta fugit fugiat hic aliquam itaque facere, soluta. Totam id dolores, sint aperiam sequi pariatur praesentium animi perspiciatis molestias iure, ducimus!</p>
+            {% if type %}
+              <h3 class="card-title">{{ type }}</h3>
+              <h4>${{ price }}</h4>
+              <p class="card-text">{{ desc }}</p>
+              <p>
+                  <button type="button" class="btn btn-primary">Add to Cart</button>
+                  <button type="button" class="btn btn-secondary">Add to Wish List</button>
+              </p>
+            {% else %}
+              <h3 class="card-title">Product Name</h3>
+              <h4>Price</h4>
+              <p class="card-text">Description</p>
+              <p>
+                  <button type="button" class="btn btn-primary">Add to Cart</button>
+                  <button type="button" class="btn btn-secondary">Add to Wish List</button>
+              </p>
+            {% endif %}
             <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
             4.0 stars
           </div>
@@ -70,7 +72,7 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
             <small class="text-muted">Posted by Anonymous on 3/1/17</small>
             <hr>
-            <a href="#" class="btn btn-success">Leave a Review</a>
+            <button type = "button" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
           </div>
         </div>
         <!-- /.card -->
@@ -81,12 +83,37 @@
     </div>
 
   </div>
+
+<!-- Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Leave a Review</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <textarea class="form-control" id="reviewArea" rows="5"></textarea>
+              </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Leave Review</button>
+      </div>
+    </div>
+  </div>
+</div>
   <!-- /.container -->
 
   <!-- Footer -->
   <footer class="py-5 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+      <p class="m-0 text-center text-white">Copyright &copy; Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
     </div>
     <!-- /.container -->
   </footer>

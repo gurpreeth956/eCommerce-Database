@@ -7,12 +7,17 @@
     <meta name="Raymond Huang" content="">
     <link rel="icon" href="../../../../favicon.ico">
 
-    <title>Log In</title>
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title> E-Store </title>
+    {% endif %}
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.1/examples/sign-in/">
 
     <!-- Bootstrap core CSS -->
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
     <!-- Custom styles for this template -->
     <link href= "static/css/{{ styles }}" rel="stylesheet">
@@ -21,9 +26,49 @@
         {% block content %} {% endblock %}
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script>window.jQuery || document.write('<script src="/js/vendor/jquery-slim.min.js"><\/script>')</script>
-        <script src="static/js/vendor/popper.min.js"></script>
+        <script src="static/js/bootstrap.bundle.min.js"></script>
         <script src="static/js/bootstrap.min.js"></script>
         <script src="static/js/vendor/holder.min.js"></script>
         <script src="static/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+
+        <script>
+            $(document).ready(function(){
+              var date_input=$('input[name="birthday"]'); //our date input has the name "date"
+              var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+              var options={
+                format: 'mm/dd/yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+              };
+              date_input.datepicker(options);
+            })
+        </script>
+        <script>
+            $(document).ready(function(){
+              var date_input=$('input[name="expiration"]'); //our date input has the name "expiration"
+              var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+              var options={
+                format: 'mm/yy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+              };
+              date_input.datepicker(options);
+            })
+        </script>
+        <script>
+          $(function(){
+
+               $(".dropdown-menu a").click(function(){
+
+              $(".btn:first-child").text($(this).text());
+              $(".btn:first-child").val($(this).text());
+
+               });
+
+            });
+        </script>
   </body>
 </html>

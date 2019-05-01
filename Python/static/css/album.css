@@ -2,15 +2,10 @@
   --jumbotron-padding-y: 3rem;
 }
 
+
 body{
 height:100vh;
 	display: -ms-flexbox;
-}
-@media (min-width: 768px) {
-  .jumbotron {
-    padding-top: calc(var(--jumbotron-padding-y) * 2);
-    padding-bottom: calc(var(--jumbotron-padding-y) * 2);
-  }
 }
 
 .navbar {

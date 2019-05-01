@@ -6,23 +6,25 @@ def insert():
     try:
         cursor = client.cursor()
         query = "INSERT INTO Person(ID, Email, Named, DateOfBirth, Phone, Address, DateJoined, IsEmployee)\
-                values(\"11111\", \"111.sanjr@gmail.com\", \"BILL\", \"1912-02-07\", \"4545454545\", \"Hurst\",\
-                \"2015-05-15\", \"N\")"
-        cursor.execute(query)
+                values(%s, %s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (123, 'asdf@gmail.com', 'Te', '1998-11-25', 6072165029, 'Ithaca', '1998-11-25', 'N'))
         client.commit()
     except Exception:
         print(Exception)
         client.rollback()
     finally:
         client.close()
+    print('done')
 
 
 def select():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
+        idvar = 123
         cursor = client.cursor()
-        query = "SELECT ID, Email, Named, DateOfBirth, Phone, Address, DateJoined, IsEmployee FROM Person"
-        cursor.execute(query)
+        query = "SELECT ID, Email, Named, DateOfBirth, Phone, Address, DateJoined, IsEmployee FROM Person \
+                WHERE ID = %s"
+        cursor.execute(query, idvar)
         results = cursor.fetchall()
         for row in results:
             idnum = row[0]
@@ -35,3 +37,20 @@ def select():
 # To test methods:
 # insert()
 # select()
+
+def getCustomerTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT CustomerID, Userpass, HasMembership FROM Customer"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        for row in results:
+            print(row[0])
+    except Exception:
+        print("Could not retrieve Customer Table data")
+    finally:
+        client.close()
+
+
+getCustomerTable()

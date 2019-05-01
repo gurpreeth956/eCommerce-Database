@@ -1,0 +1,77 @@
+{% extends "layouts.html" %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+      <a class="navbar-brand" href="/">Navbar</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+          <div class="navbar-nav navbar">
+            <a class="nav-item nav-link" href="/">Home</a>
+            <a class="nav-item nav-link" href="/shop.html">Shop</a>
+            <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
+          </div>
+          <ul class="navbar-nav navbar-right">
+              {% if loggedin %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ loggedin }}
+                        </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="profile.html">Profile</a>
+                        <a class="dropdown-item active" href="history.html">Order History</a>
+                        <a class="dropdown-item" href="wishlist.html">Wish List</a>
+                    </div>
+                    </li>
+              {% else %}
+                    <li><a href="signup.html"> Sign Up</a></li>
+                    <li><a href="signin.html"> Login</a></li>
+              {% endif %}
+          </ul>
+      </div>
+    </nav>
+
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">My Profile</h1>
+      </div>
+    </div>
+
+    <div class="container">
+        <div class="profile-image text-center">
+            <img src="static/images/thanos.jpg" class="rounded-circle" alt="Cinque Terre" width="296" height="236">
+        </div>
+
+        <form>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="customFile" placeholder="Choose new profile image">
+              <label class="custom-file-label" for="customFile">Choose new profile image</label>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail" class="sr-only">Email</label>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email"  name = "email" value = "{{ request.form.email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="inputNumber" class="sr-only">Phone Number</label>
+                <input type="number" id="inputNumber" class="form-control" placeholder="Phone Number"  name = "number" value = "{{ request.form.number }}" required>
+            </div>
+            <h4>Change Password</h4>
+            <div class="form-group">
+                <label for="inputPassword" class="sr-only">Old Password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Old Password"  name = "password" value = "{{ request.form.password }}" required>
+                <label for="newPassword" class="sr-only">New Password</label>
+                <input type="newPassword" id="newPassword" class="form-control" placeholder="New Password" name = "newPassword" value = "{{ request.form.newPassword }}" required>
+                <label for="verifyPassword" class="sr-only">Verify Password</label>
+                <input type="verifyPassword" id="verifyPassword" class="form-control" placeholder="Verify Password" name = "verifyPassword" value = "{{ request.form.verifyPassword }}" required>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
+        </form>
+    </div>
+
+<footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+{% endblock content %}

@@ -1,0 +1,33 @@
+.card mt-4{
+        margin: 0 auto; /* Added */
+        float: none; /* Added */
+        margin-bottom: 10px; /* Added */
+}
+
+footer{
+   margin-top:3rem;
+}
+
+.jumbotron {
+    width:100%;
+    margin:0;
+}
+
+form{
+    max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-group{
+    margin-top:1rem;
+}
+
+form h4{
+    text-align:center;
+}
+
+.profile-image{
+    margin-top:3rem;
+    margin-bottom:1rem;
+}
