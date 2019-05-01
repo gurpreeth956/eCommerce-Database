@@ -15,6 +15,7 @@ CREATE TABLE Customer (
     CustomerID INT,
     Userpass VARCHAR(20) NOT NULL,
     HasMembership CHAR(1) DEFAULT 'N',
+    UserImage VARCHAR(30),
     PRIMARY KEY (CustomerID),
     FOREIGN KEY (CustomerID)
         REFERENCES Person (ID)
@@ -42,7 +43,6 @@ CREATE TABLE Item (
     Seller VARCHAR(15) NOT NULL,
     ItemDesc VARCHAR(100),
     Category VARCHAR(15) NOT NULL,
-    URL VARCHAR(50),
     PRIMARY KEY (ItemID)
 );
 
@@ -108,10 +108,9 @@ CREATE TABLE OrderedItems (
 
 CREATE TABLE Payment (
     OrderID INT,
+    CardName VARCHAR(15) NOT NULL,
     CardNum VARCHAR(16) NOT NULL,
-    CVS INT(3) NOT NULL,
     CardComp VARCHAR(10) NOT NULL,
-    CardType VARCHAR(10) NOT NULL,
     CardExp DATE NOT NULL,
     PRIMARY KEY (OrderID),
     FOREIGN KEY (OrderID)
@@ -302,9 +301,10 @@ INSERT INTO Employee VALUES('432591', '7645', NULL);
 INSERT INTO Employee VALUES('845523', '1265', '7645');
 INSERT INTO Employee VALUES('359803', '4552', '7645');
 
-INSERT INTO Item VALUES('1233', '500', '123.00', 'IPhone X', 'Apple', 'A fancy phone', 'Phone', 'Link3');
-INSERT INTO Item VALUES('18332', '90', '90.00', 'Soccer Ball', 'Tottenham', 'A ball that wins nothing', 'Sports', 'Link2');
-INSERT INTO Item VALUES('81234', '200', '10.00', 'Diamond', 'PewDiePie', NULL, 'Gamnig', 'Link3');
+INSERT INTO Item VALUES('1233', '500', '123.00', 'IPhone X', 'Apple', 'A fancy phone', 'Phone');
+INSERT INTO Item VALUES('18332', '90', '90.00', 'Soccer Ball', 'Tottenham', 'A ball that wins nothing', 'Sports');
+INSERT INTO Item VALUES('81234', '200', '10.00', 'Diamond', 'PewDiePie', NULL, 'Gamnig');
+
 
 INSERT INTO ShoppingCart VALUES('368192', '1233', '5');
 INSERT INTO ShoppingCart VALUES('251059', '18332', '2');
@@ -326,9 +326,9 @@ INSERT INTO OrderedItems VALUES('4444', '18332', '10');
 INSERT INTO OrderedItems VALUES('21344', '18332', '10');
 INSERT INTO OrderedItems VALUES('332', '18332', '20');
 
-INSERT INTO Payment VALUES('4444', '1234567891235674', '315', 'Chase', 'Debit', '2018-11-25');
-INSERT INTO Payment VALUES('21344', '1234567891234567', '474', 'MasterCard', 'Credit', '2018-11-25');
-INSERT INTO Payment VALUES('332', '6123456789123456', '908', 'Discover', 'Credit', '2018-11-25');
+INSERT INTO Payment VALUES('4444', 'Bobby', '1234567891235674', 'Chase', '2018-11-25');
+INSERT INTO Payment VALUES('21344', 'Billy', '1234567891234567', 'MasterCard', '2018-11-25');
+INSERT INTO Payment VALUES('332', 'James', '6123456789123456', 'Discover', '2018-11-25');
 
 INSERT INTO Shipment VALUES('4444', '100 Circle Rd', 'Fragile', '10', 'USPS');
 INSERT INTO Shipment VALUES('21344', '101 Circle Rd', 'Fragile', '5', 'UPS');

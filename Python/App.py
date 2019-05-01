@@ -7,15 +7,17 @@ app = Flask(__name__)
 
 
 # Variables
-loggedin = None
+loggedinid = None
+loggedinname = None
 
 
 @app.route("/")
 def home():
-    global loggedin
+    global loggedinid, loggedinname
     if 'logoff' in request.args:
-        loggedin = None
-    return render_template('index.html', loggedin= loggedin, title= 'Home', styles = 'album.css', bodyclass = 'bg-light')
+        loggedinid = None
+        loggedinname = None
+    return render_template('index.html', loggedin=loggedinname, title='Home', styles='album.css', bodyclass='bg-light')
 
 
 @app.route("/signup.html", methods=['GET', 'POST'])
@@ -41,16 +43,18 @@ def login():
         client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
         try:
             cursor = client.cursor()
-            query = "SELECT P.Email, C.CustomerID, C.Userpass FROM Customer C, Person P WHERE C.CustomerID = P.ID"
+            query = "SELECT P.Email, C.CustomerID, C.Userpass, P.Named FROM Customer C, Person P " \
+                    "WHERE C.CustomerID = P.ID"
             cursor.execute(query)
             results = cursor.fetchall()
             for customer in results:
                 if customer[0] == email and customer[2] == password:
-                    global loggedin
-                    loggedin = customer[1]
+                    global loggedinid, loggedinname
+                    loggedinid = customer[1]
+                    loggedinname = customer[3]
                     print('Logged In')
                     break
-            if loggedin != None:
+            if loggedinid != None:
                 return redirect('/')
         except Exception:
             print("Can not retrieve specified Customer Entity")
@@ -61,13 +65,14 @@ def login():
 
 @app.route("/checkout.html")
 def checkout():
-    global loggedin
-    return render_template('checkout.html', loggedin= loggedin, title= 'Shopping Cart', styles= 'checkout.css', bodyclass= 'bg-light')
+    global loggedinid, loggedinname
+    return render_template('checkout.html', loggedin=loggedinname, title='Shopping Cart', styles='checkout.css',
+                           bodyclass='bg-light')
 
 
 @app.route("/shop.html", methods=['GET', 'POST'])
 def shop():
-    global loggedin
+    global loggedinid, loggedinname
     # Example of how to get data from database to html file
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
@@ -75,48 +80,46 @@ def shop():
         query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item"
         cursor.execute(query)
         result = cursor.fetchall()
-
     except Exception:
         print("Can not retrieve specified Item Entity")
     finally:
         client.close()
-    return render_template('shop.html', loggedin= loggedin, title='Shop', data=result, styles='', bodyclass='bg-light')
+    return render_template('shop.html', loggedin=loggedinname, title='Shop', data=result, styles='',
+                           bodyclass='bg-light')
 
 
 @app.route("/item.html", methods=['GET', 'POST'])
 def item():
     if 'type' and 'price' and 'desc' in request.args:
-        return render_template('item.html', type= request.args['type'], price= request.args['price'],
-                               desc= request.args['desc'], loggedin= loggedin, title='[Item Name]', styles= '', bodyclass= 'bg-light')
+        return render_template('item.html', type=request.args['type'], price=request.args['price'],
+                               desc=request.args['desc'], loggedin=loggedinname, title='[Item Name]', styles='',
+                               bodyclass='bg-light')
     else:
-        return render_template('item.html', loggedin= loggedin, title='[Item Name]', styles= '', bodyclass= 'bg-light')
+        return render_template('item.html', loggedin=loggedinname, title='[Item Name]', styles='', bodyclass='bg-light')
+
 
 @app.route("/profile.html")
 def profile():
-    if loggedin != None:
-        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
-        try:
-            cursor = client.cursor()
-            query = "SELECT P.Named FROM Person P, Customer C WHERE C.CustomerID = P.ID AND C.Username = %s"
-            cursor.execute(query, loggedin)
-            result = cursor.fetchall()
-        except Exception:
-            print("Can not retrieve specified name Entity")
-        finally:
-            client.close()
+    global loggedinid, loggedinname
+    result = ['NO USER']
+    if loggedinid != None:
+        result = [loggedinname]
     else:
         return redirect('/')
-    return render_template('profile.html', name= result, loggedin= loggedin, title='Profile', styles='', bodyclass='bg-light')
+    return render_template('profile.html', name=result, loggedin=loggedinname, title='Profile', styles='',
+                           bodyclass='bg-light')
 
 
 @app.route("/history.html")
 def history():
-    return render_template('history.html', loggedin= loggedin, title='Order History', styles='history.css', bodyclass='bg-light')
+    return render_template('history.html', loggedin=loggedinname, title='Order History', styles='history.css',
+                           bodyclass='bg-light')
 
 
 @app.route("/wishlist.html")
 def wishlist():
-    return render_template('wishlist.html', loggedin= loggedin, title='Wish List', styles='wishlist.css', bodyclass='bg-light')
+    return render_template('wishlist.html', loggedin=loggedinname, title='Wish List', styles='wishlist.css',
+                           bodyclass='bg-light')
 
 
 '''
@@ -254,13 +257,13 @@ def getEmployeeTable():
 
 
 # Item Table
-def insertItem(itemid, quantity, price, itemtype, seller, itemdesc, category, url):
+def insertItem(itemid, quantity, price, itemtype, seller, itemdesc, category):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO Item(ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category, URL) \
+        query = "INSERT INTO Item(ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category) \
             values(%s, %s, %s, %s, %s, %s)"
-        cursor.execute(query, (itemid, quantity, price, itemtype, seller, itemdesc, category, url))
+        cursor.execute(query, (itemid, quantity, price, itemtype, seller, itemdesc, category))
         client.commit()
     except Exception:
         print("Could not add entity to Item Table")
@@ -273,7 +276,7 @@ def getItemTuple(itemid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category, URL FROM Item WHERE ItemID = %s"
+        query = "SELECT ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category FROM Item WHERE ItemID = %s"
         cursor.execute(query, itemid)
         result = cursor.fetchall()
         return result
@@ -287,7 +290,7 @@ def getItemTable():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category, URL FROM Item"
+        query = "SELECT ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category FROM Item"
         cursor.execute(query)
         results = cursor.fetchall()
         return results
@@ -513,12 +516,12 @@ def getOrderedItemsTable():
 
 
 # Payment Table
-def insertPayment(orderid, cardnum, cvs, cardcomp, cardtype, cardexp):
+def insertPayment(orderid, cardname, cardnum, cardcomp, cardexp):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO Payment(OrderID, CardNum, CVS, CardComp, CardType, CardExp) values(%s, %s, %s, %s, %s, %s)"
-        cursor.execute(query, (orderid, cardnum, cvs, cardcomp, cardtype, cardexp))
+        query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp) values(%s, %s, %s, %s, %s)"
+        cursor.execute(query, (orderid, cardname, cardnum, cardcomp, cardexp))
         client.commit()
     except Exception:
         print("Could not add entity to Payment Table")
@@ -531,7 +534,7 @@ def getPaymentTuple(orderid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT OrderID, CardNum, CVS, CardComp, CardType, CardExp FROM Payment WHERE OrderID = %s"
+        query = "SELECT OrderID, CardName, CardNum, CardComp, CardExp FROM Payment WHERE OrderID = %s"
         cursor.execute(query, orderid)
         result = cursor.fetchall()
         return result
@@ -545,7 +548,7 @@ def getPaymentTable():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT OrderID, CardNum, CVS, CardComp, CardType, CardExp"
+        query = "SELECT OrderID, CardName, CardNum, CardComp, CardExp FROM Payment"
         cursor.execute(query)
         results = cursor.fetchall()
         return results
@@ -588,7 +591,7 @@ def getShipmentTable():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT OrderID, Address, Details, Fee, Company"
+        query = "SELECT OrderID, Address, Details, Fee, Company FROM SHIPMENT"
         cursor.execute(query, orderid)
         results = cursor.fetchall()
         return results

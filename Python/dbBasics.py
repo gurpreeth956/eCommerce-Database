@@ -37,3 +37,20 @@ def select():
 # To test methods:
 # insert()
 # select()
+
+def getCustomerTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT CustomerID, Userpass, HasMembership FROM Customer"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        for row in results:
+            print(row[0])
+    except Exception:
+        print("Could not retrieve Customer Table data")
+    finally:
+        client.close()
+
+
+getCustomerTable()
