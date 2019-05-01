@@ -1,0 +1,148 @@
+{% extends "layouts.html" %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+      <a class="navbar-brand" href="/">Navbar</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+          <div class="navbar-nav navbar">
+            <a class="nav-item nav-link" href="/">Home</a>
+            <a class="nav-item nav-link" href="/shop.html">Shop</a>
+            <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
+          </div>
+          <ul class="navbar-nav navbar-right">
+              {% if loggedin %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ loggedin }}
+                        </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="profile.html">Profile</a>
+                        <a class="dropdown-item active" href="history.html">Order History</a>
+                        <a class="dropdown-item" href="wishlist.html">Wish List</a>
+                    </div>
+                    </li>
+              {% else %}
+                    <li><a href="signup.html"> Sign Up</a></li>
+                    <li><a href="signin.html"> Login</a></li>
+              {% endif %}
+          </ul>
+      </div>
+    </nav>
+
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">Payment Info</h1>
+      </div>
+    </div>
+
+<div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-4" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">Discover ending in 9999</h5>
+                  <p class="card-text">Thanos Purpleman</br>Expires 12/12</p>
+                  <a data-toggle="modal" data-target="#editModal" href="#" class="card-link">Edit</a>
+                  <a href="#" class="card-link">Delete</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-4" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">Visa ending in 1111</h5>
+                  <p class="card-text">Thanos Purpleman</br>Expires 10/10</p>
+                  <a data-toggle="modal" data-target="#editModal" href="#" class="card-link">Edit</a>
+                  <a href="#" class="card-link">Delete</a>
+              </div>
+            </div>
+          </div>
+      </div>
+        <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#addModal">Add Card</button>
+    </div>
+  </div>
+  <!-- /.container -->
+
+<!--Edit Card Modal-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalTitle">Edit Card Info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="inputNumber" class="sr-only">Card Number</label>
+            <input type="number" id="inputNumber" class="form-control" placeholder="Card Number" name = "number" value="{{ request.form.number }}" required>
+          </div>
+            <div class="form-group">
+            <label for="inputName" class="sr-only">Full Name</label>
+            <input type="name" id="inputName" class="form-control" placeholder="Full Name" name = "name" value="{{ request.form.name }}" required>
+          </div>
+            <div class="form-group">
+            <label for="inputCompany" class="sr-only">Company</label>
+            <input type="company" id="inputCompany" class="form-control" placeholder="Company" name = "company" value="{{ request.form.company }}" required>
+          </div>
+            <div class="form-group">
+            <input type= "expirationDate" class="form-control" id="expiration" name="expiration" placeholder="Expiration Date" type="text" value = "{{ request.form.expirationDate }}" required/>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalTitle">Edit Card Info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="inputNumber2" class="sr-only">Card Number</label>
+            <input type="number" id="inputNumber2" class="form-control" placeholder="Card Number" name = "number" value="{{ request.form.number }}" required>
+          </div>
+            <div class="form-group">
+            <label for="inputName2" class="sr-only">Full Name</label>
+            <input type="name" id="inputName2" class="form-control" placeholder="Full Name" name = "name" value="{{ request.form.name }}" required>
+          </div>
+            <div class="form-group">
+            <label for="inputCompany2" class="sr-only">Company</label>
+            <input type="company" id="inputCompany2" class="form-control" placeholder="Company" name = "company" value="{{ request.form.company }}" required>
+          </div>
+            <div class="form-group">
+            <input type= "expirationDate" class="form-control" id="expiration2" name="expiration" placeholder="Expiration Date" type="text" value = "{{ request.form.expirationDate }}" required/>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+{% endblock content %}

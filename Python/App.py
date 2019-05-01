@@ -115,6 +115,21 @@ def history():
 def wishlist():
     return render_template('wishlist.html', loggedin= loggedin, title='Wish List', styles='wishlist.css', bodyclass='bg-light')
 
+@app.route("/premium.html")
+def premium():
+    return render_template('premium.html', loggedin= loggedin, title='Premium', styles='wishlist.css', bodyclass='bg-light')
+
+@app.route("/address.html")
+def address():
+    return render_template('address.html', loggedin= loggedin, title='Address', styles='wishlist.css', bodyclass='bg-light')
+
+@app.route("/payment.html")
+def payment():
+    return render_template('payment.html', loggedin= loggedin, title='Payment', styles='wishlist.css', bodyclass='bg-light')
+
+@app.route("/settings.html")
+def settings():
+    return render_template('settings.html', loggedin= loggedin, title='Settings', styles='settings.css', bodyclass='bg-light')
 
 # to run in python
 if __name__ == '__main__':

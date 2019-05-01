@@ -13,6 +13,21 @@ footer{
     margin:0;
 }
 
-.alert {
+form{
+    max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-group{
     margin-top:1rem;
+}
+
+form h4{
+    text-align:center;
+}
+
+.profile-image{
+    margin-top:3rem;
+    margin-bottom:1rem;
 }
