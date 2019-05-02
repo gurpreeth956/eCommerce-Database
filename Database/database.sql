@@ -125,6 +125,7 @@ CREATE TABLE Shipment (
     Address VARCHAR(200) NOT NULL,
     Fee INT NOT NULL,
     Company VARCHAR(20) NOT NULL,
+    ShipName VARCHAR(20) NOT NULL,
     PRIMARY KEY (OrderID),
     FOREIGN KEY (OrderID)
         REFERENCES Orders (OrderNum)
@@ -336,9 +337,9 @@ INSERT INTO Payment VALUES('4444', 'Bobby', '1234567891235674', 'Chase', '2018-1
 INSERT INTO Payment VALUES('21344', 'Billy', '1234567891234567', 'MasterCard', '2018-11-25', 'Stony');
 INSERT INTO Payment VALUES('332', 'James', '6123456789123456', 'Discover', '2018-11-25', 'Stony');
 
-INSERT INTO Shipment VALUES('4444', '100 Circle Rd', '10', 'USPS');
-INSERT INTO Shipment VALUES('21344', '101 Circle Rd', '5', 'UPS');
-INSERT INTO Shipment VALUES('332', '102 Circle Rd', '3', 'FEDEX');
+INSERT INTO Shipment VALUES('4444', '100 Circle Rd', '10', 'USPS', 'Bill1');
+INSERT INTO Shipment VALUES('21344', '101 Circle Rd', '5', 'UPS', 'Bill2');
+INSERT INTO Shipment VALUES('332', '102 Circle Rd', '3', 'FEDEX', 'Bill3');
 
 INSERT INTO Returnment VALUES('4444', '1233', '4', 'Balls are broken');
 

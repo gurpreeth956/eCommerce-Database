@@ -70,16 +70,14 @@ def checkout():
     if request.method == 'POST':
         name = request.form['firstName'] + ' ' + request.form['secondName']
         email = request.form['email']
-        address = request.form['address'] + ' ' + request.form['address2'] + ' ' + request.form['state'] + ' ' + request.form['country'] + ' ' + request.form['zip']
+        billaddress = request.form['address'] + ' ' + request.form['address2'] + ' ' + request.form['state'] + ' ' + request.form['country'] + ' ' + request.form['zip']
         cardName = request.form['cardName']
         cardNum = request.form['cardNum']
         cardExp = request.form['cardExp']
         cardCVV = request.form['cardCVV']
         cardType = request.form['cardType']
-
-
-        # NEED TO ADD BILLING ADDRESS
-
+        shipname = request.form['firstNameShip'] + ' ' + request.form['secondNameShip']
+        shipaddress = request.form['addressShip'] + ' ' + request.form['address2Ship'] + ' ' + request.form['stateShip'] + ' ' + request.form['countryShip'] + ' ' + request.form['zipShip']
 
         client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
         try:
@@ -101,13 +99,13 @@ def checkout():
             for row in customer:
                 if row[2] == 'Y':
                     fee = '0'
-            query = "INSERT INTO Shipment(OrderID, Address, Fee, Company) values(%s, %s, %s, %s)"
-            cursor.execute(query, (orderid, address, fee, 'UPS'))
+            query = "INSERT INTO Shipment(OrderID, Address, Fee, Company, ShipName) values(%s, %s, %s, %s, %s)"
+            cursor.execute(query, (orderid, shipaddress, fee, 'UPS', shipname))
 
             # Create Payment Entity
             query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp, Billing) \
                     values(%s, %s, %s, %s, %s, %s)"
-            cursor.execute(query, (orderid, cardName, cardNum, cardType, cardExp, address)) # billing
+            cursor.execute(query, (orderid, cardName, cardNum, cardType, cardExp, billaddress))
 
             # Create OrderedItems Entity
             for row in results:
@@ -672,12 +670,12 @@ def getPaymentTable():
 
 
 # Shipment Table
-def insertShipment(orderid, address, fee, company):
+def insertShipment(orderid, address, fee, company, shipname):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO Shipment(OrderID, Address, Fee, Company) values(%s, %s, %s, %s)"
-        cursor.execute(query, (orderid, address, fee, company))
+        query = "INSERT INTO Shipment(OrderID, Address, Fee, Company, ShipName) values(%s, %s, %s, %s, %s)"
+        cursor.execute(query, (orderid, address, fee, company, shipname))
         client.commit()
     except Exception:
         print("Could not add entity to Shipment Table")
@@ -690,7 +688,7 @@ def getShipmentTuple(orderid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT OrderID, Address, Fee, Company FROM Shipment WHERE OrderID = %s"
+        query = "SELECT OrderID, Address, Fee, Company, ShipName FROM Shipment WHERE OrderID = %s"
         cursor.execute(query, orderid)
         result = cursor.fetchall()
         return result
@@ -704,7 +702,7 @@ def getShipmentTable():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT OrderID, Address, Fee, Company FROM SHIPMENT"
+        query = "SELECT OrderID, Address, Fee, Company, ShipName FROM SHIPMENT"
         cursor.execute(query, orderid)
         results = cursor.fetchall()
         return results
