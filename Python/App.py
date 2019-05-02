@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 import pymysql.cursors
+import datetime
 
 
 # Do hard refresh on web page if something does not loading
@@ -151,7 +152,21 @@ def profile():
 
 @app.route("/history.html")
 def history():
-    return render_template('history.html', loggedin=loggedinname, title='Order History', styles='history.css',
+    global loggedinid
+    result = None
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT O.OrderDate, O.Completed, I.ItemID, I.ItemType, I.Price " \
+                "FROM Orders O, OrderedItems S, Item I " \
+                "WHERE O.CustomerID = %s AND O.OrderNum = S.OrderID AND S.ItemID = I.ItemID"
+        cursor.execute(query, loggedinid)
+        result = cursor.fetchall()
+    except Exception:
+        print("Can not retrieve specified information")
+    finally:
+        client.close()
+    return render_template('history.html', values=result, loggedin=loggedinname, title='Order History', styles='history.css',
                            bodyclass='bg-light')
 
 
