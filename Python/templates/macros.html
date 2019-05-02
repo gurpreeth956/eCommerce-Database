@@ -156,23 +156,24 @@
                         </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         {% if active == 'profile' %}
-                            <a class="dropdown-item active" href="profile.html"> Profile</a>
-                            <a class="dropdown-item" href="history.html">Order History</a>
+                            <a class="dropdown-item active" href="profile.html"><span class="fa fa-user"></span> Profile</a>
+                            <a class="dropdown-item" href="history.html">Orders</a>
                             <a class="dropdown-item" href="wishlist.html">Wish List</a>
                             <a class="dropdown-item" href="/?logoff=true">Log Off</a>
                         {% elif active == 'history' %}
-                            <a class="dropdown-item" href="profile.html"> Profile</a>
-                            <a class="dropdown-item active" href="history.html">Order History</a>
+                            <a class="dropdown-item" href="profile.html"><span class="fa fa-user"></span> Profile</a>
+                            <a class="dropdown-item active" href="history.html">Orders</a>
                             <a class="dropdown-item" href="wishlist.html">Wish List</a>
                             <a class="dropdown-item" href="/?logoff=true">Log Off</a>
                         {% elif active == 'wishlist' %}
-                            <a class="dropdown-item" href="profile.html">Profile</a>
-                            <a class="dropdown-item" href="history.html">Order History</a>
+                            <a class="dropdown-item" href="profile.html"><span class="fa fa-user"></span> Profile</a>
+                            <a class="dropdown-item" href="history.html">Orders</a>
                             <a class="dropdown-item active" href="wishlist.html">Wish List</a>
                             <a class="dropdown-item" href="/?logoff=true">Log Off</a>
                         {% else %}
-                            <a class="dropdown-item" href="profile.html">Profile</a>
-                            <a class="dropdown-item" href="history.html">Order History</a>
+                            <a class="dropdown-item" href="profile.html"><span class="fa fa-user"></span> Profile</a>
+                            <a class="dropdown-item" href="history.html">Orders</a>
+
                             <a class="dropdown-item" href="wishlist.html">Wish List</a>
                             <a class="dropdown-item" href="/?logoff=true">Log Off</a>
                         {% endif %}
