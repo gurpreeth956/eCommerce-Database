@@ -44,11 +44,12 @@ def insertOrders():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     #try:
     cursor = client.cursor()
-    query = "SELECT Category FROM Item GROUP BY Category"
-    cursor.execute(query)
-    results = cursor.fetchall()
-    for row in results:
-        print(row[0])
+    # Delete orders from shopping cart
+    query = "DELETE FROM ShoppingCart WHERE CustomerID = %s"
+    cursor.execute(query, '7')
+    client.commit()
+    #for row in results:
+    #    print(row[0])
     #except Exception:
      #   print("Could not add entity to Orders Table")
      #   client.rollback()

@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import pymysql.cursors
+import datetime
+from datetime import datetime
 
 
 # Do hard refresh on web page if something does not loading
@@ -64,6 +66,7 @@ def login():
 
 @app.route("/checkout.html", methods=['GET', 'POST'])
 def checkout():
+    global loggedinid
     if request.method == 'POST':
         name = request.form['firstName'] + ' ' + request.form['secondName']
         email = request.form['email']
@@ -107,13 +110,11 @@ def checkout():
             # Create OrderedItems Entity
             for row in results:
                 query = "INSERT INTO OrderedItems(OrderID, ItemID, Quantity) values(%s, %s, %s)" #NEED TO CHECKKKKKKKKKKK
-                cursor.execute(query, (orderid, row[0], row[2]))
-
+                cursor.execute(query, (orderid, row[1], row[2]))
 
             # Delete orders from shopping cart
-            # query = "DELETE FROM ShoppingCart WHERE CustomerID = %s"
-            # cursor.execute(query, loggedinid)
-
+            query = "DELETE FROM ShoppingCart WHERE CustomerID = %s"
+            cursor.execute(query, loggedinid)
 
             client.commit()
         except Exception:

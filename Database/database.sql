@@ -339,9 +339,8 @@ INSERT INTO Payment VALUES('332', 'James', '6123456789123456', 'Discover', '2018
 
 INSERT INTO Shipment VALUES('4444', '100 Circle Rd', '10', 'USPS', 'Bill1');
 INSERT INTO Shipment VALUES('21344', '101 Circle Rd', '5', 'UPS', 'Bill2');
-INSERT INTO Shipment VALUES('332', '102 Circle Rd', '3', 'FEDEX', 'Bill3');
+INSERT INTO Shipment VALUES('332', '102 Circle Rd', '3', 'FEDEX', 'Bill');
 
 INSERT INTO Returnment VALUES('4444', '1233', '4', 'Balls are broken');
-
 INSERT INTO Reviews VALUES('368192', '1233', '2', 'It would not turn on');
 INSERT INTO Reviews VALUES('592134', '18332', '5', 'It\'s pretty good');
