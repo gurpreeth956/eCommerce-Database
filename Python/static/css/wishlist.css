@@ -8,6 +8,11 @@ footer{
    margin-top:3rem;
 }
 
+.container{
+    padding-left:50px;
+    padding-right:50px
+}
+
 .jumbotron {
     width:100%;
     margin:0;
