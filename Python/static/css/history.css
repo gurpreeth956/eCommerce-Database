@@ -6,6 +6,11 @@ h2 {
     margin-top:1rem;
 }
 
+.container{
+    padding-left:50px;
+    padding-right:50px
+}
+
 .dropdown-date {
     margin-top:3rem;
     margin-left:1rem;
