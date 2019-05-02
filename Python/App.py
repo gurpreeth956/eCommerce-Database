@@ -63,9 +63,48 @@ def login():
     return render_template('signin.html', title='Log In', styles='signin.css', bodyclass='text-center')
 
 
-@app.route("/checkout.html")
+@app.route("/checkout.html", methods=['GET', 'POST'])
 def checkout():
-    global loggedinid, loggedinname
+    if request.method == 'POST':
+        name = request.form['firstName'] + ' ' + request.form['secondName']
+        email = request.form['email']
+        address = request.form['address'] + ' ' + request.form['address2'] + ' ' + request.form['state'] + ' ' + request.form['country'] + ' ' + request.form['zip']
+        cardName = request.form['cardName']
+        cardNum = request.form['cardNum']
+        cardExp = request.form['cardExp']
+        cardCVV = request.form['cardCVV']
+
+
+        # NEED TO ADD BILLING ADDRESS
+
+
+        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        try:
+            cursor = client.cursor()
+            query = "SELECT CustomerID, ItemID, Quantity FROM Customer WHERE CustomerID = %s"
+            cursor.execute(query, loggedinid)
+            results = cursor.fetchall()
+
+            # Create Orders Entity
+            table = getOrdersTable()
+            orderid = len(table) + 1
+            insertOrders(orderid, loggedinid, orderdate, 'N', None, name, email)
+
+            # Create Shipment Entity
+            insertShipment(orderid, address, '5', 'UPS')
+
+            # Create Payment Entity
+            insertPayment(orderid, cardName, cardNum, cardComp, cardExp, address) # need to change to billing
+
+            for row in results:
+                # Create OrderedItems Entity
+                insertOrderedItems(orderid, row[0], row[2])
+
+        except Exception:
+            print("Could not retrieve specified ShoppingCart Entities")
+        finally:
+            client.close()
+
     return render_template('checkout.html', loggedin=loggedinname, title='Shopping Cart', styles='checkout.css',
                            bodyclass='bg-light')
 
