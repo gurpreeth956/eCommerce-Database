@@ -40,14 +40,15 @@ def select():
 # insert()
 # select()
 
-def insertOrders(orderid, customerid, orderdate, completed, discountid, ordername, orderemail):
+def insertOrders():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     #try:
     cursor = client.cursor()
-    query = "INSERT INTO Orders(OrderNum, CustomerID, OrderDate, Completed, DiscountID, OrderName, OrderEmail) \
-            values(%s, %s, %s, %s, %s, %s, %s)"
-    cursor.execute(query, (orderid, customerid, orderdate, completed, discountid, ordername, orderemail))
-    client.commit()
+    query = "SELECT Category FROM Item GROUP BY Category"
+    cursor.execute(query)
+    results = cursor.fetchall()
+    for row in results:
+        print(row[0])
     #except Exception:
      #   print("Could not add entity to Orders Table")
      #   client.rollback()
@@ -56,4 +57,4 @@ def insertOrders(orderid, customerid, orderdate, completed, discountid, ordernam
 
 
 now = datetime.now()
-insertOrders('334', '7', '2018-06-10', 'N', None, 'Bob', 'gim')
+insertOrders()

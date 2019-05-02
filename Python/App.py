@@ -138,12 +138,20 @@ def shop():
         cursor = client.cursor()
         query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item"
         cursor.execute(query)
+        if 'category' in request.args:
+            query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item WHERE Category = %s"
+            cursor.execute(query, request.args['category'])
         result = cursor.fetchall()
+
+        query = "SELECT Category FROM Item GROUP BY Category"
+        cursor.execute(query)
+        category = cursor.fetchall()
     except Exception:
         print("Can not retrieve specified Item Entity")
     finally:
         client.close()
-    return render_template('shop.html', loggedin=loggedinname, title='Shop', data=result, styles='',
+
+    return render_template('shop.html', loggedin=loggedinname, title='Shop', category=category, data=result, styles='',
                            bodyclass='bg-light')
 
 
