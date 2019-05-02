@@ -1,11 +1,11 @@
 #TABLETION
 CREATE TABLE Person (
     ID INT,
-    Email VARCHAR(30) NOT NULL,
-    Named VARCHAR(25) NOT NULL,
+    Email VARCHAR(50) NOT NULL,
+    Named VARCHAR(30) NOT NULL,
     DateofBirth DATE NOT NULL,
-    Phone VARCHAR(10) NOT NULL,
-    Address VARCHAR(30) NOT NULL,
+    Phone VARCHAR(15) NOT NULL,
+    Address VARCHAR(200) NOT NULL,
     DateJoined DATE NOT NULL,
     IsEmployee CHAR(1) DEFAULT 'N',
     PRIMARY KEY (ID)
@@ -13,7 +13,7 @@ CREATE TABLE Person (
 
 CREATE TABLE Customer (
     CustomerID INT,
-    Userpass VARCHAR(20) NOT NULL,
+    Userpass VARCHAR(30) NOT NULL,
     HasMembership CHAR(1) DEFAULT 'N',
     PRIMARY KEY (CustomerID),
     FOREIGN KEY (CustomerID)
@@ -38,10 +38,10 @@ CREATE TABLE Item (
     ItemID INT,
     Quantity INT NOT NULL,
     Price DEC(9 , 2) NOT NULL,
-    ItemType VARCHAR(15) NOT NULL,
-    Seller VARCHAR(15) NOT NULL,
-    ItemDesc VARCHAR(100),
-    Category VARCHAR(15) NOT NULL,
+    ItemType VARCHAR(30) NOT NULL,
+    Seller VARCHAR(30) NOT NULL,
+    ItemDesc VARCHAR(200),
+    Category VARCHAR(30) NOT NULL,
     PRIMARY KEY (ItemID)
 );
 
@@ -83,8 +83,8 @@ CREATE TABLE Orders (
     OrderDate DATE NOT NULL,
     Completed CHAR(1) DEFAULT 'N',
     DiscountID INT,
-    OrderName VARCHAR(20) NOT NULL,
-    OrderEmail VARCHAR(40) NOT NULL,
+    OrderName VARCHAR(30) NOT NULL,
+    OrderEmail VARCHAR(50) NOT NULL,
     PRIMARY KEY (OrderNum),
     FOREIGN KEY (CustomerID)
         REFERENCES Customer (CustomerID)
@@ -109,11 +109,11 @@ CREATE TABLE OrderedItems (
 
 CREATE TABLE Payment (
     OrderID INT,
-    CardName VARCHAR(15) NOT NULL,
+    CardName VARCHAR(20) NOT NULL,
     CardNum VARCHAR(16) NOT NULL,
-    CardComp VARCHAR(10) NOT NULL,
+    CardComp VARCHAR(20) NOT NULL,
     CardExp DATE NOT NULL,
-    BillingAddress VARCHAR(50) NOT NULL,
+    Billing VARCHAR(200) NOT NULL,
     PRIMARY KEY (OrderID),
     FOREIGN KEY (OrderID)
         REFERENCES Orders (OrderNum)
@@ -122,10 +122,9 @@ CREATE TABLE Payment (
 
 CREATE TABLE Shipment (
     OrderID INT,
-    Address VARCHAR(30) NOT NULL,
-    Details VARCHAR(30),
+    Address VARCHAR(200) NOT NULL,
     Fee INT NOT NULL,
-    Company VARCHAR(10) NOT NULL,
+    Company VARCHAR(20) NOT NULL,
     PRIMARY KEY (OrderID),
     FOREIGN KEY (OrderID)
         REFERENCES Orders (OrderNum)
@@ -136,7 +135,7 @@ CREATE TABLE Returnment (
     OrderID INT,
     ItemID INT,
     Quantity INT,
-    Comments VARCHAR(100) NOT NULL,
+    Comments VARCHAR(200) NOT NULL,
     PRIMARY KEY (OrderID , ItemID , Quantity),
     FOREIGN KEY (OrderID)
         REFERENCES OrderedItems (OrderID)
@@ -150,7 +149,7 @@ CREATE TABLE Reviews (
     CustomerID INT,
     ItemID INT,
     Ratings INT NOT NULL,
-    Comments VARCHAR(100) NOT NULL,
+    Comments VARCHAR(200) NOT NULL,
     PRIMARY KEY (CustomerID, ItemID),
     FOREIGN KEY (CustomerID)
         REFERENCES Customer (CustomerID)
@@ -304,7 +303,7 @@ INSERT INTO Employee VALUES('845523', '1265', '7645');
 INSERT INTO Employee VALUES('359803', '4552', '7645');
 
 INSERT INTO Item VALUES('1233', '500', '123.00', 'IPhone X', 'Apple', 'A fancy phone', 'Phone');
-INSERT INTO Item VALUES('18332', '90', '90.00', 'Soccer Ball', 'Tottenham', 'A ball that wins nothicustomerng', 'Sports');
+INSERT INTO Item VALUES('18332', '90', '90.00', 'Soccer Ball', 'Tottenham', 'A ball that wins nothing', 'Sports');
 INSERT INTO Item VALUES('81234', '200', '10.00', 'Diamond', 'PewDiePie', NULL, 'Gamnig');
 INSERT INTO Item VALUES('1', '20', '50.00', 'Sweater', 'Adidas', 'A gray sweater that will keep you warm and stylish', 'Sweater');
 INSERT INTO Item VALUES('2', '8', '80.00', 'Bayern Jersey', 'Adidas', 'A Bayern Munich home jersey from 2017-2018 season', 'Sports');
@@ -337,9 +336,9 @@ INSERT INTO Payment VALUES('4444', 'Bobby', '1234567891235674', 'Chase', '2018-1
 INSERT INTO Payment VALUES('21344', 'Billy', '1234567891234567', 'MasterCard', '2018-11-25', 'Stony');
 INSERT INTO Payment VALUES('332', 'James', '6123456789123456', 'Discover', '2018-11-25', 'Stony');
 
-INSERT INTO Shipment VALUES('4444', '100 Circle Rd', 'Fragile', '10', 'USPS');
-INSERT INTO Shipment VALUES('21344', '101 Circle Rd', 'Fragile', '5', 'UPS');
-INSERT INTO Shipment VALUES('332', '102 Circle Rd', NULL, '3', 'FEDEX');
+INSERT INTO Shipment VALUES('4444', '100 Circle Rd', '10', 'USPS');
+INSERT INTO Shipment VALUES('21344', '101 Circle Rd', '5', 'UPS');
+INSERT INTO Shipment VALUES('332', '102 Circle Rd', '3', 'FEDEX');
 
 INSERT INTO Returnment VALUES('4444', '1233', '4', 'Balls are broken');
 
