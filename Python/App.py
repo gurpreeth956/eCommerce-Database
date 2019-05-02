@@ -176,6 +176,10 @@ def payment():
 def settings():
     return render_template('settings.html', loggedin=loggedinname, title='Settings', styles='settings.css', bodyclass='bg-light')
 
+@app.route("/returns.html")
+def returns():
+    return render_template('returns.html', loggedin=loggedinname, title='Returns', styles='returns.css', bodyclass='bg-light')
+
 '''
 BELOW ARE ALL THE METHODS FOR GETTING AND SETTING DATA FROM THE DATABASE
 '''

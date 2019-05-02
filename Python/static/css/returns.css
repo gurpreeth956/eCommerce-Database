@@ -2,6 +2,7 @@
         margin: 0 auto; /* Added */
         float: none; /* Added */
         margin-bottom: 10px; /* Added */
+        max-height:150px;
 }
 
 footer{
@@ -11,8 +12,18 @@ footer{
 .jumbotron {
     width:100%;
     margin:0;
+    margin-bottom:3rem;
 }
 
-.alert {
+.img-fluid{
+    max-height:150px;
+}
+
+small, h3{
     margin-top:1rem;
 }
+
+a {
+    margin-right:5px;
+}
+

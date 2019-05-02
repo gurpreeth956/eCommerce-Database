@@ -1,20 +1,7 @@
 {% extends "layouts.html" %}
-{% from "macros.html" import nav_right with context %}
+{% from "macros.html" import nav with context %}
 {% block content %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-      <a class="navbar-brand" href="/">Navbar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-          <div class="navbar-nav navbar">
-            <a class="nav-item nav-link" href="/">Home</a>
-            <a class="nav-item nav-link" href="/shop.html">Shop</a>
-            <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
-          </div>
-          {{ nav_right('history') }}
-      </div>
-    </nav>
+{{ nav('history') }}
 
     <div class="jumbotron jumbotron-fluid">
       <div class="container">
@@ -47,8 +34,8 @@
             <h4>$24.99</h4>
             <p>
                 <button type="button" class="btn btn-primary">Buy it Again</button>
-                <button type="button" class="btn btn-secondary">Leave a Review</button>
-                <button type="button" class="btn btn-danger">Return Item</button>
+                <button type="button" class="btn btn-secondary" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
+                <button type="button" class="btn btn-danger" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#returnModal">Return Item</button>
             </p>
           </div>
         </div>
@@ -61,8 +48,8 @@
             <h4>$24.99</h4>
             <p>
                 <button type="button" class="btn btn-primary">Buy it Again</button>
-                <button type="button" class="btn btn-secondary">Leave a Review</button>
-                <button type="button" class="btn btn-danger">Return Item</button>
+                <button type="button" class="btn btn-secondary" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
+                <button type="button" class="btn btn-danger" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#returnModal">Return Item</button>
             </p>
           </div>
         </div>
@@ -73,6 +60,60 @@
     </div>
 
   </div>
+
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reviewModalLabel">Leave a Review</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <textarea class="form-control" id="reviewArea" rows="5" placeholder="Review Here"></textarea>
+              </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Leave Review</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="returnModalLabel">Return Item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="quantity" class="form-control" id="quantity" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+                <label for="description">Why are you returning this item?</label>
+                <textarea class="form-control" id="description" rows="5" placeholder = "Description"></textarea>
+              </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Leave Review</button>
+      </div>
+    </div>
+  </div>
+</div>
   <!-- /.container -->
 
   <!-- Footer -->
