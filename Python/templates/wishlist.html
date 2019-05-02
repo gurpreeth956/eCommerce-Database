@@ -10,36 +10,31 @@
     </div>
 <div class="container">
     <div class="row">
-      <!-- /.col-lg-3 -->
-
-      <div class="col-lg-12">
-        <div class="card mt-4">
-          <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
-          <div class="card-body">
-            <h3 class="card-title">Product Name</h3>
-            <h4>$24.99</h4>
-            <p>
-                <button type="button" class="btn btn-primary">Buy Now</button>
-                <button type="button" class="btn btn-danger">Remove</button>
-            </p>
-          </div>
-        </div>
-        <!-- /.card -->
-          <div class="card mt-4">
-          <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
-          <div class="card-body">
-            <h3 class="card-title">Product Name</h3>
-            <h4>$24.99</h4>
-            <p>
-                <button type="button" class="btn btn-primary">Buy Now</button>
-                <button type="button" class="btn btn-danger">Remove</button>
-            </p>
-          </div>
-        </div>
-
-      </div>
-      <!-- /.col-lg-12 -->
-
+          <!-- /.col-lg-12 -->
+        {% if values != None %}
+        {% for value in values %}
+            <div class="col-lg-12">
+                <div class="card mt-4">
+                    <img class="card-img-top img-fluid" src="static/images/items/{{ value[0] }}.png" alt="">
+                <div class="card-body">
+                    <h3 class="card-title">{{ value[1] }}</h3>
+                    <h4>{{ value[2] }}</h4>
+                    <p>
+                        <form method="POST">
+                        <input type="hidden" name="item" value={{ value[0] }}>
+                        <input type="submit" class="btn btn-primary" name="cart" value="Buy Now">
+                        <input type="submit" class="btn btn-danger" name="remove" value="Remove">
+                        </form>
+                    </p>
+                </div>
+                </div>
+            <!-- /.card -->
+            </div>
+        {% endfor %}
+          <!-- /.col-lg-12 -->
+        {% else %}
+            <p> No Items in Wishlist</p>
+        {% endif %}
     </div>
 
   </div>
