@@ -37,39 +37,34 @@
           </div>
         </div>
       <!-- /.col-lg-3 -->
-
-      <div class="col-lg-9">
-        <h2>Delivered on Insert Date here</h2>
-        <div class="card mt-4">
-          <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
-          <div class="card-body">
-            <h3 class="card-title">Product Name</h3>
-            <h4>$24.99</h4>
-            <p>
-                <button type="button" class="btn btn-primary">Buy it Again</button>
-                <button type="button" class="btn btn-secondary" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
-                <button type="button" class="btn btn-danger" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#returnModal">Return Item</button>
-            </p>
-          </div>
-        </div>
+    {% if values != None %}
+        {% for value in values %}
+        <div class="col-lg-9">
+            <h2>Ordered on  {{ value[0] }}</h2>
+            {% if value[1] == 'Y' %}
+                <h3> Order Status: Completed</h3>
+            {% else %}
+                <h3> Order Status: Pending</h3>
+            {% endif %}
+            <div class="card mt-3">
+                <img class="card-img-top img-fluid" src="static/images/items/{{ value[2] }}.png" alt="">
+            <div class="card-body">
+                <h3 class="card-title">{{ value[3] }}</h3>
+                <h4>{{ value[4] }}</h4>
+                <p>
+                    <button type="button" class="btn btn-primary">Buy it Again</button>
+                    <button type="button" class="btn btn-secondary" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
+                    <button type="button" class="btn btn-danger" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#returnModal">Return Item</button>
+                </p>
+            </div>
+            </div>
         <!-- /.card -->
-          <h2>Delivered on Insert Date here</h2>
-          <div class="card mt-4">
-          <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
-          <div class="card-body">
-            <h3 class="card-title">Product Name</h3>
-            <h4>$24.99</h4>
-            <p>
-                <button type="button" class="btn btn-primary">Buy it Again</button>
-                <button type="button" class="btn btn-secondary" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
-                <button type="button" class="btn btn-danger" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#returnModal">Return Item</button>
-            </p>
-          </div>
         </div>
-
-      </div>
+        {% endfor %}
       <!-- /.col-lg-9 -->
-
+    {% else %}
+        <p> No Orders</p>
+    {% endif %}
     </div>
 
   </div>
