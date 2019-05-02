@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect
 import pymysql.cursors
-import datetime
 
 
 # Do hard refresh on web page if something does not loading
@@ -53,7 +52,6 @@ def login():
                     global loggedinid, loggedinname
                     loggedinid = customer[1]
                     loggedinname = customer[3]
-                    print('Logged In')
                     break
             if loggedinid != None:
                 return redirect('/')
@@ -91,10 +89,17 @@ def shop():
 
 @app.route("/item.html", methods=['GET', 'POST'])
 def item():
+    global loggedinid
+    if request.method == 'POST':
+        itemid = request.form['item']
+        if 'cart' in request.form:
+            insertShoppingCart(loggedinid, itemid, 1)
+        elif 'wishlist' in request.form:
+            insertWishList(loggedinid, itemid)
     if 'type' and 'price' and 'desc' and 'id' in request.args:
         return render_template('item.html', type=request.args['type'], price=request.args['price'],
                                desc=request.args['desc'], id=request.args['id'], loggedin=loggedinname,
-                               title='[Item Name]', styles='', bodyclass='bg-light')
+                               employee=None, title=request.args['type'], styles='', bodyclass='bg-light')
     else:
         return render_template('item.html', loggedin=loggedinname, title='[Item Name]', styles='', bodyclass='bg-light')
 
@@ -131,9 +136,39 @@ def history():
                            bodyclass='bg-light')
 
 
-@app.route("/wishlist.html")
+@app.route("/wishlist.html", methods=['GET', 'POST'])
 def wishlist():
-    return render_template('wishlist.html', loggedin=loggedinname, title='Wish List', styles='wishlist.css',
+    global loggedinid
+    if request.method == 'POST':
+        itemid = request.form['item']
+        if 'cart' in request.form:
+            insertShoppingCart(loggedinid, itemid, 1)
+        elif 'remove' in request.form:
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+
+            try:
+                cursor = client.cursor()
+                query = "DELETE FROM WishList WHERE CustomerID = %s AND ItemID = %s"
+                cursor.execute(query, (loggedinid, itemid))
+                client.commit()
+            except Exception:
+                print("Can not retrieve specified information")
+            finally:
+                client.close()
+    result = None
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT I.ItemID, I.ItemType, I.Price " \
+                "FROM Wishlist W,  Item I " \
+                "WHERE W.CustomerID = %s AND W.ItemID = I.ItemID"
+        cursor.execute(query, loggedinid)
+        result = cursor.fetchall()
+    except Exception:
+        print("Can not retrieve specified information")
+    finally:
+        client.close()
+    return render_template('wishlist.html', values= result, loggedin=loggedinname, title='Wish List', styles='wishlist.css',
                            bodyclass='bg-light')
 
 @app.route("/premium.html")
@@ -351,9 +386,10 @@ def insertShoppingCart(customerid, itemid, quantity):
 
 def getShoppingCartTuple(customerid, itemid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT CustomerID, ItemID, Quantity FROM Customer WHERE CustomerID = %s AND ItemID = %s"
+        query = "SELECT CustomerID, ItemID, Quantity FROM ShoppingCart WHERE CustomerID = %s AND ItemID = %s"
         cursor.execute(query, (customerid, itemid))
         result = cursor.fetchall()
         return result
@@ -367,7 +403,7 @@ def getShoppingCartTable():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT CustomerID, ItemID, Quantity FROM Customer"
+        query = "SELECT CustomerID, ItemID, Quantity FROM ShoppingCart"
         cursor.execute(query)
         results = cursor.fetchall()
         return results
@@ -382,7 +418,7 @@ def insertWishList(customerid, itemid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO WishList(CustomerID, ItemID) values(%s, %s, %s)"
+        query = "INSERT INTO WishList(CustomerID, ItemID) values(%s, %s)"
         cursor.execute(query, (customerid, itemid))
         client.commit()
     except Exception:

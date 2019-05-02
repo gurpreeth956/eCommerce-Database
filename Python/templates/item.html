@@ -27,10 +27,17 @@
               <h4>${{ price }}</h4>
               <p class="card-text">{{ desc }}</p>
               <p>
-                  <button type="button" class="btn btn-primary">Add to Cart</button>
-                  <button type="button" class="btn btn-secondary">Add to Wish List</button>
+                {% if loggedin %}
+                  <form method="POST">
+                    <input type="hidden" name="item" value={{ id }}>
+                    <input type="submit" class="btn btn-primary" name="cart" value="Add to Cart">
+                    <input type="submit" class="btn btn-secondary" name="wishlist" value="Add to Wishlist">
+                  </form>
+                {% endif %}
+                {% if employee %}
                   <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal">Edit Item</button>
                   <button type="button" class="btn btn-danger">Delete Item</button>
+                {% endif %}
               </p>
             {% else %}
               <h3 class="card-title">Product Name</h3>
