@@ -29,6 +29,8 @@
           <a href="#" class="list-group-item">Category 3</a>
         </div>
 
+        <button style="margin-top:1rem;" data-toggle="modal" data-target="#addModal" type="button" class="btn btn-success btn-lg">Add Item</button>
+
       </div>
       <!-- /.col-lg-3 -->
 
@@ -88,9 +90,79 @@
 
     </div>
     <!-- /.row -->
-
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
   </div>
   <!-- /.container -->
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalTitle">Add Item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputName">Name</label>
+              <input type="name" class="form-control" id="inputName" placeholder="Name">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputPrice">Price</label>
+              <input type="price" class="form-control" id="inputPrice" placeholder="Price">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputSeller">Seller Name</label>
+            <input type="seller" class="form-control" id="inputSeller" placeholder="Seller Name">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputCategory">Category</label>
+              <input type="text" class="form-control" id="inputCategory">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputCategory">Image</label>
+              <div class="custom-file">
+                <label class="custom-file-label" for="customFile">Image</label>
+                <input type="file" class="custom-file-input" id="customFile" placeholder="Image">
+              </div>
+            </div>
+            <div class="form-group col-md-2">
+              <label for="inputQuantity">Quantity</label>
+              <input type="text" class="form-control" id="inputQuantity">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-group">
+              <label for="inputReview">Description</label>
+              <textarea class="form-control" id="inputReview" rows="5" placeholder=""></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Add Item</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <!-- Footer -->
   <footer class="py-5 bg-dark">
