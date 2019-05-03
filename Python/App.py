@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import pymysql.cursors
 import datetime
-from datetime import datetime
+from datetime import datetime as dt
 
 
 # Do hard refresh on web page if something does not loading
@@ -81,7 +81,7 @@ def checkout():
 
         # Get sum of prices
         for row in items:
-            total += row[3]
+            total += row[1] * row[3]
             quantity += row[1]
     except Exception:
         print('Could not get shopping cart data')
@@ -89,9 +89,10 @@ def checkout():
         client.close()
 
     if request.method == 'POST':
-        print("f")
+
 
         # DISABLE ADD BUTTON IF AMOUNT GREATER THAN STOCK
+
 
         if 'checkout' in request.form:
             name = request.form['firstName'] + ' ' + request.form['secondName']
@@ -99,7 +100,7 @@ def checkout():
             billaddress = request.form['address'] + ' ' + request.form['address2'] + ' ' + request.form['state'] + ' ' + request.form['country'] + ' ' + request.form['zip']
             cardName = request.form['cardName']
             cardNum = request.form['cardNum']
-            cardExp = request.form['cardExp']
+            cardExp = request.form['expiration']
             cardCVV = request.form['cardCVV']
             cardType = request.form['cardType']
             shipname = request.form['firstNameShip'] + ' ' + request.form['secondNameShip']
@@ -117,7 +118,7 @@ def checkout():
                 orderid = len(table) + 1
                 query = "INSERT INTO Orders(OrderNum, CustomerID, OrderDate, Completed, DiscountID, OrderName, OrderEmail) \
                                 values(%s, %s, %s, %s, %s, %s, %s)"
-                cursor.execute(query, (orderid, loggedinid, datetime.today().strftime('%Y-%m-%d'), 'N', None, name, email))
+                cursor.execute(query, (orderid, loggedinid, dt.today().strftime('%Y-%m-%d'), 'N', None, name, email))
 
                 # Create Shipment Entity
                 customer = getCustomerTuple(loggedinid)
@@ -131,11 +132,11 @@ def checkout():
                 # Create Payment Entity
                 query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp, Billing) \
                         values(%s, %s, %s, %s, %s, %s)"
-                cursor.execute(query, (orderid, cardName, cardNum, cardType, '2018-09-22', billaddress))
+                cursor.execute(query, (orderid, cardName, cardNum, cardType, datetime.datetime.strptime('01' + cardExp, '%d%m/%y').date(), billaddress))
 
                 # Create OrderedItems Entity
                 for row in results:
-                    query = "INSERT INTO OrderedItems(OrderID, ItemID, Quantity) values(%s, %s, %s)" #NEED TO CHECKKKKKKKKKKK
+                    query = "INSERT INTO OrderedItems(OrderID, ItemID, Quantity) values(%s, %s, %s)"
                     cursor.execute(query, (orderid, row[1], row[2]))
 
                 # Delete orders from shopping cart
@@ -315,9 +316,11 @@ def settings():
 def returns():
     return render_template('returns.html', loggedin=loggedinname, title='Returns', styles='returns.css', bodyclass='bg-light')
 
+
 @app.route("/thankyou.html")
 def thankyou():
     return render_template('thankyou.html', loggedin=loggedinname, title='Thank You', styles='thankyou.css', bodyclass='bg-light')
+
 
 '''
 BELOW ARE ALL THE METHODS FOR GETTING AND SETTING DATA FROM THE DATABASE
