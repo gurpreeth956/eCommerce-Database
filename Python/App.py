@@ -39,6 +39,7 @@ def signup():
 
 @app.route("/signin.html", methods=['GET', 'POST'])
 def login():
+    global loggedinid, loggedinname
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -51,7 +52,6 @@ def login():
             results = cursor.fetchall()
             for customer in results:
                 if customer[0] == email and customer[2] == password:
-                    global loggedinid, loggedinname
                     loggedinid = customer[1]
                     loggedinname = customer[3]
                     break
@@ -67,64 +67,122 @@ def login():
 @app.route("/checkout.html", methods=['GET', 'POST'])
 def checkout():
     global loggedinid
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    items = None
+    quantity = 0
+    total = 0
+    try:
+        cursor = client.cursor()
+        query = "SELECT I.ItemType, SUM(S.Quantity), I.ItemDesc, SUM(I.Price), S.ItemID " \
+                "FROM Item I, ShoppingCart S WHERE S.CustomerID = %s AND I.ItemID = S.ItemID " \
+                "GROUP BY I.ItemType, I.ItemDesc, S.ItemID"
+        cursor.execute(query, loggedinid)
+        items = cursor.fetchall()
+
+        # Get sum of prices
+        for row in items:
+            total += row[3]
+            quantity += row[1]
+    except Exception:
+        print('Could not get shopping cart data')
+    finally:
+        client.close()
+
     if request.method == 'POST':
-        name = request.form['firstName'] + ' ' + request.form['secondName']
-        email = request.form['email']
-        billaddress = request.form['address'] + ' ' + request.form['address2'] + ' ' + request.form['state'] + ' ' + request.form['country'] + ' ' + request.form['zip']
-        cardName = request.form['cardName']
-        cardNum = request.form['cardNum']
-        cardExp = request.form['cardExp']
-        cardCVV = request.form['cardCVV']
-        cardType = request.form['cardType']
-        shipname = request.form['firstNameShip'] + ' ' + request.form['secondNameShip']
-        shipaddress = request.form['addressShip'] + ' ' + request.form['address2Ship'] + ' ' + request.form['stateShip'] + ' ' + request.form['countryShip'] + ' ' + request.form['zipShip']
 
-        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
-        try:
-            cursor = client.cursor()
-            query = "SELECT CustomerID, ItemID, Quantity FROM ShoppingCart WHERE CustomerID = %s"
-            cursor.execute(query, loggedinid)
-            results = cursor.fetchall()
 
-            # Create Orders Entity
-            table = getOrdersTable()
-            orderid = len(table) + 1
-            query = "INSERT INTO Orders(OrderNum, CustomerID, OrderDate, Completed, DiscountID, OrderName, OrderEmail) \
-                            values(%s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(query, (orderid, loggedinid, datetime.today().strftime('%Y-%m-%d'), 'N', None, name, email))
+        # DISABLE ADD BUTTON IF AMOUNT GREATER THAN STOCK
 
-            # Create Shipment Entity
-            customer = getCustomerTuple(loggedinid)
-            fee = '5'
-            for row in customer:
-                if row[2] == 'Y':
-                    fee = '0'
-            query = "INSERT INTO Shipment(OrderID, Address, Fee, Company, ShipName) values(%s, %s, %s, %s, %s)"
-            cursor.execute(query, (orderid, shipaddress, fee, 'UPS', shipname))
 
-            # Create Payment Entity
-            query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp, Billing) \
-                    values(%s, %s, %s, %s, %s, %s)"
-            cursor.execute(query, (orderid, cardName, cardNum, cardType, cardExp, billaddress))
+        if 'add' or 'remove' in request.form:
+            itemid = request.form['itemid']
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                cursor = client.cursor()
+                if 'add' in request.form:
+                    query = "UPDATE ShoppingCart SET Quantity = Quantity + 1 WHERE CustomerID = %s AND ItemID = %s"
+                    cursor.execute(query, (loggedinid, itemid))
+                elif 'remove' in request.form:
+                    query = "UPDATE ShoppingCart SET Quantity = Quantity - 1 WHERE CustomerID = %s AND ItemID = %s"
+                    cursor.execute(query, (loggedinid, itemid))
+                    query = "DELETE FROM ShoppingCart WHERE CustomerID = %s AND Quantity = 0"
+                    cursor.execute(query, loggedinid)
 
-            # Create OrderedItems Entity
-            for row in results:
-                query = "INSERT INTO OrderedItems(OrderID, ItemID, Quantity) values(%s, %s, %s)" #NEED TO CHECKKKKKKKKKKK
-                cursor.execute(query, (orderid, row[1], row[2]))
+                query = "SELECT I.ItemType, S.Quantity, I.ItemDesc, I.Price, S.ItemID " \
+                        "FROM Item I, ShoppingCart S WHERE S.CustomerID = %s AND I.ItemID = S.ItemID"
+                cursor.execute(query, loggedinid)
+                items = cursor.fetchall()
 
-            # Delete orders from shopping cart
-            query = "DELETE FROM ShoppingCart WHERE CustomerID = %s"
-            cursor.execute(query, loggedinid)
+                # Get sum of prices
+                total = 0
+                quantity = 0
+                for row in items:
+                    total += row[1] * row[3]
+                    quantity += row[1]
+                client.commit()
+            except Exception:
+                print("Could not complete order action")
+                client.rollback()
+            finally:
+                client.close()
+        elif 'checkout' in request.form:
+            name = request.form['firstName'] + ' ' + request.form['secondName']
+            email = request.form['email']
+            billaddress = request.form['address'] + ' ' + request.form['address2'] + ' ' + request.form['state'] + ' ' + request.form['country'] + ' ' + request.form['zip']
+            cardName = request.form['cardName']
+            cardNum = request.form['cardNum']
+            cardExp = request.form['cardExp']
+            cardCVV = request.form['cardCVV']
+            cardType = request.form['cardType']
+            shipname = request.form['firstNameShip'] + ' ' + request.form['secondNameShip']
+            shipaddress = request.form['addressShip'] + ' ' + request.form['address2Ship'] + ' ' + request.form['stateShip'] + ' ' + request.form['countryShip'] + ' ' + request.form['zipShip']
 
-            client.commit()
-        except Exception:
-            print("Could not complete order action")
-            client.rollback()
-        finally:
-            client.close()
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                cursor = client.cursor()
+                query = "SELECT CustomerID, ItemID, Quantity FROM ShoppingCart WHERE CustomerID = %s"
+                cursor.execute(query, loggedinid)
+                results = cursor.fetchall()
 
-    return render_template('checkout.html', loggedin=loggedinname, title='Shopping Cart', styles='checkout.css',
-                           bodyclass='bg-light')
+                # Create Orders Entity
+                table = getOrdersTable()
+                orderid = len(table) + 1
+                query = "INSERT INTO Orders(OrderNum, CustomerID, OrderDate, Completed, DiscountID, OrderName, OrderEmail) \
+                                values(%s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(query, (orderid, loggedinid, datetime.today().strftime('%Y-%m-%d'), 'N', None, name, email))
+
+                # Create Shipment Entity
+                customer = getCustomerTuple(loggedinid)
+                fee = '5'
+                for row in customer:
+                    if row[2] == 'Y':
+                        fee = '0'
+                query = "INSERT INTO Shipment(OrderID, Address, Fee, Company, ShipName) values(%s, %s, %s, %s, %s)"
+                cursor.execute(query, (orderid, shipaddress, fee, 'UPS', shipname))
+
+                # Create Payment Entity
+                query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp, Billing) \
+                        values(%s, %s, %s, %s, %s, %s)"
+                cursor.execute(query, (orderid, cardName, cardNum, cardType, cardExp, billaddress))
+
+                # Create OrderedItems Entity
+                for row in results:
+                    query = "INSERT INTO OrderedItems(OrderID, ItemID, Quantity) values(%s, %s, %s)" #NEED TO CHECKKKKKKKKKKK
+                    cursor.execute(query, (orderid, row[1], row[2]))
+
+                # Delete orders from shopping cart
+                query = "DELETE FROM ShoppingCart WHERE CustomerID = %s"
+                cursor.execute(query, loggedinid)
+
+                client.commit()
+            except Exception:
+                print("Could not complete order action")
+                client.rollback()
+            finally:
+                client.close()
+
+    return render_template('checkout.html', loggedin=loggedinname, items=items, quantity=quantity, total=total,
+                           title='Shopping Cart', styles='checkout.css', bodyclass='bg-light')
 
 
 @app.route("/shop.html", methods=['GET', 'POST'])
@@ -153,7 +211,6 @@ def shop():
 
 @app.route("/item.html", methods=['GET', 'POST'])
 def item():
-    global loggedinid
     if request.method == 'POST':
         itemid = request.form['item']
         if 'cart' in request.form:

@@ -44,12 +44,13 @@ def insertOrders():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     #try:
     cursor = client.cursor()
-    # Delete orders from shopping cart
-    query = "DELETE FROM ShoppingCart WHERE CustomerID = %s"
+    query = "SELECT I.ItemType, SUM(S.Quantity), I.ItemDesc, SUM(I.Price), S.ItemID " \
+            "FROM Item I, ShoppingCart S WHERE S.CustomerID = %s AND I.ItemID = S.ItemID " \
+            "GROUP BY I.ItemType, I.ItemDesc, S.ItemID"
     cursor.execute(query, '7')
-    client.commit()
-    #for row in results:
-    #    print(row[0])
+    items = cursor.fetchall()
+    for row in items:
+        print(row[3])
     #except Exception:
      #   print("Could not add entity to Orders Table")
      #   client.rollback()

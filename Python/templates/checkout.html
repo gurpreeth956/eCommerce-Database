@@ -13,30 +13,27 @@
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-muted">Your cart</span>
-            <span class="badge badge-secondary badge-pill">3</span>
+            <span class="badge badge-secondary badge-pill">{{ quantity }}</span>
           </h4>
           <ul class="list-group mb-3">
+          {% if items != None %}
+            {% for item in items %}
             <li class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
-                <h6 class="my-0">Product name</h6>
-                <small class="text-muted">Brief description</small>
+                <h6 class="my-0">{{ item[0] }} ({{ item[1]}})</h6>
+                <small class="text-muted">{{ item[2] }}</small>
+                <p>
+                  <form method="POST">
+                  <input type="hidden" name="itemid" value="{{ item[4] }}">
+                  <input type="submit" class="btn btn-primary" name="add" value="+">
+                  <input type="submit" class="btn btn-secondary" name="remove" value="-">
+                  </form>
+                </p>
               </div>
-              <span class="text-muted">$12</span>
+              <span class="text-muted">{{ item[3] }}</span>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Second product</h6>
-                <small class="text-muted">Brief description</small>
-              </div>
-              <span class="text-muted">$8</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Third item</h6>
-                <small class="text-muted">Brief description</small>
-              </div>
-              <span class="text-muted">$5</span>
-            </li>
+            {% endfor %}
+          {% endif %}
             <li class="list-group-item d-flex justify-content-between bg-light">
               <div class="text-success">
                 <h6 class="my-0">Promo code</h6>
@@ -46,7 +43,7 @@
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <span>Total (USD)</span>
-              <strong>$20</strong>
+              <strong>{{ total }}</strong>
             </li>
           </ul>
 
@@ -249,7 +246,7 @@
               </div>
             </div>
             <hr class="mb-4">
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+            <input class="btn btn-primary btn-lg btn-block" type="submit" name="checkout">Continue to checkout</input>
           </form>
         </div>
       </div>
