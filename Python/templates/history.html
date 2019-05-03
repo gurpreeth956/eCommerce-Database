@@ -10,39 +10,45 @@
     </div>
 
 <div class="container">
-    <div class="row">
-      <!-- /.col-lg-3 -->
     {% if values != None %}
         {% for value in values %}
-        <div class="col-lg-12">
-            <h2>Ordered on  {{ value[0] }}</h2>
-            {% if value[1] == 'Y' %}
-                <h3> Order Status: Completed</h3>
-            {% else %}
-                <h3> Order Status: Pending</h3>
-            {% endif %}
-            <div class="card mt-3">
-                <img class="card-img-top img-fluid" src="static/images/items/{{ value[2] }}.png" alt="">
-            <div class="card-body">
-                <h3 class="card-title">{{ value[3] }}</h3>
-                <h4>{{ value[4] }}</h4>
-                <p>
-                    <button type="button" class="btn btn-primary">Buy it Again</button>
-                    <button type="button" class="btn btn-secondary" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
-                    <button type="button" class="btn btn-danger" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#returnModal">Return Item</button>
-                </p>
+        <div class="card">
+            <div class="row no-gutters">
+                <div class="col-auto">
+                    <img src="static/images/items/{{ value[2] }}.png" class="img-fluid" alt="">
+                </div>
+                <div class="col">
+                    <div class="card-block px-2">
+                        <div class="float-left">
+                            <h3 class="card-title">{{ value[3] }}</h3>
+                        </div>
+                        <div class="float-right">
+                            <h4>Ordered on {{ value[0]  }}</h4>
+                            {% if value[1] == 'Y' %}
+                            <small class="text-muted float-right">Ordered Status: Completed </small>
+                            {% else %}
+                            <small class="text-muted float-right">Order Status: Pending </small>
+                            {% endif %}
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="float-left">
+                            <p class="card-text">${{ value[4] }}</p>
+                        </div>
+                        <div class="float-right">
+                            <button type="button" class="btn btn-primary">Buy it Again</button>
+                            <button type="button" class="btn btn-secondary" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
+                            <button type="button" class="btn btn-danger" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#returnModal">Return Item</button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
             </div>
-            </div>
-        <!-- /.card -->
         </div>
         {% endfor %}
-      <!-- /.col-lg-12 -->
     {% else %}
         <p> No Orders</p>
     {% endif %}
-    </div>
-
-  </div>
+</div>
 
 <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
