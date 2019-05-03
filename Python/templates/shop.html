@@ -11,9 +11,9 @@
 
         <h1 class="my-4">Shop Name</h1>
         <div class="list-group">
-          <a href="#" class="list-group-item">Category 1</a>
-          <a href="#" class="list-group-item">Category 2</a>
-          <a href="#" class="list-group-item">Category 3</a>
+          {% for item in category %}
+          <a href="/shop.html?category={{ item[0] }}" class="list-group-item">{{ item[0] }}</a>
+          {% endfor %}
         </div>
 
         <button style="margin-top:1rem;" data-toggle="modal" data-target="#addModal" type="button" class="btn btn-success btn-lg">Add Item</button>
@@ -120,8 +120,13 @@
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="inputCategory">Category</label>
-              <input type="text" class="form-control" id="inputCategory">
+              <label for="type">Category</label>
+                <select class="custom-select d-block w-100" id="type" name="cardType" value="{{ request.form.cardType }}" required>
+                  <option value="">Choose...</option>
+                  <option>Shirts</option>
+                  <option>Pants</option>
+                  <option>Shoes</option>
+                </select>
             </div>
             <div class="form-group col-md-4">
               <label for="inputCategory">Image</label>
