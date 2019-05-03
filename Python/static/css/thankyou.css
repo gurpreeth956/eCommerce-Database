@@ -1,0 +1,20 @@
+h2{
+    margin-top:3rem;
+}
+
+.spacer {
+     padding-top: 80px;
+     padding-bottom: 40px
+ }
+
+ .img-fluid{
+    max-height:150px;
+    max-width:200px;
+}
+
+h6{
+}
+
+footer{
+   margin-top:3rem;
+}
