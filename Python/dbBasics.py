@@ -1,5 +1,5 @@
 import pymysql
-from datetime import datetime
+import datetime
 import time
 
 
@@ -58,5 +58,7 @@ def insertOrders():
     client.close()
 
 
-now = datetime.now()
-insertOrders()
+#now = datetime.now()
+#insertOrders()
+
+datetime.datetime.strptime('01' + '05/19', '%d%m/%y').date()

@@ -327,7 +327,6 @@ INSERT INTO Discount VALUES('5454', '4.90', '2019-10-25');
 INSERT INTO Orders VALUES('4444', '368192', '2018-11-25', 'Y', '7878', 'Bobby', 'bob.builder@gmail.com');
 INSERT INTO Orders VALUES('21344', '251059', '2019-04-08', 'N', NULL, 'Billy', 'billy.cat@gmail.com');
 INSERT INTO Orders VALUES('332', '592134', '2012-08-10', 'Y', NULL, 'NotJames', 'notjames@gmail.com');
-INSERT INTO Orders VALUES('4', '592134', '2012-08-10', 'Y', NULL, 'NotJames', 'notjames@gmail.com');
 
 INSERT INTO OrderedItems VALUES('4444', '1233', '5');
 INSERT INTO OrderedItems VALUES('4444', '18332', '10');
