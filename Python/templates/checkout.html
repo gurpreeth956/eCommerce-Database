@@ -223,7 +223,7 @@
             <div class="row">
               <div class="col-md-3 mb-3">
                 <label for="cc-expiration">Expiration</label>
-                <input type="text" class="form-control" id="cc-expiration" placeholder="" name="cardExp" value="{{ request.form.cardExp }}" required>
+                <input type= "expirationDate" class="form-control" id="cc-expiration" name="expiration" placeholder="" type="text" value = "{{ request.form.cardExp }}" required/>
                 <div class="invalid-feedback">
                   Expiration date required
                 </div>
@@ -246,12 +246,35 @@
               </div>
             </div>
             <hr class="mb-4">
-            <input class="btn btn-primary btn-lg btn-block" type="submit" name="checkout">Continue to checkout</input>
+            <input class="btn btn-primary btn-lg btn-block" type="submit" name="checkout" data-toggle="modal" data-target="#confirmModal">Continue to checkout</input>
           </form>
         </div>
       </div>
       
     </div>
+
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Order Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4 style="text-align:center;">Proceed with this order?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a role = "button" class="btn btn-success" href="thankyou.html">Confirm Order</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer class="py-5 bg-dark">
     <div class="container">
       <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>

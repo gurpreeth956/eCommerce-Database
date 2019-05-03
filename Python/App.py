@@ -252,7 +252,7 @@ def history():
         print("Can not retrieve specified information")
     finally:
         client.close()
-    return render_template('history.html', values=result, loggedin=loggedinname, title='Order History', styles='history.css',
+    return render_template('history.html', values=result, loggedin=loggedinname, title='Order History', styles='returns.css',
                            bodyclass='bg-light')
 
 
@@ -288,7 +288,7 @@ def wishlist():
         print("Can not retrieve specified information")
     finally:
         client.close()
-    return render_template('wishlist.html', values= result, loggedin=loggedinname, title='Wish List', styles='wishlist.css',
+    return render_template('wishlist.html', values= result, loggedin=loggedinname, title='Wish List', styles='returns.css',
                            bodyclass='bg-light')
 
 
@@ -316,6 +316,9 @@ def settings():
 def returns():
     return render_template('returns.html', loggedin=loggedinname, title='Returns', styles='returns.css', bodyclass='bg-light')
 
+@app.route("/thankyou.html")
+def thankyou():
+    return render_template('thankyou.html', loggedin=loggedinname, title='Thank You', styles='thankyou.css', bodyclass='bg-light')
 
 '''
 BELOW ARE ALL THE METHODS FOR GETTING AND SETTING DATA FROM THE DATABASE
