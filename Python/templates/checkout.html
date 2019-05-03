@@ -24,7 +24,7 @@
                 <small class="text-muted">{{ item[2] }}</small>
                 <p>
                   <form method="POST">
-                  <input type="hidden" name="itemid" value="{{ item[4] }}">
+                  <input type="hidden" name="itemid" value={{ item[4] }}>
                   <input type="submit" class="btn btn-primary" name="add" value="+">
                   <input type="submit" class="btn btn-secondary" name="remove" value="-">
                   </form>
@@ -223,7 +223,7 @@
             <div class="row">
               <div class="col-md-3 mb-3">
                 <label for="cc-expiration">Expiration</label>
-                <input type= "expirationDate" class="form-control" id="cc-expiration" name="expiration" placeholder="" type="text" value = "{{ request.form.cardExp }}" required/>
+                <input type= "expirationDate" class="form-control" id="cc-expiration" name="cardExp" placeholder="" type="text" value = "{{ request.form.cardExp }}" required/>
                 <div class="invalid-feedback">
                   Expiration date required
                 </div>
@@ -246,7 +246,7 @@
               </div>
             </div>
             <hr class="mb-4">
-            <input class="btn btn-primary btn-lg btn-block" type="submit" name="checkout" data-toggle="modal" data-target="#confirmModal">Continue to checkout</input>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" name="checkout" data-toggle="modal" data-target="#confirmModal">Continue to checkout</button>
           </form>
         </div>
       </div>

@@ -89,43 +89,11 @@ def checkout():
         client.close()
 
     if request.method == 'POST':
-
+        print("f")
 
         # DISABLE ADD BUTTON IF AMOUNT GREATER THAN STOCK
 
-
-        if 'add' or 'remove' in request.form:
-            itemid = request.form['itemid']
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
-            try:
-                cursor = client.cursor()
-                if 'add' in request.form:
-                    query = "UPDATE ShoppingCart SET Quantity = Quantity + 1 WHERE CustomerID = %s AND ItemID = %s"
-                    cursor.execute(query, (loggedinid, itemid))
-                elif 'remove' in request.form:
-                    query = "UPDATE ShoppingCart SET Quantity = Quantity - 1 WHERE CustomerID = %s AND ItemID = %s"
-                    cursor.execute(query, (loggedinid, itemid))
-                    query = "DELETE FROM ShoppingCart WHERE CustomerID = %s AND Quantity = 0"
-                    cursor.execute(query, loggedinid)
-
-                query = "SELECT I.ItemType, S.Quantity, I.ItemDesc, I.Price, S.ItemID " \
-                        "FROM Item I, ShoppingCart S WHERE S.CustomerID = %s AND I.ItemID = S.ItemID"
-                cursor.execute(query, loggedinid)
-                items = cursor.fetchall()
-
-                # Get sum of prices
-                total = 0
-                quantity = 0
-                for row in items:
-                    total += row[1] * row[3]
-                    quantity += row[1]
-                client.commit()
-            except Exception:
-                print("Could not complete order action")
-                client.rollback()
-            finally:
-                client.close()
-        elif 'checkout' in request.form:
+        if 'checkout' in request.form:
             name = request.form['firstName'] + ' ' + request.form['secondName']
             email = request.form['email']
             billaddress = request.form['address'] + ' ' + request.form['address2'] + ' ' + request.form['state'] + ' ' + request.form['country'] + ' ' + request.form['zip']
@@ -163,7 +131,7 @@ def checkout():
                 # Create Payment Entity
                 query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp, Billing) \
                         values(%s, %s, %s, %s, %s, %s)"
-                cursor.execute(query, (orderid, cardName, cardNum, cardType, cardExp, billaddress))
+                cursor.execute(query, (orderid, cardName, cardNum, cardType, '2018-09-22', billaddress))
 
                 # Create OrderedItems Entity
                 for row in results:
@@ -177,6 +145,37 @@ def checkout():
                 client.commit()
             except Exception:
                 print("Could not complete order action")
+                client.rollback()
+            finally:
+                client.close()
+        else:
+            itemid = request.form['itemid']
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                cursor = client.cursor()
+                if 'add' in request.form:
+                    query = "UPDATE ShoppingCart SET Quantity = Quantity + 1 WHERE CustomerID = %s AND ItemID = %s"
+                    cursor.execute(query, (loggedinid, itemid))
+                elif 'remove' in request.form:
+                    query = "UPDATE ShoppingCart SET Quantity = Quantity - 1 WHERE CustomerID = %s AND ItemID = %s"
+                    cursor.execute(query, (loggedinid, itemid))
+                    query = "DELETE FROM ShoppingCart WHERE CustomerID = %s AND Quantity = 0"
+                    cursor.execute(query, loggedinid)
+
+                query = "SELECT I.ItemType, S.Quantity, I.ItemDesc, I.Price, S.ItemID " \
+                        "FROM Item I, ShoppingCart S WHERE S.CustomerID = %s AND I.ItemID = S.ItemID"
+                cursor.execute(query, loggedinid)
+                items = cursor.fetchall()
+
+                # Get sum of prices
+                total = 0
+                quantity = 0
+                for row in items:
+                    total += row[1] * row[3]
+                    quantity += row[1]
+                client.commit()
+            except Exception:
+                print("Could not complete item action")
                 client.rollback()
             finally:
                 client.close()
