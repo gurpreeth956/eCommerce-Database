@@ -9,35 +9,43 @@
       </div>
     </div>
 <div class="container">
-    <div class="row">
-          <!-- /.col-lg-12 -->
+
+
         {% if values != None %}
-        {% for value in values %}
-            <div class="col-lg-12">
-                <div class="card mt-4">
-                    <img class="card-img-top img-fluid" src="static/images/items/{{ value[0] }}.png" alt="">
-                <div class="card-body">
-                    <h3 class="card-title">{{ value[1] }}</h3>
-                    <h4>{{ value[2] }}</h4>
-                    <p>
-                        <form method="POST">
-                        <input type="hidden" name="item" value={{ value[0] }}>
-                        <input type="submit" class="btn btn-primary" name="cart" value="Buy Now">
-                        <input type="submit" class="btn btn-danger" name="remove" value="Remove">
-                        </form>
-                    </p>
+            {% for value in values %}
+            <div class="card">
+                <div class="row no-gutters">
+                    <div class="col-auto">
+                        <img src="static/images/items/{{ value[0] }}.png" class="img-fluid" alt="">
+                    </div>
+                    <div class="col">
+                        <div class="card-block px-2">
+                            <div class="float-left">
+                                <h3 class="card-title">{{ value[1] }}</h3>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="float-left">
+                                <p class="card-text">${{ value[2] }}</p>
+                            </div>
+                            <div class="float-right">
+                                <p>
+                                    <form method="POST">
+                                        <input type="hidden" name="item" value={{ value[0] }}>
+                                        <input type="submit" class="btn btn-primary" name="cart" value="Buy Now">
+                                        <input type="submit" class="btn btn-danger" name="remove" value="Remove">
+                                    </form>
+                                </p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
                 </div>
-                </div>
-            <!-- /.card -->
             </div>
-        {% endfor %}
-          <!-- /.col-lg-12 -->
+            {% endfor %}
         {% else %}
             <p> No Items in Wishlist</p>
         {% endif %}
-    </div>
-
-  </div>
+</div>
   <!-- /.container -->
 
   <!-- Footer -->
