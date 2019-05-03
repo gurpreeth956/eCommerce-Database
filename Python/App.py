@@ -259,6 +259,9 @@ def settings():
 def returns():
     return render_template('returns.html', loggedin=loggedinname, title='Returns', styles='returns.css', bodyclass='bg-light')
 
+@app.route("/thankyou.html")
+def thankyou():
+    return render_template('thankyou.html', loggedin=loggedinname, title='Thank You', styles='thankyou.css', bodyclass='bg-light')
 
 '''
 BELOW ARE ALL THE METHODS FOR GETTING AND SETTING DATA FROM THE DATABASE
