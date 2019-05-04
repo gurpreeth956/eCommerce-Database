@@ -11,41 +11,48 @@
 
     <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
-            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-muted">Your cart</span>
-                <span class="badge badge-secondary badge-pill">{{ quantity }}</span>
-            </h4>
-            <ul class="list-group mb-3">
-                {% if items != None %}
-                {% for item in items %}
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                    <div>
-                        <h6 class="my-0">{{ item[0] }} ({{ item[1]}})</h6>
-                        <small class="text-muted">{{ item[2] }}</small>
-                        <p>
-                        <form method="POST">
-                            <input type="hidden" name="itemid" value={{ item[4] }}>
-                            <input type="submit" class="btn btn-primary" name="add" value="+">
-                            <input type="submit" class="btn btn-secondary" name="remove" value="-">
-                        </form>
-                        </p>
-                    </div>
-                    <span class="text-muted">{{ item[3] }}</span>
-                </li>
-                {% endfor %}
-                {% endif %}
-                <li class="list-group-item d-flex justify-content-between bg-light">
-                    <div class="text-success">
-                        <h6 class="my-0">Promo code</h6>
-                        <small>EXAMPLECODE</small>
-                    </div>
-                    <span class="text-success">-$5</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between">
-                    <span>Total (USD)</span>
-                    <strong>{{ total }}</strong>
-                </li>
-            </ul>
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Your cart</span>
+            <span class="badge badge-secondary badge-pill">{{ quantity }}</span>
+          </h4>
+          <ul class="list-group mb-3">
+          {% if items != None %}
+            {% for item in items %}
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0">{{ item[0] }} ({{ item[1]}})</h6>
+                <small class="text-muted">{{ item[2] }}</small>
+                <p>
+                  <form method="POST">
+                  <input type="hidden" name="itemid" value={{ item[4] }}>
+                  {% if addbtn %}
+                    <button type="submit" class="btn btn-primary" name="add">+</button>
+                  {% else %}
+                    <button type="submit" class="btn btn-secondary" name="add" disabled>+</button>
+                  {% endif %}
+                  <button type="submit" class="btn btn-secondary" name="remove">-</button>
+                  </form>
+                </p>
+              </div>
+              <span class="text-muted">{{ item[3] }}</span>
+            </li>
+            {% endfor %}
+          {% endif %}
+            <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="text-success">
+                <h6 class="my-0">Discounts</h6>
+              </div>
+              <span class="text-success">{{ discount }}%</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Shipment Fee</span>
+              <strong>{{ shipment }}</strong>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (USD)</span>
+              <strong>{{ total }}</strong>
+            </li>
+          </ul>
 
             <form class="card p-2">
                 <div class="input-group">
@@ -282,9 +289,9 @@
                 </div>
                 <hr class="mb-4">
                 {% if quantity == 0 %}
-                <a href="thankyou.html" class="btn btn-primary btn-lg btn-block">Continue to Checkout</a>
+                    <button class="btn btn-secondary btn-lg btn-block" type="submit" name="checkout" disabled>Continue to Checkout</button>
                 {% else %}
-                <a href="thankyou.html" class="btn btn-primary btn-lg btn-block">Continue to Checkout</a>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" name="checkout">Continue to Checkout</button>
                 {% endif %}
             </form>
         </div>
@@ -459,15 +466,6 @@
           });
         }, false);
       })();
-
-
-
-
-
-
-
-
-
 </script>
 {% endblock content %}
 
