@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 
 # Variables (make global in method if you are writing to it)
+employee = False
 loggedinid = None
 loggedinname = None
 
@@ -237,13 +238,24 @@ def profile():
                            bodyclass='bg-light')
 
 
-@app.route("/history.html")
+@app.route("/history.html", methods=['GET', 'POST'])
 def history():
+    global loggedinid
+    if request.method == 'POST':
+        if 'review' in request.form:
+            review = request.form['review']
+
+        elif 'return' in request.form:
+            itemid = request.form['item']
+            orderid = request.form['order']
+            quantity = request.form['quantity']
+            comments = request.form['comments']
+            insertReturnment(orderid, itemid, quantity, comments)
     result = None
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT O.OrderDate, O.Completed, I.ItemID, I.ItemType, I.Price " \
+        query = "SELECT O.OrderDate, O.Completed, I.ItemID, I.ItemType, I.Price, S.OrderID, S.Quantity " \
                 "FROM Orders O, OrderedItems S, Item I " \
                 "WHERE O.CustomerID = %s AND O.OrderNum = S.OrderID AND S.ItemID = I.ItemID"
         cursor.execute(query, loggedinid)
@@ -314,7 +326,22 @@ def settings():
 
 @app.route("/returns.html")
 def returns():
-    return render_template('returns.html', loggedin=loggedinname, title='Returns', styles='returns.css', bodyclass='bg-light')
+    if employee:
+        result = getReturnmentTable()
+    else:
+        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        try:
+            cursor = client.cursor()
+            query = "SELECT R.OrderID, R.ItemID, R.Quantity, R.Comments, I.ItemType, I.Price " \
+                    "FROM Returnment R, Orders O, Item I " \
+                    "WHERE O.OrderNum = R.OrderID AND O.CustomerID = %s AND I.ItemID = R.ItemID"
+            cursor.execute(query, loggedinid)
+            result = cursor.fetchall()
+        except Exception:
+            print("Could not retrieve specified Returnment Entity")
+        finally:
+            client.close()
+    return render_template('returns.html', employee=employee, values=result, loggedin=loggedinname, title='Returns', styles='returns.css', bodyclass='bg-light')
 
 
 @app.route("/thankyou.html")
