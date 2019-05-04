@@ -44,13 +44,12 @@ def insertOrders():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     #try:
     cursor = client.cursor()
-    nummm = '4'
-    query = "SELECT O.ItemID, O.Quantity, I.Price, I.ItemType, I.ItemDesc " \
-            "FROM OrderedItems O, Item I WHERE O.OrderID = %s AND O.ItemID = I.ItemID"
-    cursor.execute(query, nummm)
-    results = cursor.fetchall()
-    for row in results:
-        print(row[3])
+    newmem = 'Y'
+    query = "UPDATE Customer SET HasMembership = %s WHERE CustomerID = 7"
+    cursor.execute(query, newmem)
+    client.commit()
+    #for row in results:
+     #   print(row[3])
     #except Exception:
      #   print("Could not add entity to Orders Table")
      #   client.rollback()
