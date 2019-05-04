@@ -5,7 +5,6 @@ CREATE TABLE Person (
     Named VARCHAR(30) NOT NULL,
     DateofBirth DATE NOT NULL,
     Phone VARCHAR(15) NOT NULL,
-    Address VARCHAR(200) NOT NULL,
     DateJoined DATE NOT NULL,
     IsEmployee CHAR(1) DEFAULT 'N',
     PRIMARY KEY (ID)
@@ -82,16 +81,12 @@ CREATE TABLE Orders (
     CustomerID INT,
     OrderDate DATE NOT NULL,
     Completed CHAR(1) DEFAULT 'N',
-    DiscountID INT,
     OrderName VARCHAR(30) NOT NULL,
     OrderEmail VARCHAR(50) NOT NULL,
     PRIMARY KEY (OrderNum),
     FOREIGN KEY (CustomerID)
         REFERENCES Customer (CustomerID)
-        ON DELETE NO ACTION ON UPDATE CASCADE,
-    FOREIGN KEY (DiscountID)
-        REFERENCES Discount (DiscountID)
-        ON DELETE SET NULL ON UPDATE CASCADE
+        ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 CREATE TABLE OrderedItems (
@@ -113,7 +108,11 @@ CREATE TABLE Payment (
     CardNum VARCHAR(16) NOT NULL,
     CardComp VARCHAR(20) NOT NULL,
     CardExp DATE NOT NULL,
-    Billing VARCHAR(200) NOT NULL,
+    Address1 VARCHAR(200) NOT NULL,
+    Address2 VARCHAR(200),
+    State VARCHAR(50) NOT NULL,
+    Country VARCHAR(50) NOT NULL,
+    Zip VARCHAR(5) NOT NULL,
     PRIMARY KEY (OrderID),
     FOREIGN KEY (OrderID)
         REFERENCES Orders (OrderNum)
@@ -122,7 +121,11 @@ CREATE TABLE Payment (
 
 CREATE TABLE Shipment (
     OrderID INT,
-    Address VARCHAR(200) NOT NULL,
+    Address1 VARCHAR(200) NOT NULL,
+    Address2 VARCHAR(200),
+    State VARCHAR(50) NOT NULL,
+    Country VARCHAR(50) NOT NULL,
+    Zip VARCHAR(5) NOT NULL,
     Fee INT NOT NULL,
     Company VARCHAR(20) NOT NULL,
     ShipName VARCHAR(20) NOT NULL,
@@ -157,6 +160,31 @@ CREATE TABLE Reviews (
         ON DELETE NO ACTION ON UPDATE CASCADE,
     FOREIGN KEY (ItemID)
         REFERENCES OrderedItems (ItemID)
+        ON DELETE NO ACTION ON UPDATE CASCADE
+);
+
+CREATE TABLE Addresses (
+	ID INT,
+    Address1 VARCHAR(200) NOT NULL,
+    Address2 VARCHAR(200),
+    State VARCHAR(50) NOT NULL,
+    Country VARCHAR(50) NOT NULL,
+    Zip VARCHAR(5) NOT NULL,
+    PRIMARY KEY (ID, Address1, Address2, State, Country, Zip),
+	FOREIGN KEY (ID)
+        REFERENCES Person (ID)
+        ON DELETE NO ACTION ON UPDATE CASCADE
+);
+
+CREATE TABLE Cards (
+	ID INT,
+    CardName VARCHAR(20) NOT NULL,
+    CardNum VARCHAR(16) NOT NULL,
+    CardComp VARCHAR(20) NOT NULL,
+    CardExp DATE NOT NULL,
+    PRIMARY KEY (ID, CardName, CardNum, CardComp, CardExp),
+	FOREIGN KEY (ID)
+        REFERENCES Person (ID)
         ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
@@ -307,12 +335,12 @@ DELIMITER ;
 
 
 #INSERTIONS
-INSERT INTO	Person VALUES('368192', 'bob.builder@gmail.com', 'Bobby', '1998-11-30', '9179179170', 'Linden', '2018-11-23', 'N');
-INSERT INTO	Person VALUES('251059', 'billy.cat@gmail.com', 'Billy', '1996-03-11', '9179179171', 'Queens', '2018-01-24', 'N');
-INSERT INTO	Person VALUES('592134', 'sam.televi@gmail.com', 'James', '1992-05-14', '9179179172', 'Ithaca', '2017-09-01', 'N');
-INSERT INTO	Person VALUES('845523', 'mars.nasa@gmail.com', 'Tenmond', '2001-11-25', '9179179173', 'Stony', '2017-03-26', 'Y');
-INSERT INTO	Person VALUES('359803', 'plane.wire@gmail.com', 'Rayzin', '1967-10-12', '9179179174', 'Ithaca', '2018-01-27', 'Y');
-INSERT INTO	Person VALUES('432591', 'thom.sanjr@gmail.com', 'Thomsan', '1912-02-07', '4545454545', 'Hurst', '2015-05-15', 'Y');
+INSERT INTO	Person VALUES('368192', 'bob.builder@gmail.com', 'Bobby', '1998-11-30', '9179179170', '2018-11-23', 'N');
+INSERT INTO	Person VALUES('251059', 'billy.cat@gmail.com', 'Billy', '1996-03-11', '9179179171', '2018-01-24', 'N');
+INSERT INTO	Person VALUES('592134', 'sam.televi@gmail.com', 'James', '1992-05-14', '9179179172', '2017-09-01', 'N');
+INSERT INTO	Person VALUES('845523', 'mars.nasa@gmail.com', 'Tenmond', '2001-11-25', '9179179173', '2017-03-26', 'Y');
+INSERT INTO	Person VALUES('359803', 'plane.wire@gmail.com', 'Rayzin', '1967-10-12', '9179179174', '2018-01-27', 'Y');
+INSERT INTO	Person VALUES('432591', 'thom.sanjr@gmail.com', 'Thomsan', '1912-02-07', '4545454545', '2015-05-15', 'Y');
 
 INSERT INTO Customer VALUES('368192', 'password', 'N');
 INSERT INTO Customer VALUES('251059', 'wordpass', 'N');
@@ -343,23 +371,24 @@ INSERT INTO WishList VALUES('592134', '81234');
 INSERT INTO Discount VALUES('7878', '0.10', 'Y');
 INSERT INTO Discount VALUES('5454', '0.05', 'N');
 
-INSERT INTO Orders VALUES('4444', '368192', '2018-11-25', 'Y', '7878', 'Bobby', 'bob.builder@gmail.com');
-INSERT INTO Orders VALUES('21344', '251059', '2019-04-08', 'N', NULL, 'Billy', 'billy.cat@gmail.com');
-INSERT INTO Orders VALUES('332', '592134', '2012-08-10', 'Y', NULL, 'NotJames', 'notjames@gmail.com');
+INSERT INTO Orders VALUES('4444', '368192', '2018-11-25', 'Y', 'Bobby', 'bob.builder@gmail.com');
+INSERT INTO Orders VALUES('21344', '251059', '2019-04-08', 'N', 'Billy', 'billy.cat@gmail.com');
+INSERT INTO Orders VALUES('332', '592134', '2012-08-10', 'Y', 'NotJames', 'notjames@gmail.com');
 
 INSERT INTO OrderedItems VALUES('4444', '1233', '5');
 INSERT INTO OrderedItems VALUES('4444', '18332', '10');
 INSERT INTO OrderedItems VALUES('21344', '18332', '10');
 INSERT INTO OrderedItems VALUES('332', '18332', '20');
 
-INSERT INTO Payment VALUES('4444', 'Bobby', '1234567891235674', 'Chase', '2018-11-25', 'NYC');
-INSERT INTO Payment VALUES('21344', 'Billy', '1234567891234567', 'MasterCard', '2018-11-25', 'Stony');
-INSERT INTO Payment VALUES('332', 'James', '6123456789123456', 'Discover', '2018-11-25', 'Stony');
+INSERT INTO Payment VALUES('4444', 'Bobby', '1234567891235674', 'Chase', '2018-11-25', 'First', 'Second', 'NY', 'USA', '11117');
+INSERT INTO Payment VALUES('21344', 'Billy', '1234567891234567', 'MasterCard', '2018-11-25', 'One', 'Two', 'CAL', 'USA', '22222');
+INSERT INTO Payment VALUES('332', 'James', '6123456789123456', 'Discover', '2018-11-25', 'First', 'Second', 'NY', 'USA', '33333');
 
-INSERT INTO Shipment VALUES('4444', '100 Circle Rd', '10', 'USPS', 'Bill1');
-INSERT INTO Shipment VALUES('21344', '101 Circle Rd', '5', 'UPS', 'Bill2');
-INSERT INTO Shipment VALUES('332', '102 Circle Rd', '3', 'FEDEX', 'Bill');
+INSERT INTO Shipment VALUES('4444', 'First', 'Second', 'NY', 'USA', '11117', '10', 'USPS', 'Bill1');
+INSERT INTO Shipment VALUES('21344', 'Queens', 'City', 'NY', 'USA', '33633', '5', 'UPS', 'Bill2');
+INSERT INTO Shipment VALUES('332', 'Sacremento', NULL, 'Cal', 'USA', '11117', '3', 'FEDEX', 'Bill');
 
 INSERT INTO Returnment VALUES('4444', '1233', '4', 'Balls are broken');
+
 INSERT INTO Reviews VALUES('368192', '1233', '2', 'It would not turn on');
 INSERT INTO Reviews VALUES('592134', '18332', '5', 'It\'s pretty good');

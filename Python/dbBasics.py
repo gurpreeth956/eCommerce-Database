@@ -45,11 +45,12 @@ def insertOrders():
     #try:
     cursor = client.cursor()
     newmem = 'Y'
-    query = "UPDATE Customer SET HasMembership = %s WHERE CustomerID = 7"
-    cursor.execute(query, newmem)
-    client.commit()
-    #for row in results:
-     #   print(row[3])
+    query = "SELECT I.ItemType, S.Quantity, I.ItemDesc, I.Price, S.ItemID, I.Quantity " \
+            "FROM Item I, ShoppingCart S WHERE S.CustomerID = 7 AND I.ItemID = S.ItemID"
+    cursor.execute(query)
+    results = cursor.fetchall()
+    for row in results:
+        print(row[5])
     #except Exception:
      #   print("Could not add entity to Orders Table")
      #   client.rollback()
@@ -58,6 +59,6 @@ def insertOrders():
 
 
 #now = datetime.now()
-#insertOrders()
+insertOrders()
 
 datetime.datetime.strptime('01' + '05/19', '%d%m/%y').date()

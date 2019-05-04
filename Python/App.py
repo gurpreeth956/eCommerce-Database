@@ -30,12 +30,12 @@ def signup():
     if request.method == 'POST':
         table = getPersonTable()
         idn = len(table) + 1
-        name = request.form['firstName']
+        name = request.form['firstName'] + ' ' + request.form['lastName']
         email = request.form['email']
         password = request.form['password']
         phone = request.form['phone']
 
-        insertPerson(idn, email, name, '1998-11-25', phone, 'Ithaca', dt.today().strftime('%Y-%m-%d'), 'N')
+        insertPerson(idn, email, name, '1998-11-25', phone, dt.today().strftime('%Y-%m-%d'), 'N')
         insertCustomer(idn, password, 'N')
         return redirect('/signin.html')
     return render_template('signup.html', title='Sign Up', styles='signin.css', bodyclass='text-center')
@@ -82,7 +82,7 @@ def checkout():
     try:
         # For things on the right side of the checkout page
         cursor = client.cursor()
-        query = "SELECT I.ItemType, S.Quantity, I.ItemDesc, I.Price, S.ItemID " \
+        query = "SELECT I.ItemType, S.Quantity, I.ItemDesc, I.Price, S.ItemID, I.Quantity " \
                 "FROM Item I, ShoppingCart S WHERE S.CustomerID = %s AND I.ItemID = S.ItemID"
         cursor.execute(query, loggedinid)
         items = cursor.fetchall()
@@ -122,8 +122,11 @@ def checkout():
         if 'checkout' in request.form:
             name = request.form['firstName'] + ' ' + request.form['secondName']
             email = request.form['email']
-            billaddress = request.form['address'] + ' ' + request.form['address2'] + ' ' + request.form['state'] + ' ' + \
-                          request.form['country'] + ' ' + request.form['zip']
+            address1 = request.form['address']
+            address2 = request.form['address2']
+            state = request.form['state']
+            country = request.form['country']
+            zip = request.form['zip']
             cardName = request.form['cardName']
             cardNum = request.form['cardNum']
             cardExp = request.form['expiration']
@@ -134,55 +137,53 @@ def checkout():
                 'stateShip'] + ' ' + request.form['countryShip'] + ' ' + request.form['zipShip']
 
             client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
-            try:
-                cursor = client.cursor()
-                query = "SELECT CustomerID, ItemID, Quantity FROM ShoppingCart WHERE CustomerID = %s"
-                cursor.execute(query, loggedinid)
-                results = cursor.fetchall()
+            #try:
+            cursor = client.cursor()
+            query = "SELECT CustomerID, ItemID, Quantity FROM ShoppingCart WHERE CustomerID = %s"
+            cursor.execute(query, loggedinid)
+            results = cursor.fetchall()
 
-                # Create Orders Entity
-                table = getOrdersTable()
-                orderid = len(table) + 1
-                query = "INSERT INTO Orders(OrderNum, CustomerID, OrderDate, Completed, DiscountID, OrderName, OrderEmail) \
-                                values(%s, %s, %s, %s, %s, %s, %s)"
-                cursor.execute(query, (orderid, loggedinid, dt.today().strftime('%Y-%m-%d'), 'N', None, name,
-                                       email))  # MAKE PENDING PAGE FOR ORDERS
+            # Create Orders Entity
+            table = getOrdersTable()
+            orderid = len(table) + 1
+            query = "INSERT INTO Orders(OrderNum, CustomerID, OrderDate, Completed, OrderName, OrderEmail) \
+                            values(%s, %s, %s, %s, %s, %s)"
+            cursor.execute(query, (orderid, loggedinid, dt.today().strftime('%Y-%m-%d'), 'N', name, email))  # MAKE PENDING PAGE FOR ORDERS
 
-                # Create Shipment Entity
-                customer = getCustomerTuple(loggedinid)
-                fee = '5'
-                for row in customer:
-                    if row[2] == 'Y':
-                        fee = '0'
-                query = "INSERT INTO Shipment(OrderID, Address, Fee, Company, ShipName) values(%s, %s, %s, %s, %s)"
-                cursor.execute(query, (orderid, shipaddress, fee, 'UPS', shipname))
+            # Create Shipment Entity
+            customer = getCustomerTuple(loggedinid)
+            fee = '5'
+            for row in customer:
+                if row[2] == 'Y':
+                    fee = '0'
+            query = "INSERT INTO Shipment(OrderID, Address1, Address2, State, Country, Zip, Fee, Company, ShipName) values(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(query, (orderid, address1, address2, state, country, zip, fee, 'UPS', shipname))
 
-                # Create Payment Entity
-                query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp, Billing) \
-                        values(%s, %s, %s, %s, %s, %s)"
-                cursor.execute(query, (
-                orderid, cardName, cardNum, cardType, datetime.datetime.strptime('01' + cardExp, '%d%m/%y').date(),
-                billaddress))
+            # Create Payment Entity
+            query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp, Address1, Address2, State, Country, Zip) \
+                    values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(query, (orderid, cardName, cardNum, cardType, datetime.datetime.strptime('01' + cardExp, '%d%m/%y').date(),
+            address1, address2, state, country, zip))
 
-                # Create OrderedItems Entity
-                for row in results:
-                    query = "INSERT INTO OrderedItems(OrderID, ItemID, Quantity) values(%s, %s, %s)"
-                    cursor.execute(query, (orderid, row[1], row[2]))
-                    query = "UPDATE Item SET Quantity = Quantity - %s WHERE ItemID = %s"
-                    cursor.execute(query, (row[2], row[1]))
+            # Create OrderedItems Entity
+            for row in results:
+                query = "INSERT INTO OrderedItems(OrderID, ItemID, Quantity) values(%s, %s, %s)"
+                cursor.execute(query, (orderid, row[1], row[2]))
+                query = "UPDATE Item SET Quantity = Quantity - %s WHERE ItemID = %s"
+                cursor.execute(query, (row[2], row[1]))
 
-                # Delete orders from shopping cart
-                query = "DELETE FROM ShoppingCart WHERE CustomerID = %s"
-                cursor.execute(query, loggedinid)
+            # Delete orders from shopping cart
+            query = "DELETE FROM ShoppingCart WHERE CustomerID = %s"
+            cursor.execute(query, loggedinid)
 
-                client.commit()
-                ordersuccessful = True
-                lastorderid = orderid
-            except Exception:
-                print("Could not complete order action")
-                client.rollback()
-            finally:
-                client.close()
+            client.commit()
+            ordersuccessful = True
+            lastorderid = orderid
+            #except Exception:
+             #   print("Could not complete order action")
+              #  client.rollback()
+            #finally:
+            client.close()
         else:
             itemid = request.form['itemid']
             client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
@@ -210,7 +211,7 @@ def checkout():
                     query = "DELETE FROM ShoppingCart WHERE CustomerID = %s AND Quantity = 0"
                     cursor.execute(query, loggedinid)
 
-                query = "SELECT I.ItemType, S.Quantity, I.ItemDesc, I.Price, S.ItemID " \
+                query = "SELECT I.ItemType, S.Quantity, I.ItemDesc, I.Price, S.ItemID, I.Quantity " \
                         "FROM Item I, ShoppingCart S WHERE S.CustomerID = %s AND I.ItemID = S.ItemID"
                 cursor.execute(query, loggedinid)
                 items = cursor.fetchall()
@@ -309,7 +310,16 @@ def item():
 def profile():
     result = ['NO USER']
     if loggedinid != None:
-        result = [loggedinname]
+        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        try:
+            cursor = client.cursor()
+            query = "SELECT Named FROM Person WHERE ID = %s"
+            cursor.execute(query, loggedinid)
+            result = cursor.fetchall()
+        except Exception:
+            print("Could not retrieve specified Person Entity for Profile Page")
+        finally:
+            client.close()
     else:
         return redirect('/')
     return render_template('profile.html', name=result, loggedin=loggedinname, title='Profile', styles='',
@@ -434,7 +444,12 @@ def payment():
 
 @app.route("/settings.html")
 def settings():
-    return render_template('settings.html', loggedin=loggedinname, title='Settings', styles='settings.css',
+    result = ['NO USER']
+    if loggedinid != None:
+        result = getPersonTuple(loggedinid)
+    else:
+        return redirect('/')
+    return render_template('settings.html', loggedin=loggedinname, value=result, title='Settings', styles='settings.css',
                            bodyclass='bg-light')
 
 
@@ -491,13 +506,13 @@ BELOW ARE ALL THE METHODS FOR GETTING AND SETTING DATA FROM THE DATABASE
 '''
 
 
-def insertPerson(idvar, email, name, birthdate, phone, address, datejoined, isemployee):
+def insertPerson(idvar, email, name, birthdate, phone, datejoined, isemployee):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO Person(ID, Email, Named, DateOfBirth, Phone, Address, DateJoined, IsEmployee)\
-            values(%s, %s, %s, %s, %s, %s, %s, %s)"
-        cursor.execute(query, (idvar, email, name, birthdate, phone, address, datejoined, isemployee))
+        query = "INSERT INTO Person(ID, Email, Named, DateOfBirth, Phone, DateJoined, IsEmployee)\
+            values(%s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (idvar, email, name, birthdate, phone, datejoined, isemployee))
         client.commit()
     except Exception:
         print("Could not add entity to Person Table")
@@ -510,7 +525,7 @@ def getPersonTuple(idvar):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT ID, Email, Named, DateOfBirth, Phone, Address, DateJoined, IsEmployee FROM Person WHERE ID = %s"
+        query = "SELECT ID, Email, Named, DateOfBirth, Phone, DateJoined, IsEmployee FROM Person WHERE ID = %s"
         cursor.execute(query, idvar)
         result = cursor.fetchall()
         return result
@@ -524,7 +539,7 @@ def getPersonTable():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT ID, Email, Named, DateOfBirth, Phone, Address, DateJoined, IsEmployee FROM Person"
+        query = "SELECT ID, Email, Named, DateOfBirth, Phone, DateJoined, IsEmployee FROM Person"
         cursor.execute(query)
         results = cursor.fetchall()
         return results
@@ -795,13 +810,13 @@ def getDiscountTable():
 
 
 # Orders Table
-def insertOrders(orderid, customerid, orderdate, completed, discountid, ordername, orderemail):
+def insertOrders(orderid, customerid, orderdate, completed, ordername, orderemail):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO Orders(OrderNum, CustomerID, OrderDate, Completed, DiscountID, OrderName, OrderEmail) \
-                values(%s, %s, %s, %s, %s, %s, %s)"
-        cursor.execute(query, (orderid, customerid, orderdate, completed, discountid, ordername, orderemail))
+        query = "INSERT INTO Orders(OrderNum, CustomerID, OrderDate, Completed, OrderName, OrderEmail) \
+                values(%s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (orderid, customerid, orderdate, completed, ordername, orderemail))
         client.commit()
     except Exception:
         print("Could not add entity to Orders Table")
@@ -814,7 +829,7 @@ def getOrdersTuple(orderid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT OrderNum, CustomerID, OrderDate, Completed, DiscountID, OrderName, OrderEmail FROM Orders \
+        query = "SELECT OrderNum, CustomerID, OrderDate, Completed, OrderName, OrderEmail FROM Orders \
                 WHERE OrderNum = %s"
         cursor.execute(query, orderid)
         result = cursor.fetchall()
@@ -829,7 +844,7 @@ def getOrdersTable():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT OrderNum, CustomerID, OrderDate, Completed, DiscountID, OrderName, OrderEmail FROM Orders"
+        query = "SELECT OrderNum, CustomerID, OrderDate, Completed, OrderName, OrderEmail FROM Orders"
         cursor.execute(query)
         results = cursor.fetchall()
         return results
@@ -883,13 +898,13 @@ def getOrderedItemsTable():
 
 
 # Payment Table
-def insertPayment(orderid, cardname, cardnum, cardcomp, cardexp, billing):
+def insertPayment(orderid, cardname, cardnum, cardcomp, cardexp, address1, address2, state, country, zip):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp, Billing) \
+        query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp, Address1, Address2, State, Country, Zip) \
                 values(%s, %s, %s, %s, %s, %s)"
-        cursor.execute(query, (orderid, cardname, cardnum, cardcomp, cardexp, billing))
+        cursor.execute(query, (orderid, cardname, cardnum, cardcomp, cardexp, address1, address2, state, country, zip))
         client.commit()
     except Exception:
         print("Could not add entity to Payment Table")
@@ -902,7 +917,7 @@ def getPaymentTuple(orderid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT OrderID, CardName, CardNum, CardComp, CardExp, Billing FROM Payment \
+        query = "SELECT OrderID, CardName, CardNum, CardComp, CardExp, Address1, Address2, State, Country, Zip FROM Payment \
                 WHERE OrderID = %s"
         cursor.execute(query, orderid)
         result = cursor.fetchall()
@@ -917,7 +932,7 @@ def getPaymentTable():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT OrderID, CardName, CardNum, CardComp, CardExp, Billing FROM Payment"
+        query = "SELECT OrderID, CardName, CardNum, CardComp, CardExp, Address1, Address2, State, Country, Zip FROM Payment"
         cursor.execute(query)
         results = cursor.fetchall()
         return results
@@ -928,12 +943,12 @@ def getPaymentTable():
 
 
 # Shipment Table
-def insertShipment(orderid, address, fee, company, shipname):
+def insertShipment(orderid, address1, address2, state, country, zip, fee, company, shipname):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO Shipment(OrderID, Address, Fee, Company, ShipName) values(%s, %s, %s, %s, %s)"
-        cursor.execute(query, (orderid, address, fee, company, shipname))
+        query = "INSERT INTO Shipment(OrderID, Address1, Address2, State, Country, Zip, Fee, Company, ShipName) values(%s, %s, %s, %s, %s)"
+        cursor.execute(query, (orderid, address1, address2, state, country, zip, fee, company, shipname))
         client.commit()
     except Exception:
         print("Could not add entity to Shipment Table")
@@ -946,7 +961,7 @@ def getShipmentTuple(orderid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT OrderID, Address, Fee, Company, ShipName FROM Shipment WHERE OrderID = %s"
+        query = "SELECT OrderID, Address1, Address2, State, Country, Zip, Fee, Company, ShipName FROM Shipment WHERE OrderID = %s"
         cursor.execute(query, orderid)
         result = cursor.fetchall()
         return result
@@ -960,7 +975,7 @@ def getShipmentTable():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT OrderID, Address, Fee, Company, ShipName FROM SHIPMENT"
+        query = "SELECT OrderID, Address1, Address2, State, Country, Zip, Fee, Company, ShipName FROM SHIPMENT"
         cursor.execute(query, orderid)
         results = cursor.fetchall()
         return results
