@@ -320,9 +320,11 @@ def profile():
 def history():
     global loggedinid
     if request.method == 'POST':
-        if 'review' in request.form:
+        if 'cart' in request.form:
+            itemid = request.form['itemid']
+            insertShoppingCart(loggedinid, itemid, 1)
+        elif 'review' in request.form:
             review = request.form['review']
-
         elif 'return' in request.form:
             itemid = request.form['item']
             orderid = request.form['order']
