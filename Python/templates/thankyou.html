@@ -5,7 +5,7 @@
 <div class="container">
     <h2>Thank you for shopping with RTG Clothing!</h2>
     <h5>Your order details are below.</h5>
-    <p class="text-muted">Order {{ orderid }}</p>
+    <p class="text-muted">Order #123456789</p>
 
     <div class="spacer"></div>
 
@@ -25,28 +25,51 @@
 
     </div>
     <hr>
-    {% for item in results %}
+
     <div class="row">
         <div class="col-4">
-            <img src="static/images/items/{{ item[0] }}.png" class="img-fluid float-left mr-2" alt="">
-            <h6>{{ item[3] }}</h6>
+            <img src="static/images/thanos.jpg" class="img-fluid float-left mr-2" alt="">
+            <h6>Thanos</h6>
         </div>
         <div class="col-4">
-            <p>{{ item[4] }}</p>
+            <p>My lord and savior</p>
         </div>
         <div class="col-2">
-            <p>{{ item[1] }}</p>
+            <p>14,000,651</p>
         </div>
         <div class="col-2">
-            <p>{{ item[2] }}</p>
+            <p>Priceless</p>
         </div>
     </div>
     <hr>
-    {% endfor %}
-
+    <div class="row">
+        <div class="col-4">
+            <img src="static/images/thanos.jpg" class="img-fluid float-left mr-2" alt="">
+            <h6>Thanos</h6>
+        </div>
+        <div class="col-4">
+            <p>My lord and savior</p>
+        </div>
+        <div class="col-2">
+            <p>14,000,651</p>
+        </div>
+        <div class="col-2">
+            <p>Priceless</p>
+        </div>
+    </div>
+    <hr>
     <div class="row">
         <div class="col-10">
             <a href="shop.html" class="btn btn-primary">Return to Shop</a>
+        </div>
+        <div class="col-2">
+            <div class="float-left">
+                <h6>Total: &nbsp;</h6>
+            </div>
+            <div class="float-left">
+                <p>Priceless^2</p>
+            </div>
+            <div class="clearfix"></div>
         </div>
     </div>
 </div>

@@ -72,8 +72,8 @@ CREATE TABLE WishList (
 
 CREATE TABLE Discount (
 	DiscountID INT,
-    DiscountPercent DEC(2, 2),
-    Valid CHAR(1) DEFAULT 'N',
+    DiscountPrice DEC(5, 2),
+    ExpDate DATE,
     PRIMARY KEY (DiscountID)
 );
 
@@ -284,25 +284,6 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET message_text = 'Rating not 1-5';
     END IF;
 END$
-
-#Disount Valid
-CREATE TRIGGER Insert_Valid_Y_Or_N BEFORE INSERT ON Discount 
-FOR EACH ROW
-BEGIN
-    IF NEW.Valid NOT IN ('Y', 'N')
-    THEN
-        SIGNAL SQLSTATE '45000' SET message_text = 'Valid must be Y or N';
-    END IF;
-END$
-
-CREATE TRIGGER Update_Valid_Y_Or_N BEFORE UPDATE ON Discount 
-FOR EACH ROW
-BEGIN
-    IF NEW.Valid NOT IN ('Y', 'N')
-    THEN
-        SIGNAL SQLSTATE '45000' SET message_text = 'Valid must be Y or N';
-    END IF;
-END$
 DELIMITER ;
 
 
@@ -340,8 +321,8 @@ INSERT INTO WishList VALUES('368192', '1233');
 INSERT INTO WishList VALUES('251059', '18332');
 INSERT INTO WishList VALUES('592134', '81234');
 
-INSERT INTO Discount VALUES('7878', '0.10', 'Y');
-INSERT INTO Discount VALUES('5454', '0.05', 'N');
+INSERT INTO Discount VALUES('7878', '9.00', '2019-11-25');
+INSERT INTO Discount VALUES('5454', '4.90', '2019-10-25');
 
 INSERT INTO Orders VALUES('4444', '368192', '2018-11-25', 'Y', '7878', 'Bobby', 'bob.builder@gmail.com');
 INSERT INTO Orders VALUES('21344', '251059', '2019-04-08', 'N', NULL, 'Billy', 'billy.cat@gmail.com');
