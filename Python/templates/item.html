@@ -7,174 +7,191 @@
 
     <div class="row">
 
-      <div class="col-lg-3">
-        <h1 class="my-4">Shop Name</h1>
-        <div class="list-group">
-          <a href="#" class="list-group-item active">Category 1</a>
-          <a href="#" class="list-group-item">Category 2</a>
-          <a href="#" class="list-group-item">Category 3</a>
+        <div class="col-lg-3">
+            <h1 class="my-4">Shop Name</h1>
+            <div class="list-group">
+                <a href="#" class="list-group-item active">Category 1</a>
+                <a href="#" class="list-group-item">Category 2</a>
+                <a href="#" class="list-group-item">Category 3</a>
+            </div>
         </div>
-      </div>
-      <!-- /.col-lg-3 -->
+        <!-- /.col-lg-3 -->
 
-      <div class="col-lg-9">
+        <div class="col-lg-9">
 
-        <div class="card mt-4">
-          <img class="card-img-top img-fluid" src="static/images/items/{{ id }}.png" alt="">
-          <div class="card-body">
-            {% if type %}
-              <h3 class="card-title">{{ type }}</h3>
-              <h4>${{ price }}</h4>
-              <p class="card-text">{{ desc }}</p>
-              <p>
-                {% if loggedin %}
-                  <form method="POST">
-                    <input type="hidden" name="item" value={{ id }}>
-                    <input type="submit" class="btn btn-primary" name="cart" value="Add to Cart">
-                    <input type="submit" class="btn btn-secondary" name="wishlist" value="Add to Wishlist">
-                  </form>
-                {% endif %}
-                {% if employee %}
-                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal">Edit Item</button>
-                  <button type="button" class="btn btn-danger">Delete Item</button>
-                {% endif %}
-              </p>
-            {% else %}
-              <h3 class="card-title">Product Name</h3>
-              <h4>Price</h4>
-              <p class="card-text">Description</p>
-              <p>
-                  <button type="button" class="btn btn-primary">Add to Cart</button>
-                  <button type="button" class="btn btn-secondary">Add to Wish List</button>
-              </p>
-            {% endif %}
-            <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
-            4.0 stars
-          </div>
+            <div class="card mt-4">
+                <img class="card-img-top img-fluid" src="static/images/items/{{ id }}.png" alt="">
+                <div class="card-body">
+                    {% if type %}
+                    <h3 class="card-title">{{ type }}</h3>
+                    <h4>${{ price }}</h4>
+                    <p class="card-text">{{ desc }}</p>
+                    <p>
+                        {% if loggedin %}
+                    <form method="POST">
+                        <input type="hidden" name="item" value={{ id }}>
+                        <input type="submit" class="btn btn-primary" name="cart" value="Add to Cart">
+                        <input type="submit" class="btn btn-secondary" name="wishlist" value="Add to Wishlist">
+                    </form>
+                    {% endif %}
+                    {% if employee %}
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal">Edit
+                        Item
+                    </button>
+                    <button type="button" class="btn btn-danger">Delete Item</button>
+                    {% endif %}
+                    </p>
+                    {% else %}
+                    <h3 class="card-title">Product Name</h3>
+                    <h4>Price</h4>
+                    <p class="card-text">Description</p>
+                    <p>
+                        <button type="button" class="btn btn-primary">Add to Cart</button>
+                        <button type="button" class="btn btn-secondary">Add to Wish List</button>
+                    </p>
+                    {% endif %}
+                    <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
+                    4.0 stars
+                </div>
+            </div>
+            <!-- /.card -->
+
+            <div class="card card-outline-secondary my-4">
+                <div class="card-header">
+                    Product Reviews
+                </div>
+                <div class="card-body">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore,
+                        similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum.
+                        Sequi mollitia, necessitatibus quae sint natus.</p>
+                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+                    <button type="button" class="btn btn-danger btn-sm float-right">Delete Review</button>
+                    <hr>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore,
+                        similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum.
+                        Sequi mollitia, necessitatibus quae sint natus.</p>
+                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+                    <button type="button" class="btn btn-danger btn-sm float-right">Delete Review</button>
+                    <hr>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore,
+                        similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum.
+                        Sequi mollitia, necessitatibus quae sint natus.</p>
+                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+                    <button type="button" class="btn btn-danger btn-sm float-right">Delete Review</button>
+                    <hr>
+                    <button type="button" href="#reviewModal" class="btn btn-success" data-toggle="modal"
+                            data-target="#reviewModal">Leave a Review
+                    </button>
+                </div>
+            </div>
+            <!-- /.card -->
+
         </div>
-        <!-- /.card -->
-
-        <div class="card card-outline-secondary my-4">
-          <div class="card-header">
-            Product Reviews
-          </div>
-          <div class="card-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-            <small class="text-muted">Posted by Anonymous on 3/1/17</small> <button type="button" class="btn btn-danger btn-sm float-right">Delete Review</button>
-            <hr>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-            <small class="text-muted">Posted by Anonymous on 3/1/17</small> <button type="button" class="btn btn-danger btn-sm float-right">Delete Review</button>
-            <hr>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-            <small class="text-muted">Posted by Anonymous on 3/1/17</small> <button type="button" class="btn btn-danger btn-sm float-right">Delete Review</button>
-            <hr>
-            <button type = "button" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
-          </div>
-        </div>
-        <!-- /.card -->
-
-      </div>
-      <!-- /.col-lg-9 -->
+        <!-- /.col-lg-9 -->
 
     </div>
 
-  </div>
+</div>
 
 <!-- Review Modal -->
-<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Leave a Review</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-            <div class="form-group">
-                <textarea class="form-control" id="reviewArea" rows="5" placeholder="Review Here"></textarea>
-              </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Leave Review</button>
-      </div>
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Leave a Review</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <textarea class="form-control" id="reviewArea" rows="5" placeholder="Review Here"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Leave Review</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- Edit Item Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalTitle">Edit Item</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputName">Name</label>
-              <input type="name" class="form-control" id="inputName" placeholder="Name">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalTitle">Edit Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="form-group col-md-4">
-              <label for="inputPrice">Price</label>
-              <input type="price" class="form-control" id="inputPrice" placeholder="Price">
+            <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="inputName">Name</label>
+                            <input type="name" class="form-control" id="inputName" placeholder="Name">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputPrice">Price</label>
+                            <input type="price" class="form-control" id="inputPrice" placeholder="Price">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSeller">Seller Name</label>
+                        <input type="seller" class="form-control" id="inputSeller" placeholder="Seller Name">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="type">Category</label>
+                            <select class="custom-select d-block w-100" id="type" name="cardType"
+                                    value="{{ request.form.cardType }}" required>
+                                <option value="">Choose...</option>
+                                <option>Shirts</option>
+                                <option>Pants</option>
+                                <option>Shoes</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputCategory">Image</label>
+                            <div class="custom-file">
+                                <label class="custom-file-label" for="customFile">Image</label>
+                                <input type="file" class="custom-file-input" id="customFile" placeholder="Image">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputQuantity">Quantity</label>
+                            <input type="text" class="form-control" id="inputQuantity">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="inputReview">Description</label>
+                            <textarea class="form-control" id="inputReview" rows="5" placeholder=""></textarea>
+                        </div>
+                    </div>
+                </form>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="inputSeller">Seller Name</label>
-            <input type="seller" class="form-control" id="inputSeller" placeholder="Seller Name">
-          </div>
-          <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="type">Category</label>
-                  <select class="custom-select d-block w-100" id="type" name="cardType" value="{{ request.form.cardType }}" required>
-                    <option value="">Choose...</option>
-                    <option>Shirts</option>
-                    <option>Pants</option>
-                    <option>Shoes</option>
-                  </select>
-              </div>
-            <div class="form-group col-md-4">
-              <label for="inputCategory">Image</label>
-              <div class="custom-file">
-                <label class="custom-file-label" for="customFile">Image</label>
-                <input type="file" class="custom-file-input" id="customFile" placeholder="Image">
-              </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Edit Item</button>
             </div>
-            <div class="form-group col-md-2">
-              <label for="inputQuantity">Quantity</label>
-              <input type="text" class="form-control" id="inputQuantity">
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="form-group">
-              <label for="inputReview">Description</label>
-              <textarea class="form-control" id="inputReview" rows="5" placeholder=""></textarea>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Edit Item</button>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
-  <!-- /.container -->
+<!-- /.container -->
 
-  <!-- Footer -->
-  <footer class="py-5 bg-dark">
+<!-- Footer -->
+<footer class="py-5 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin
+            Loden 2019</p>
     </div>
     <!-- /.container -->
-  </footer>
+</footer>
 {% endblock content %}

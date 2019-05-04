@@ -297,16 +297,44 @@ def wishlist():
         cursor.execute(query, loggedinid)
         result = cursor.fetchall()
     except Exception:
-        print("Can not retrieve specified information")
+        print("Can not retrieve wishlist information")
     finally:
         client.close()
-    return render_template('wishlist.html', values= result, loggedin=loggedinname, title='Wish List', styles='returns.css',
+    return render_template('wishlist.html', values=result, loggedin=loggedinname, title='Wish List', styles='returns.css',
                            bodyclass='bg-light')
 
 
-@app.route("/premium.html")
+@app.route("/premium.html", methods=['GET', 'POST'])
 def premium():
-    return render_template('premium.html', loggedin=loggedinname, title='Premium', styles='wishlist.css', bodyclass='bg-light')
+    hasmembership = False
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT HasMembership FROM Customer WHERE CustomerID = %s"
+        cursor.execute(query, loggedinid)
+        result = cursor.fetchall()
+
+        for row in result:
+            if row[0] == 'Y':
+                hasmembership = True
+    except Exception:
+        print("Can not retrieve membership information")
+    finally:
+        client.close()
+    if request.method == 'POST':
+        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        try:
+            newmem = 'Y'
+            cursor = client.cursor()
+            query = "UPDATE Customer SET HasMembership = %s WHERE CustomerID = %s"
+            cursor.execute(query, (newmem, loggedinid))
+            client.commit()
+        except Exception:
+            print("Can not update membership information")
+        finally:
+            client.close()
+        return redirect('/profile.html')
+    return render_template('premium.html', loggedin=loggedinname, hasmembership=hasmembership, title='Premium', styles='wishlist.css', bodyclass='bg-light')
 
 
 @app.route("/address.html")
@@ -347,6 +375,10 @@ def returns():
 @app.route("/thankyou.html")
 def thankyou():
     return render_template('thankyou.html', loggedin=loggedinname, title='Thank You', styles='thankyou.css', bodyclass='bg-light')
+
+@app.route("/pendingorder.html")
+def pendingorder():
+    return render_template('pendingorder.html', loggedin=loggedinname, title='Pending Orders', styles='returns.css', bodyclass='bg-light')
 
 
 '''

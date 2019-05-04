@@ -3,164 +3,206 @@
 {% block content %}
 {{ nav('shop') }}
 
-        <div class="container">
+<div class="container">
 
     <div class="row">
 
-      <div class="col-lg-3">
+        <div class="col-lg-3">
 
-        <h1 class="my-4">Shop Name</h1>
-        <div class="list-group">
-          {% for item in category %}
-          <a href="/shop.html?category={{ item[0] }}" class="list-group-item">{{ item[0] }}</a>
-          {% endfor %}
+            <h1 class="my-4">Shop Name</h1>
+            <div class="list-group">
+                {% for item in category %}
+                <a href="/shop.html?category={{ item[0] }}" class="list-group-item">{{ item[0] }}</a>
+                {% endfor %}
+            </div>
+
+            <button style="margin-top:1rem;" data-toggle="modal" data-target="#addItemModal" type="button"
+                    class="btn btn-success btn-lg">Add Item
+            </button>
+            <button style="margin-top:1rem;" data-toggle="modal" data-target="#addDiscountModal" type="button"
+                    class="btn btn-primary btn-lg">Add Discount
+            </button>
+
         </div>
+        <!-- /.col-lg-3 -->
 
-        <button style="margin-top:1rem;" data-toggle="modal" data-target="#addModal" type="button" class="btn btn-success btn-lg">Add Item</button>
+        <div class="col-lg-9">
 
-      </div>
-      <!-- /.col-lg-3 -->
-
-      <div class="col-lg-9">
-
-        <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
-          <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-          </ol>
-          <div class="carousel-inner" role="listbox">
-            <div class="carousel-item active">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="First slide">
+            <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+                        <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="First slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Second slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
-            <div class="carousel-item">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Second slide">
+
+            <div class="row">
+                {% for item in data %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="/item.html"><img class="card-img-top" src="static/images/items/{{ item[3] }}.png"
+                                                  alt=""></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="/item.html?type={{ item[0] }}&price={{ item[1] }}&desc={{ item[2] }}&id={{ item[3] }}">
+                                    {{ item[0] }}</a>
+                            </h4>
+                            <h5>${{ item[1] }}</h5>
+                            <p class="card-text">{{ item[2] }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            <div class="carousel-item">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
-            </div>
-          </div>
-          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
+            <!-- /.row -->
+
         </div>
-
-        <div class="row">
-          {% for item in data %}
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="/item.html"><img class="card-img-top" src="static/images/items/{{ item[3] }}.png" alt=""></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="/item.html?type={{ item[0] }}&price={{ item[1] }}&desc={{ item[2] }}&id={{ item[3] }}">
-                    {{ item[0] }}</a>
-                </h4>
-                <h5>${{ item[1] }}</h5>
-                <p class="card-text">{{ item[2] }}</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-        <!-- /.row -->
-
-      </div>
-      <!-- /.col-lg-9 -->
+        <!-- /.col-lg-9 -->
 
     </div>
     <!-- /.row -->
-<nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1">Previous</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Next</a>
-    </li>
-  </ul>
-</nav>
-  </div>
-  <!-- /.container -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<!-- /.container -->
 
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addModalTitle">Add Item</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputName">Name</label>
-              <input type="name" class="form-control" id="inputName" placeholder="Name">
+<div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalTitle"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addItemModalTitle">Add Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="form-group col-md-4">
-              <label for="inputPrice">Price</label>
-              <input type="price" class="form-control" id="inputPrice" placeholder="Price">
+            <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="inputName">Name</label>
+                            <input type="name" class="form-control" id="inputName" placeholder="Name">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputPrice">Price</label>
+                            <input type="price" class="form-control" id="inputPrice" placeholder="Price">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSeller">Seller Name</label>
+                        <input type="seller" class="form-control" id="inputSeller" placeholder="Seller Name">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="type">Category</label>
+                            <select class="custom-select d-block w-100" id="type" name="cardType"
+                                    value="{{ request.form.cardType }}" required>
+                                <option value="">Choose...</option>
+                                <option>Shirts</option>
+                                <option>Pants</option>
+                                <option>Shoes</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="customFile">Image</label>
+                            <div class="custom-file">
+                                <label class="custom-file-label" for="customFile">Image</label>
+                                <input type="file" class="custom-file-input" id="customFile" placeholder="Image">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputQuantity">Quantity</label>
+                            <input type="text" class="form-control" id="inputQuantity">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="inputReview">Description</label>
+                            <textarea class="form-control" id="inputReview" rows="5" placeholder=""></textarea>
+                        </div>
+                    </div>
+                </form>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="inputSeller">Seller Name</label>
-            <input type="seller" class="form-control" id="inputSeller" placeholder="Seller Name">
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="type">Category</label>
-                <select class="custom-select d-block w-100" id="type" name="cardType" value="{{ request.form.cardType }}" required>
-                  <option value="">Choose...</option>
-                  <option>Shirts</option>
-                  <option>Pants</option>
-                  <option>Shoes</option>
-                </select>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Add Item</button>
             </div>
-            <div class="form-group col-md-4">
-              <label for="inputCategory">Image</label>
-              <div class="custom-file">
-                <label class="custom-file-label" for="customFile">Image</label>
-                <input type="file" class="custom-file-input" id="customFile" placeholder="Image">
-              </div>
-            </div>
-            <div class="form-group col-md-2">
-              <label for="inputQuantity">Quantity</label>
-              <input type="text" class="form-control" id="inputQuantity">
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="form-group">
-              <label for="inputReview">Description</label>
-              <textarea class="form-control" id="inputReview" rows="5" placeholder=""></textarea>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Add Item</button>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 
-  <!-- Footer -->
-  <footer class="py-5 bg-dark">
+
+<!-- Modal -->
+<div class="modal fade" id="addDiscountModal" tabindex="-1" role="dialog" aria-labelledby="addDiscountModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDiscountModalLabel">Add Discount</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="inputCode">Code</label>
+                            <input type="code" class="form-control" id="inputCode" placeholder="Code">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputPercent">Percent Off</label>
+                            <input type="percent" class="form-control" id="inputPercent" placeholder="Percent">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Add Discount</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
     </div>
     <!-- /.container -->
-  </footer>
+</footer>
 {% endblock content %}
