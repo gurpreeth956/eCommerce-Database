@@ -3,150 +3,156 @@
 {% block content %}
 {{ nav('') }}
 <div class="jumbotron jumbotron-fluid">
-      <div class="container">
+    <div class="container">
         <h1 class="display-4">Pending Orders</h1>
-      </div>
     </div>
+</div>
 
 <div class="container">
-        <div class="card">
-            <div class="row no-gutters">
-
-                <div class="col">
-                    <div class="card-block px-2" style="height:150px;">
-                        <div class="float-left">
-                            <h3>Order #1234567890</h3>
-                        </div>
-                        <div class="float-right">
-                            <a href="#" style="margin-right:5px; margin-top:1rem;" class="btn btn-danger float-right" data-toggle="modal" data-target="#orderModal">Review</a>
-                        </div>
-                        <div class="clearfix"></div>
-                        <small class="text-muted">Ordered by Raymond on 3/1/17</small>
-                    </div>
-                </div>
-            </div>
-      </div>
     <div class="card">
-            <div class="row no-gutters">
+        <div class="row no-gutters">
 
-                <div class="col">
-                    <div class="card-block px-2" style="height:150px;">
-                        <div class="float-left">
-                            <h3>Order #1234567890</h3>
-                        </div>
-                        <div class="float-right">
-                            <a href="#" style="margin-right:5px; margin-top:1rem;" class="btn btn-danger float-right" data-toggle="modal" data-target="#orderModal">Review</a>
-                        </div>
-                        <div class="clearfix"></div>
-                        <small class="text-muted">Ordered by Raymond on 3/1/17</small>
+            <div class="col">
+                <div class="card-block px-2" style="height:150px;">
+                    <div class="float-left">
+                        <h3>Order #1234567890</h3>
                     </div>
+                    <div class="float-right">
+                        <a href="#" style="margin-right:5px; margin-top:1rem;" class="btn btn-danger float-right"
+                           data-toggle="modal" data-target="#orderModal">Review</a>
+                    </div>
+                    <div class="clearfix"></div>
+                    <small class="text-muted">Ordered by Raymond on 3/1/17</small>
                 </div>
             </div>
-      </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="row no-gutters">
+
+            <div class="col">
+                <div class="card-block px-2" style="height:150px;">
+                    <div class="float-left">
+                        <h3>Order #1234567890</h3>
+                    </div>
+                    <div class="float-right">
+                        <a href="#" style="margin-right:5px; margin-top:1rem;" class="btn btn-danger float-right"
+                           data-toggle="modal" data-target="#orderModal">Review</a>
+                    </div>
+                    <div class="clearfix"></div>
+                    <small class="text-muted">Ordered by Raymond on 3/1/17</small>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Return Modal -->
-<div class="modal fade bd-example-modal-lg" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="orderModalLabel">Order Review</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <div style="padding_left:1rem; padding-right:1rem;" class="container">
-              <div class="row">
-                  <div class="col-6">
-                      <strong>Shipping Address</strong>
-                  </div>
-              </div>
-              <hr>
-              <div class="row">
-                  <div class="col">
-                      <p>Raymond Huang </br> 100 Circle Rd </br> O'Neill College E005 </br> Stony Brook, NY 11790</p>
-                  </div>
-              </div>
-              <hr>
-            <div class="row">
-                <div class="col-4">
-                  <strong>Name</strong>
-                </div>
-                <div class="col-4">
-                  <strong>Description</strong>
-                </div>
-                <div class="col-2">
-                  <strong>Quantity</strong>
-                </div>
-                <div class="col-2">
-                  <strong>Price</strong>
-                </div>
-
-              </div>
-            <hr>
-
-            <div class="row">
-                <div class="col-4">
-                    <img src="static/images/thanos.jpg" class="img-fluid float-left mr-2" style = "max-width:75px;" alt="">
-                    <h6>Thanos</h6>
-                </div>
-                <div class="col-4">
-                    <p>My lord and savior</p>
-                </div>
-                <div class="col-2">
-                    <p>14,000,651</p>
-                </div>
-                <div class="col-2">
-                    <p>Priceless</p>
-                </div>
+<div class="modal fade bd-example-modal-lg" id="orderModal" tabindex="-1" role="dialog"
+     aria-labelledby="orderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderModalLabel">Order Review</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <hr>
-            <div class="row">
-                <div class="col-4">
-                    <img src="static/images/thanos.jpg" class="img-fluid float-left mr-2"  style = "max-width:75px;" alt="">
-                    <h6>Thanos</h6>
-                </div>
-                <div class="col-4">
-                    <p>My lord and savior</p>
-                </div>
-                <div class="col-2">
-                    <p>14,000,651</p>
-                </div>
-                <div class="col-2">
-                    <p>Priceless</p>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-10">
-
-                </div>
-                <div class="col-2">
-                    <div class="float-left">
-                        <h6>Total: &nbsp;</h6>
+            <div class="modal-body">
+                <div style="padding_left:1rem; padding-right:1rem;" class="container">
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Shipping Address</strong>
+                        </div>
                     </div>
-                    <div class="float-left">
-                        <p>Priceless^2</p>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <p>Raymond Huang </br> 100 Circle Rd </br> O'Neill College E005 </br> Stony Brook, NY
+                                11790</p>
+                        </div>
                     </div>
-                    <div class="clearfix"></div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            <strong>Name</strong>
+                        </div>
+                        <div class="col-4">
+                            <strong>Description</strong>
+                        </div>
+                        <div class="col-2">
+                            <strong>Quantity</strong>
+                        </div>
+                        <div class="col-2">
+                            <strong>Price</strong>
+                        </div>
+
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <img src="static/images/thanos.jpg" class="img-fluid float-left mr-2"
+                                 style="max-width:75px;" alt="">
+                            <h6>Thanos</h6>
+                        </div>
+                        <div class="col-4">
+                            <p>My lord and savior</p>
+                        </div>
+                        <div class="col-2">
+                            <p>14,000,651</p>
+                        </div>
+                        <div class="col-2">
+                            <p>Priceless</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            <img src="static/images/thanos.jpg" class="img-fluid float-left mr-2"
+                                 style="max-width:75px;" alt="">
+                            <h6>Thanos</h6>
+                        </div>
+                        <div class="col-4">
+                            <p>My lord and savior</p>
+                        </div>
+                        <div class="col-2">
+                            <p>14,000,651</p>
+                        </div>
+                        <div class="col-2">
+                            <p>Priceless</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-10">
+
+                        </div>
+                        <div class="col-2">
+                            <div class="float-left">
+                                <h6>Total: &nbsp;</h6>
+                            </div>
+                            <div class="float-left">
+                                <p>Priceless^2</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Reject</button>
-        <button type="button" class="btn btn-success">Approve</button>
-      </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Reject</button>
+                <button type="button" class="btn btn-success">Approve</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
 <footer class="py-5 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
     </div>
     <!-- /.container -->
-  </footer>
+</footer>
 {% endblock content %}

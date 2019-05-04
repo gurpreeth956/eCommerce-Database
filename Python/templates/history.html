@@ -3,113 +3,119 @@
 {% block content %}
 {{ nav('history') }}
 
-    <div class="jumbotron jumbotron-fluid">
-      <div class="container">
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
         <h1 class="display-4">Order History</h1>
-      </div>
     </div>
+</div>
 
 <div class="container">
     {% if values != None %}
-        {% for value in values %}
-        <div class="card">
-            <div class="row no-gutters">
-                <div class="col-auto">
-                    <img src="static/images/items/{{ value[2] }}.png" class="img-fluid" alt="">
-                </div>
-                <div class="col">
-                    <div class="card-block px-2">
-                        <div class="float-left">
-                            <h3 class="card-title">{{ value[3] }}</h3>
-                        </div>
-                        <div class="float-right">
-                            <h4>Ordered on {{ value[0]  }}</h4>
-                            {% if value[1] == 'Y' %}
-                            <small class="text-muted float-right">Ordered Status: Completed </small>
-                            {% else %}
-                            <small class="text-muted float-right">Order Status: Pending </small>
-                            {% endif %}
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="float-left">
-                            <p class="card-text">${{ value[4] }}</p>
-                        </div>
-                        <div class="float-right">
-                            <button type="button" class="btn btn-primary">Buy it Again</button>
-                            <button type="button" class="btn btn-secondary" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
-                            <button type="button" class="btn btn-danger" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#returnModal">Return Item</button>
-                        </div>
-                        <div class="clearfix"></div>
+    {% for value in values %}
+    <div class="card">
+        <div class="row no-gutters">
+            <div class="col-auto">
+                <img src="static/images/items/{{ value[2] }}.png" class="img-fluid" alt="">
+            </div>
+            <div class="col">
+                <div class="card-block px-2">
+                    <div class="float-left">
+                        <h3 class="card-title">{{ value[3] }}</h3>
                     </div>
+                    <div class="float-right">
+                        <h4>Ordered on {{ value[0] }}</h4>
+                        {% if value[1] == 'Y' %}
+                        <small class="text-muted float-right">Ordered Status: Completed</small>
+                        {% else %}
+                        <small class="text-muted float-right">Order Status: Pending</small>
+                        {% endif %}
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="float-left">
+                        <p class="card-text">${{ value[4] }}</p>
+                    </div>
+                    <div class="float-right">
+                        <button type="button" class="btn btn-primary">Buy it Again</button>
+                        <button type="button" class="btn btn-secondary" href="#reviewModal" class="btn btn-success"
+                                data-toggle="modal" data-target="#reviewModal">Leave a Review
+                        </button>
+                        <button type="button" class="btn btn-danger" href="#reviewModal" class="btn btn-success"
+                                data-toggle="modal" data-target="#returnModal">Return Item
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
             </div>
         </div>
-        {% endfor %}
+    </div>
+    {% endfor %}
     {% else %}
-        <p> No Orders</p>
+    <p> No Orders</p>
     {% endif %}
 </div>
 
-<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="reviewModalLabel">Leave a Review</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-            <div class="form-group">
-                <textarea class="form-control" id="reviewArea" rows="5" placeholder="Review Here"></textarea>
-              </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Leave Review</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="returnModalLabel">Return Item</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-            <div class="form-group">
-                <label for="quantity">Quantity</label>
-                <input type="quantity" class="form-control" id="quantity" aria-describedby="emailHelp">
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">Leave a Review</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="form-group">
-                <label for="description">Why are you returning this item?</label>
-                <textarea class="form-control" id="description" rows="5" placeholder = "Description"></textarea>
-              </div>
-
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Leave Review</button>
-      </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <textarea class="form-control" id="reviewArea" rows="5" placeholder="Review Here"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Leave Review</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-  <!-- /.container -->
 
-  <!-- Footer -->
-  <footer class="py-5 bg-dark">
+<div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="returnModalLabel">Return Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="quantity" class="form-control" id="quantity" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Why are you returning this item?</label>
+                        <textarea class="form-control" id="description" rows="5" placeholder="Description"></textarea>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Leave Review</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
     </div>
     <!-- /.container -->
-  </footer>
+</footer>
 {% endblock content %}

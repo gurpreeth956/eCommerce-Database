@@ -58,6 +58,6 @@ def insertOrders():
 
 
 #now = datetime.now()
-insertOrders()
+#insertOrders()
 
-#datetime.datetime.strptime('01' + '05/19', '%d%m/%y').date()
+datetime.datetime.strptime('01' + '05/19', '%d%m/%y').date()
