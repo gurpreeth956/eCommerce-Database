@@ -1,0 +1,34 @@
+.card{
+        margin: 0 auto; /* Added */
+        float: none; /* Added */
+        margin-bottom: 10px; /* Added */
+        max-height:150px;
+}
+
+footer{
+   margin-top:3rem;
+}
+
+.jumbotron {
+    width:100%;
+    margin:0;
+    margin-bottom:3rem;
+}
+
+.img-fluid{
+    max-height:150px;
+}
+
+.modal-body img-fluid{
+    max-width:75px;
+}
+
+small, h3{
+    margin-top:1rem;
+}
+
+a {
+
+}
+
+

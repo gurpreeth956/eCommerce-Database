@@ -40,8 +40,8 @@
                             <form method="POST" action="">
                             <input type="hidden" name="itemid" value={{ value[2] }}>
                             <input type="submit" class="btn btn-primary" name="cart" value="Buy it Again">
-                            <button type="submit" class="btn btn-secondary" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
-                            <button type="submit" class="btn btn-danger" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#returnModal">Return Item</button>
+                            <a  class="btn btn-secondary"  class="btn btn-success" href="#" data-toggle="modal" data-target="#reviewModal{{ value[2] }}">Leave a Review</a>
+                            <a  class="btn btn-danger"  class="btn btn-success" href="#" data-toggle="modal" data-target="#returnModal{{ value[5] }}{{ value[2] }}">Return Item</a>
                             </form>
                         </div>
                         <div class="clearfix"></div>
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-    <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="reviewModal{{ value[2] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -74,7 +74,7 @@
       </div>
     </div>
 
-    <div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="returnModal{{ value[5] }}{{ value[2] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -83,7 +83,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-        <form method="POST" action="">
+        <form method="POST" action="/history.html">
             <div class="modal-body">
                 <div class="form-group">
                     <label for="quantity">Quantity</label>

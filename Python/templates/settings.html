@@ -10,14 +10,11 @@
 </div>
 
 <div class="container">
-    <div class="profile-image text-center">
-        <img src="static/images/thanos.jpg" class="rounded-circle" alt="Cinque Terre" width="296" height="236">
-    </div>
-
     <form>
-        <div class="custom-file">
-            <input type="file" class="custom-file-input" id="customFile" placeholder="Choose new profile image">
-            <label class="custom-file-label" for="customFile">Choose new profile image</label>
+        <div class="form-group">
+            <label for="inputName" class="sr-only">Name</label>
+            <input type="name" id="inputName" class="form-control" placeholder="Name" name="name"
+                   value="{{ request.form.name }}" required>
         </div>
         <div class="form-group">
             <label for="inputEmail" class="sr-only">Email</label>
