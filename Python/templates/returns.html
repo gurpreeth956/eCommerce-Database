@@ -2,14 +2,14 @@
 {% from "macros.html" import nav with context %}
 {% block content %}
 {{ nav('returns') }}
-{% if employee %}
-    {% if values != None %}
-        {% for value in values %}
         <div class="jumbotron jumbotron-fluid">
           <div class="container">
             <h1 class="display-4">Returns</h1>
           </div>
         </div>
+{% if employee %}
+    {% if values != None %}
+        {% for value in values %}
             <div class="container">
                     <div class="card">
                         <div class="row no-gutters">
@@ -68,11 +68,6 @@
 {% else %}
     {% if values != None %}
         {% for value in values %}
-        <div class="jumbotron jumbotron-fluid">
-          <div class="container">
-            <h1 class="display-4">Returns</h1>
-          </div>
-        </div>
             <div class="container">
                     <div class="card">
                         <div class="row no-gutters">
@@ -93,7 +88,7 @@
                                         <p class="card-text">${{ value[2] * value[5] }}</p>
                                     </div>
                                     <div class="float-right">
-                                        <a href="#" class="btn btn-danger float-right" data-toggle="modal" data-target="#returnModal">Review</a>
+                                        <a href="#" class="btn btn-danger float-right" data-toggle="modal" data-target="#returnModal{{ value[0] }}{{ value[1] }}">Review</a>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
@@ -103,7 +98,7 @@
             </div>
 
             <!-- Return Modal -->
-            <div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel" aria-hidden="true">
+            <div class="modal fade" id="returnModal{{ value[0] }}{{ value[1] }}" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -113,7 +108,8 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                      <h4>Quantity: {{ value[2] }}</h4>
+                      <h5>Quantity:</h5>
+                      <p>{{ value[2] }}</p>
                       <h5>Reason for Return:</h5>
                       <p>{{ value[3] }}</p>
                   </div>

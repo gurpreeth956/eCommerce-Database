@@ -466,6 +466,7 @@ def returns():
                     "WHERE O.OrderNum = R.OrderID AND O.CustomerID = %s AND I.ItemID = R.ItemID"
             cursor.execute(query, loggedinid)
             result = cursor.fetchall()
+            print(result)
         except Exception:
             print("Could not retrieve specified Returnment Entity")
         finally:
