@@ -247,9 +247,9 @@
             </div>
             <hr class="mb-4">
               {% if quantity == 0 %}
-                <a href="thankyou.html" class="btn btn-primary btn-lg btn-block">Continue to Checkout</a>
+                <button class="btn btn-secondary btn-lg btn-block" type="submit" name="checkout" disabled>Continue to Checkout</button>
               {% else %}
-                <a href="thankyou.html" class="btn btn-primary btn-lg btn-block">Continue to Checkout</a>
+                <button class="btn btn-primary btn-lg btn-block" type="submit" name="checkout">Continue to Checkout</button>
               {% endif %}
           </form>
         </div>

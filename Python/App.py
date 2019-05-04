@@ -36,7 +36,7 @@ def signup():
 
         insertPerson(idn, email, name, '1998-11-25', phone, 'Ithaca', dt.today().strftime('%Y-%m-%d'), 'N')
         insertCustomer(idn, password, 'N')
-        return redirect('/')
+        return redirect('/signin.html')
     return render_template('signup.html', title='Sign Up',  styles='signin.css', bodyclass='text-center')
 
 
