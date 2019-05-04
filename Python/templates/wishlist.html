@@ -1,20 +1,7 @@
 {% extends "layouts.html" %}
-{% from "macros.html" import nav_right with context %}
+{% from "macros.html" import nav with context %}
 {% block content %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-      <a class="navbar-brand" href="/">Navbar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-          <div class="navbar-nav navbar">
-            <a class="nav-item nav-link" href="/">Home</a>
-            <a class="nav-item nav-link" href="/shop.html">Shop</a>
-            <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
-          </div>
-          {{ nav_right('wishlist') }}
-      </div>
-    </nav>
+{{ nav('wishlist') }}
 
     <div class="jumbotron jumbotron-fluid">
       <div class="container">
@@ -22,40 +9,43 @@
       </div>
     </div>
 <div class="container">
-    <div class="row">
-      <!-- /.col-lg-3 -->
 
-      <div class="col-lg-9">
-        <div class="card mt-4">
-          <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
-          <div class="card-body">
-            <h3 class="card-title">Product Name</h3>
-            <h4>$24.99</h4>
-            <p>
-                <button type="button" class="btn btn-primary">Buy Now</button>
-                <button type="button" class="btn btn-danger">Remove</button>
-            </p>
-          </div>
-        </div>
-        <!-- /.card -->
-          <div class="card mt-4">
-          <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
-          <div class="card-body">
-            <h3 class="card-title">Product Name</h3>
-            <h4>$24.99</h4>
-            <p>
-                <button type="button" class="btn btn-primary">Buy Now</button>
-                <button type="button" class="btn btn-danger">Remove</button>
-            </p>
-          </div>
-        </div>
 
-      </div>
-      <!-- /.col-lg-9 -->
-
-    </div>
-
-  </div>
+        {% if values != None %}
+            {% for value in values %}
+            <div class="card">
+                <div class="row no-gutters">
+                    <div class="col-auto">
+                        <img src="static/images/items/{{ value[0] }}.png" class="img-fluid" alt="">
+                    </div>
+                    <div class="col">
+                        <div class="card-block px-2">
+                            <div class="float-left">
+                                <h3 class="card-title">{{ value[1] }}</h3>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="float-left">
+                                <p class="card-text">${{ value[2] }}</p>
+                            </div>
+                            <div class="float-right">
+                                <p>
+                                    <form method="POST">
+                                        <input type="hidden" name="item" value={{ value[0] }}>
+                                        <input type="submit" class="btn btn-primary" name="cart" value="Buy Now">
+                                        <input type="submit" class="btn btn-danger" name="remove" value="Remove">
+                                    </form>
+                                </p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p> No Items in Wishlist</p>
+        {% endif %}
+</div>
   <!-- /.container -->
 
   <!-- Footer -->

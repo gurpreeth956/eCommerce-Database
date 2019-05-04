@@ -1,0 +1,61 @@
+{% extends "layouts.html" %}
+{% from "macros.html" import nav with context %}
+{% block content %}
+{{ nav('') }}
+<div class="container">
+    <h2>Thank you for shopping with RTG Clothing!</h2>
+    <h5>Your order details are below.</h5>
+    <p class="text-muted">Order {{ orderid }}</p>
+
+    <div class="spacer"></div>
+
+    <div class="row">
+        <div class="col-4">
+          <strong>Name</strong>
+        </div>
+        <div class="col-4">
+          <strong>Description</strong>
+        </div>
+        <div class="col-2">
+          <strong>Quantity</strong>
+        </div>
+        <div class="col-2">
+          <strong>Price</strong>
+        </div>
+
+    </div>
+    <hr>
+
+    {% for item in results %}
+    <div class="row">
+        <div class="col-4">
+            <img src="static/images/items/{{ item[0] }}.png" class="img-fluid float-left mr-2" alt="">
+            <h6>{{ item[3] }}</h6>
+        </div>
+        <div class="col-4">
+            <p>{{ item[4] }}</p>
+        </div>
+        <div class="col-2">
+            <p>{{ item[1] }}</p>
+        </div>
+        <div class="col-2">
+            <p>{{ item[2] }}</p>
+        </div>
+    </div>
+    <hr>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-10">
+             <a href="shop.html" class="btn btn-primary">Return to Shop</a>
+        </div>
+    </div>
+</div>
+
+<footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+{% endblock content %}

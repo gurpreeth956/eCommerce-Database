@@ -1,20 +1,7 @@
 {% extends "layouts.html" %}
-{% from "macros.html" import nav_right with context %}
+{% from "macros.html" import nav with context %}
 {% block content %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-      <a class="navbar-brand" href="/">Navbar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-          <div class="navbar-nav navbar">
-            <a class="nav-item nav-link" href="/">Home</a>
-            <a class="nav-item nav-link" href="/shop.html">Shop</a>
-            <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
-          </div>
-          {{ nav_right('profile') }}
-      </div>
-    </nav>
+{{ nav('profile') }}
 
 <main role="main">
 
@@ -30,7 +17,7 @@
       <div class="row">
           <div class="col-md-4">
             <div class="card mb-4" style="width: 18rem;">
-              <img src="static/images/thanos.jpg" class="card-img-top" alt="...">
+              <img src="static/images/history.png" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">Order History</h5>
                 <p class="card-text">View past orders on this account.</p>
@@ -40,7 +27,7 @@
           </div>
           <div class="col-md-4">
             <div class="card mb-4" style="width: 18rem;">
-              <img src="static/images/thanos.jpg" class="card-img-top" alt="...">
+              <img src="static/images/wishlist.jpg" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">Wish List</h5>
                 <p class="card-text">View saved items.</p>
@@ -50,7 +37,7 @@
           </div>
           <div class="col-md-4">
             <div class="card mb-4" style="width: 18rem;">
-              <img src="static/images/thanos.jpg" class="card-img-top" alt="...">
+              <img src="static/images/premium.png" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">Premium</h5>
                 <p class="card-text">View account status and benefits.</p>
@@ -60,7 +47,7 @@
           </div>
           <div class="col-md-4">
             <div class="card mb-4" style="width: 18rem;">
-              <img src="static/images/thanos.jpg" class="card-img-top" alt="...">
+              <img src="static/images/address.jpg" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">Addresses</h5>
                 <p class="card-text">Change the addresses associated with your account.</p>
@@ -70,7 +57,7 @@
           </div>
           <div class="col-md-4">
             <div class="card mb-4" style="width: 18rem;">
-              <img src="static/images/thanos.jpg" class="card-img-top" alt="...">
+              <img src="static/images/payment.ico" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">Payment Methods</h5>
                 <p class="card-text">Add or remove methods of payment.</p>
@@ -80,7 +67,7 @@
           </div>
           <div class="col-md-4">
             <div class="card mb-4" style="width: 18rem;">
-              <img src="static/images/thanos.jpg" class="card-img-top" alt="...">
+              <img src="static/images/settings.png" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">Settings</h5>
                 <p class="card-text">Change your accounts settings.</p>

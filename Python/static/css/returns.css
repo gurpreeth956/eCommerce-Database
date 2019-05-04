@@ -2,26 +2,33 @@
         margin: 0 auto; /* Added */
         float: none; /* Added */
         margin-bottom: 10px; /* Added */
+        max-height:150px;
 }
 
 footer{
    margin-top:3rem;
 }
 
-.container{
-    padding-left:50px;
-    padding-right:50px
-}
-
 .jumbotron {
     width:100%;
     margin:0;
+    margin-bottom:3rem;
 }
 
-.alert {
+.img-fluid{
+    max-height:150px;
+}
+
+.modal-body img-fluid{
+    max-width:75px;
+}
+
+small, h3{
     margin-top:1rem;
 }
 
-.carousel-text{
-    color:black;
+a {
+
 }
+
+

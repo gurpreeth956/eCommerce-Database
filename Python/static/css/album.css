@@ -4,8 +4,13 @@
 
 
 body{
-height:100vh;
+    height:100vh;
 	display: -ms-flexbox;
+    background: url("/static/images/cover.jpeg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .navbar {
@@ -35,4 +40,13 @@ footer {
     margin-bottom: 0;
     bottom: 0;
     width: 100%;
+    background-color:transparent;
+}
+
+.cover-heading{
+    color:white;
+}
+
+.lead{
+    color:silver;
 }

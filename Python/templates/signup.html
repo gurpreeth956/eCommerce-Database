@@ -2,7 +2,7 @@
 {% extends "layouts.html" %}
 {% block content %}
     <form class="form-signin" method = "POST" action = "">
-      <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+      <img class="mb-4" src="/static/images/favicon.jpg" alt="" width="72" height="72">
       <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
       <label for="inputFirst" class="sr-only">First Name</label>
       <input type="firstName" id="inputFirst" class="form-control" placeholder="First Name" name = "firstName" value = "{{ request.form.firstName }}" required>
@@ -17,7 +17,7 @@
       <label for="inputPhone" class="sr-only">Phone Number</label>
       <input type="phone" id="inputPhone" class="form-control" placeholder="Phone Number" name = "phone" value = "{{ request.form.phone }}" required/>
       <input type= "birthday" class="form-control" id="birthday" name="birthday" placeholder="Birthday" type="text" value = "{{ request.form.birthday }}" required/>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+      <button class="btn btn-lg btn-primary btn-block" role="button" type="submit">Sign up</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2019</p>
     </form>
 {% endblock content %}

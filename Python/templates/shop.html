@@ -1,20 +1,7 @@
 {% extends "layouts.html" %}
-{% from "macros.html" import nav_right with context %}
+{% from "macros.html" import nav with context %}
 {% block content %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-      <a class="navbar-brand" href="/">Navbar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-          <div class="navbar-nav navbar">
-            <a class="nav-item nav-link" href="/">Home</a>
-            <a class="nav-item nav-link active" href="/shop.html">Shop</a>
-            <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
-          </div>
-          {{ nav_right('') }}
-      </div>
-    </nav>
+{{ nav('shop') }}
 
         <div class="container">
 
@@ -24,10 +11,13 @@
 
         <h1 class="my-4">Shop Name</h1>
         <div class="list-group">
-          <a href="#" class="list-group-item">Category 1</a>
-          <a href="#" class="list-group-item">Category 2</a>
-          <a href="#" class="list-group-item">Category 3</a>
+          {% for item in category %}
+          <a href="/shop.html?category={{ item[0] }}" class="list-group-item">{{ item[0] }}</a>
+          {% endfor %}
         </div>
+
+        <button style="margin-top:1rem;" data-toggle="modal" data-target="#addItemModal" type="button" class="btn btn-success btn-lg">Add Item</button>
+        <button style="margin-top:1rem;" data-toggle="modal" data-target="#addDiscountModal" type="button" class="btn btn-primary btn-lg">Add Discount</button>
 
       </div>
       <!-- /.col-lg-3 -->
@@ -65,7 +55,7 @@
           {% for item in data %}
           <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
-              <a href="/item.html"><img class="card-img-top" src="static/images/items/{{ item[3] }}.png" alt=""></a>
+              <a href="/item.html?type={{ item[0] }}&price={{ item[1] }}&desc={{ item[2] }}&id={{ item[3] }}"><img class="card-img-top" src="static/images/items/{{ item[3] }}.png" alt=""></a>
               <div class="card-body">
                 <h4 class="card-title">
                   <a href="/item.html?type={{ item[0] }}&price={{ item[1] }}&desc={{ item[2] }}&id={{ item[3] }}">
@@ -88,9 +78,117 @@
 
     </div>
     <!-- /.row -->
-
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
   </div>
   <!-- /.container -->
+
+<div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addItemModalTitle">Add Item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputName">Name</label>
+              <input type="name" class="form-control" id="inputName" placeholder="Name">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputPrice">Price</label>
+              <input type="price" class="form-control" id="inputPrice" placeholder="Price">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputSeller">Seller Name</label>
+            <input type="seller" class="form-control" id="inputSeller" placeholder="Seller Name">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="type">Category</label>
+                <select class="custom-select d-block w-100" id="type" name="cardType" value="{{ request.form.cardType }}" required>
+                  <option value="">Choose...</option>
+                  <option>Shirts</option>
+                  <option>Pants</option>
+                  <option>Shoes</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="customFile">Image</label>
+              <div class="custom-file">
+                <label class="custom-file-label" for="customFile">Image</label>
+                <input type="file" class="custom-file-input" id="customFile" placeholder="Image">
+              </div>
+            </div>
+            <div class="form-group col-md-2">
+              <label for="inputQuantity">Quantity</label>
+              <input type="text" class="form-control" id="inputQuantity">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-group">
+              <label for="inputReview">Description</label>
+              <textarea class="form-control" id="inputReview" rows="5" placeholder=""></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Add Item</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="addDiscountModal" tabindex="-1" role="dialog" aria-labelledby="addDiscountModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addDiscountModalLabel">Add Discount</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+                <label for="inputCode">Code</label>
+                <input type="code" class="form-control" id="inputCode" placeholder="Code">
+            </div>
+              <div class="form-group col-md-4">
+                <label for="inputPercent">Percent Off</label>
+                <input type="percent" class="form-control" id="inputPercent" placeholder="Percent">
+              </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Add Discount</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <!-- Footer -->
   <footer class="py-5 bg-dark">
