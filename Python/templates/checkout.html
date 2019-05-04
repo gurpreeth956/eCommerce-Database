@@ -25,8 +25,12 @@
                 <p>
                   <form method="POST">
                   <input type="hidden" name="itemid" value={{ item[4] }}>
-                  <input type="submit" class="btn btn-primary" name="add" value="+">
-                  <input type="submit" class="btn btn-secondary" name="remove" value="-">
+                  {% if addbtn %}
+                    <button type="submit" class="btn btn-primary" name="add">+</button>
+                  {% else %}
+                    <button type="submit" class="btn btn-secondary" name="add" disabled>+</button>
+                  {% endif %}
+                  <button type="submit" class="btn btn-secondary" name="remove">-</button>
                   </form>
                 </p>
               </div>
@@ -36,10 +40,13 @@
           {% endif %}
             <li class="list-group-item d-flex justify-content-between bg-light">
               <div class="text-success">
-                <h6 class="my-0">Promo code</h6>
-                <small>EXAMPLECODE</small>
+                <h6 class="my-0">Discounts</h6>
               </div>
-              <span class="text-success">-$5</span>
+              <span class="text-success">{{ discount }}%</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Shipment Fee</span>
+              <strong>{{ shipment }}</strong>
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <span>Total (USD)</span>
@@ -103,7 +110,7 @@
                 <label for="country">Country</label>
                 <select class="custom-select d-block w-100" id="country" name="country" value="{{ request.form.country }}" required>
                   <option name="country">United States</option>
-                  <option>United States</option>
+                  <option>Canada</option>
                 </select>
                 <div class="invalid-feedback">
                   Please select a valid country.
@@ -112,7 +119,7 @@
               <div class="col-md-4 mb-3">
                 <label for="state">State</label>
                 <select class="custom-select d-block w-100" id="state" name="state" value="{{ request.form.state }}" required>
-                  <option name="state">New York</option>
+                  <option name="state">Alaska</option>
                     <option>California</option>
                     <option>New York</option>
                 </select>
@@ -166,7 +173,7 @@
                   <label for="country1">Country</label>
                   <select class="custom-select d-block w-100" id="country1" name="countryShip" value="{{ request.form.countryShip }}" required>
                     <option name="country">United States</option>
-                    <option>United States</option>
+                    <option>Canada</option>
                   </select>
                   <div class="invalid-feedback">
                     Please select a valid country.
@@ -175,7 +182,7 @@
                 <div class="col-md-4 mb-3">
                   <label for="state1">State</label>
                   <select class="custom-select d-block w-100" id="state1" name="stateShip" value="{{ request.form.stateShip }}" required>
-                    <option name="state">New York</option>
+                    <option name="state">Alaska</option>
                     <option>California</option>
                     <option>New York</option>
                   </select>
