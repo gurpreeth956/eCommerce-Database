@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -8,32 +8,36 @@
     <link rel="icon" href="static/images/favicon.jpg">
 
     {% if title %}
-        <title>{{ title }}</title>
+    <title>{{ title }}</title>
     {% else %}
-        <title> E-Store </title>
+    <title> E-Store </title>
     {% endif %}
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.1/examples/sign-in/">
 
     <!-- Bootstrap core CSS -->
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
-      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
     <!-- Custom styles for this template -->
-    <link href= "static/css/{{ styles }}" rel="stylesheet">
-  </head>
-  <body class = "{{ bodyclass }}">
-        {% block content %} {% endblock %}
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="/js/vendor/jquery-slim.min.js"><\/script>')</script>
-        <script src="static/js/bootstrap.bundle.min.js"></script>
-        <script src="static/js/bootstrap.min.js"></script>
-        <script src="static/js/vendor/holder.min.js"></script>
-        <script src="static/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link href="static/css/{{ styles }}" rel="stylesheet">
+</head>
+<body class="{{ bodyclass }}">
+{% block content %} {% endblock %}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="static/js/bootstrap.bundle.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/vendor/holder.min.js"></script>
+<script src="static/jquery/jquery.min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 
-        <script>
+<script>
             $(document).ready(function(){
               var date_input=$('input[name="birthday"]'); //our date input has the name "date"
               var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
@@ -45,8 +49,9 @@
               };
               date_input.datepicker(options);
             })
-        </script>
-        <script>
+
+</script>
+<script>
             $(document).ready(function(){
               var date_input=$('input[name="expiration"]'); //our date input has the name "expiration"
               var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
@@ -58,8 +63,9 @@
               };
               date_input.datepicker(options);
             })
-        </script>
-        <script>
+
+</script>
+<script>
           $(function(){
 
                $(".dropdown-menu a").click(function(){
@@ -70,6 +76,7 @@
                });
 
             });
-        </script>
-  </body>
+
+</script>
+</body>
 </html>
