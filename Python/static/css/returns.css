@@ -19,11 +19,16 @@ footer{
     max-height:150px;
 }
 
+.modal-body img-fluid{
+    max-width:75px;
+}
+
 small, h3{
     margin-top:1rem;
 }
 
 a {
-    margin-right:5px;
+
 }
+
 
