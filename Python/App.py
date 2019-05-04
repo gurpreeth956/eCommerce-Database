@@ -11,14 +11,16 @@ app = Flask(__name__)
 # Variables (make global in method if you are writing to it)
 loggedinid = None
 loggedinname = None
+lastorderid = None
 
 
 @app.route("/")
 def home():
-    global loggedinid, loggedinname
+    global loggedinid, loggedinname, lastorderid
     if 'logoff' in request.args:
         loggedinid = None
         loggedinname = None
+        lastorderid = None
     return render_template('index.html', loggedin=loggedinname, title='Home', styles='album.css', bodyclass='bg-light')
 
 
@@ -32,8 +34,9 @@ def signup():
         password = request.form['password']
         phone = request.form['phone']
 
-        insertPerson(idn, email, name, '1998-11-25', phone, 'Ithaca', '1998-11-25', 'N')
+        insertPerson(idn, email, name, '1998-11-25', phone, 'Ithaca', dt.today().strftime('%Y-%m-%d'), 'N')
         insertCustomer(idn, password, 'N')
+        return redirect('/signin.html')
     return render_template('signup.html', title='Sign Up',  styles='signin.css', bodyclass='text-center')
 
 
@@ -66,34 +69,55 @@ def login():
 
 @app.route("/checkout.html", methods=['GET', 'POST'])
 def checkout():
-    global loggedinid
+    global loggedinid, lastorderid
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    ordersuccessful = False
     items = None
     quantity = 0
     total = 0
+    discount = 0
+    shipment = 5
+    addbtn = True
     try:
+        # For things on the right side of the checkout page
         cursor = client.cursor()
-        query = "SELECT I.ItemType, SUM(S.Quantity), I.ItemDesc, SUM(I.Price), S.ItemID " \
-                "FROM Item I, ShoppingCart S WHERE S.CustomerID = %s AND I.ItemID = S.ItemID " \
-                "GROUP BY I.ItemType, I.ItemDesc, S.ItemID"
+        query = "SELECT I.ItemType, S.Quantity, I.ItemDesc, I.Price, S.ItemID " \
+                "FROM Item I, ShoppingCart S WHERE S.CustomerID = %s AND I.ItemID = S.ItemID"
         cursor.execute(query, loggedinid)
         items = cursor.fetchall()
+
+        hasmembership = 'Y'
+        query = "SELECT HasMembership FROM Customer WHERE CustomerID = %s AND HasMembership = %s"
+        cursor.execute(query, (loggedinid, hasmembership))
+        currentcust = cursor.fetchall()
+
+        # Get discounts and no shipping fee if member
+        ismember = False
+        for row in currentcust:
+            ismember = True
+
+        if ismember:
+            valid = 'Y'
+            query = "SELECT DiscountPercent FROM Discount WHERE Valid = %s"
+            cursor.execute(query, valid)
+            discountvalues = cursor.fetchall()
+            for row in discountvalues:
+                discount += row[0]
+            shipment = 0
 
         # Get sum of prices
         for row in items:
             total += row[1] * row[3]
             quantity += row[1]
+
+        total -= (total * discount)
+        total += shipment
     except Exception:
         print('Could not get shopping cart data')
     finally:
         client.close()
 
     if request.method == 'POST':
-
-
-        # DISABLE ADD BUTTON IF AMOUNT GREATER THAN STOCK
-
-
         if 'checkout' in request.form:
             name = request.form['firstName'] + ' ' + request.form['secondName']
             email = request.form['email']
@@ -118,7 +142,7 @@ def checkout():
                 orderid = len(table) + 1
                 query = "INSERT INTO Orders(OrderNum, CustomerID, OrderDate, Completed, DiscountID, OrderName, OrderEmail) \
                                 values(%s, %s, %s, %s, %s, %s, %s)"
-                cursor.execute(query, (orderid, loggedinid, dt.today().strftime('%Y-%m-%d'), 'N', None, name, email))
+                cursor.execute(query, (orderid, loggedinid, dt.today().strftime('%Y-%m-%d'), 'N', None, name, email)) # MAKE PENDING PAGE FOR ORDERS
 
                 # Create Shipment Entity
                 customer = getCustomerTuple(loggedinid)
@@ -138,12 +162,16 @@ def checkout():
                 for row in results:
                     query = "INSERT INTO OrderedItems(OrderID, ItemID, Quantity) values(%s, %s, %s)"
                     cursor.execute(query, (orderid, row[1], row[2]))
+                    query = "UPDATE Item SET Quantity = Quantity - %s WHERE ItemID = %s"
+                    cursor.execute(query, (row[2], row[1]))
 
                 # Delete orders from shopping cart
                 query = "DELETE FROM ShoppingCart WHERE CustomerID = %s"
                 cursor.execute(query, loggedinid)
 
                 client.commit()
+                ordersuccessful = True
+                lastorderid = orderid
             except Exception:
                 print("Could not complete order action")
                 client.rollback()
@@ -153,13 +181,26 @@ def checkout():
             itemid = request.form['itemid']
             client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
             try:
+                # For things on the right side of the checkout page
                 cursor = client.cursor()
                 if 'add' in request.form:
                     query = "UPDATE ShoppingCart SET Quantity = Quantity + 1 WHERE CustomerID = %s AND ItemID = %s"
                     cursor.execute(query, (loggedinid, itemid))
+
+                    # Check if user cannot add any more quantity of item
+                    query = "SELECT Quantity FROM ShoppingCart WHERE CustomerID = %s AND ItemID = %s"
+                    cursor.execute(query, (loggedinid, itemid))
+                    currentamount = cursor.fetchall()
+                    query = "SELECT Quantity FROM Item WHERE ItemID = %s"
+                    cursor.execute(query, itemid)
+                    itemamount = cursor.fetchall()
+                    if currentamount == itemamount:
+                        addbtn = False
                 elif 'remove' in request.form:
                     query = "UPDATE ShoppingCart SET Quantity = Quantity - 1 WHERE CustomerID = %s AND ItemID = %s"
                     cursor.execute(query, (loggedinid, itemid))
+
+                    # Delete from shopping cart if quantity = 0
                     query = "DELETE FROM ShoppingCart WHERE CustomerID = %s AND Quantity = 0"
                     cursor.execute(query, loggedinid)
 
@@ -168,12 +209,36 @@ def checkout():
                 cursor.execute(query, loggedinid)
                 items = cursor.fetchall()
 
-                # Get sum of prices
+                hasmembership = 'Y'
+                query = "SELECT HasMembership FROM Customer WHERE CustomerID = %s AND HasMembership = %s"
+                cursor.execute(query, (loggedinid, hasmembership))
+                currentcust = cursor.fetchall()
+
+                # Get discounts and no shipping fee if member
                 total = 0
                 quantity = 0
+                discount = 0
+                shipment = 5
+                ismember = False
+                for row in currentcust:
+                    ismember = True
+
+                if ismember:
+                    valid = 'Y'
+                    query = "SELECT DiscountPercent FROM Discount WHERE Valid = %s"
+                    cursor.execute(query, valid)
+                    discountvalues = cursor.fetchall()
+                    for row in discountvalues:
+                        discount += row[0]
+                    shipment = 0
+
+                # Get sum of prices
                 for row in items:
                     total += row[1] * row[3]
                     quantity += row[1]
+
+                total -= (total * discount)
+                total += shipment
                 client.commit()
             except Exception:
                 print("Could not complete item action")
@@ -181,8 +246,16 @@ def checkout():
             finally:
                 client.close()
 
+    total = round(total, 2)
+    discount *= 100
+    discount = round(discount, 2)
+    if total <= 0:
+        total = 0
+    if ordersuccessful:
+        return redirect('/thankyou.html')
     return render_template('checkout.html', loggedin=loggedinname, items=items, quantity=quantity, total=total,
-                           title='Shopping Cart', styles='checkout.css', bodyclass='bg-light')
+                           discount=discount, shipment=shipment, addbtn=addbtn, title='Shopping Cart',
+                           styles='checkout.css', bodyclass='bg-light')
 
 
 @app.route("/shop.html", methods=['GET', 'POST'])
@@ -319,7 +392,23 @@ def returns():
 
 @app.route("/thankyou.html")
 def thankyou():
-    return render_template('thankyou.html', loggedin=loggedinname, title='Thank You', styles='thankyou.css', bodyclass='bg-light')
+    results = None
+    if lastorderid == None:
+        return redirect('/')
+    else:
+        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        try:
+            cursor = client.cursor()
+            query = "SELECT O.ItemID, O.Quantity, I.Price, I.ItemType, I.ItemDesc " \
+                "FROM OrderedItems O, Item I WHERE O.OrderID = %s AND O.ItemID = I.ItemID"
+            cursor.execute(query, lastorderid)
+            results = cursor.fetchall()
+        except Exception:
+            print("Could not retrieve specified OrderedItems Entity")
+        finally:
+            client.close()
+    return render_template('thankyou.html', loggedin=loggedinname, results=results, orderid=lastorderid, title='Thank You',
+                           styles='thankyou.css', bodyclass='bg-light')
 
 @app.route("/pendingorder.html")
 def pendingorder():
@@ -592,12 +681,12 @@ def getWishListTable():
 
 
 # Discount Table
-def insertDiscount(discountid, discountprice, excdate):
+def insertDiscount(discountid, discountpercent, valid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO Discount(DiscountID, DiscountPrice, ExpDate) values(%s, %s, %s)"
-        cursor.execute(query, (discountid, discountprice, excdate))
+        query = "INSERT INTO Discount(DiscountID, DiscountPercent, Valid) values(%s, %s, %s)"
+        cursor.execute(query, (discountid, discountpercent, valid))
         client.commit()
     except Exception:
         print("Could not add entity to Discount Table")
@@ -610,7 +699,7 @@ def getDiscountTuple(discountid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT DiscountID, DiscountPrice, ExpDate FROM Discount WHERE DiscountID = %s"
+        query = "SELECT DiscountID, DiscountPercent, Valid FROM Discount WHERE DiscountID = %s"
         cursor.execute(query, discountid)
         result = cursor.fetchall()
         return result
@@ -624,7 +713,7 @@ def getDiscountTable():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT DiscountID, DiscountPrice, ExpDate FROM Discount"
+        query = "SELECT DiscountID, DiscountPercent, Valid FROM Discount"
         cursor.execute(query)
         results = cursor.fetchall()
         return results
