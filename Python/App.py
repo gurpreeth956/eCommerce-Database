@@ -321,6 +321,10 @@ def returns():
 def thankyou():
     return render_template('thankyou.html', loggedin=loggedinname, title='Thank You', styles='thankyou.css', bodyclass='bg-light')
 
+@app.route("/pendingorder.html")
+def pendingorder():
+    return render_template('pendingorder.html', loggedin=loggedinname, title='Pending Orders', styles='returns.css', bodyclass='bg-light')
+
 
 '''
 BELOW ARE ALL THE METHODS FOR GETTING AND SETTING DATA FROM THE DATABASE

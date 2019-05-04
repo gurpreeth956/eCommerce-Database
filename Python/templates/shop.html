@@ -16,7 +16,8 @@
           {% endfor %}
         </div>
 
-        <button style="margin-top:1rem;" data-toggle="modal" data-target="#addModal" type="button" class="btn btn-success btn-lg">Add Item</button>
+        <button style="margin-top:1rem;" data-toggle="modal" data-target="#addItemModal" type="button" class="btn btn-success btn-lg">Add Item</button>
+        <button style="margin-top:1rem;" data-toggle="modal" data-target="#addDiscountModal" type="button" class="btn btn-primary btn-lg">Add Discount</button>
 
       </div>
       <!-- /.col-lg-3 -->
@@ -93,11 +94,11 @@
   </div>
   <!-- /.container -->
 
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addModalTitle">Add Item</h5>
+        <h5 class="modal-title" id="addItemModalTitle">Add Item</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -129,7 +130,7 @@
                 </select>
             </div>
             <div class="form-group col-md-4">
-              <label for="inputCategory">Image</label>
+              <label for="customFile">Image</label>
               <div class="custom-file">
                 <label class="custom-file-label" for="customFile">Image</label>
                 <input type="file" class="custom-file-input" id="customFile" placeholder="Image">
@@ -151,6 +152,39 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Add Item</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="addDiscountModal" tabindex="-1" role="dialog" aria-labelledby="addDiscountModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addDiscountModalLabel">Add Discount</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+                <label for="inputCode">Code</label>
+                <input type="code" class="form-control" id="inputCode" placeholder="Code">
+            </div>
+              <div class="form-group col-md-4">
+                <label for="inputPercent">Percent Off</label>
+                <input type="percent" class="form-control" id="inputPercent" placeholder="Percent">
+              </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Add Discount</button>
       </div>
     </div>
   </div>
