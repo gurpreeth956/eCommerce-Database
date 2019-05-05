@@ -276,7 +276,6 @@ def shop():
             query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item WHERE Category = %s"
             cursor.execute(query, request.args['category'])
         result = cursor.fetchall()
-
         query = "SELECT Category FROM Item GROUP BY Category"
         cursor.execute(query)
         category = cursor.fetchall()
@@ -291,19 +290,40 @@ def shop():
 
 @app.route("/item.html", methods=['GET', 'POST'])
 def item():
+    global loggedinid
     if request.method == 'POST':
-        itemid = request.form['item']
         if 'cart' in request.form:
+            itemid = request.form['item']
             insertShoppingCart(loggedinid, itemid, 1)
         elif 'wishlist' in request.form:
+            itemid = request.form['item']
             insertWishList(loggedinid, itemid)
-
+        elif 'review' in request.form:
+            itemid = request.form['itemid']
+            rating = request.form['rating']
+            review = request.form['review']
+            insertReview(loggedinid, itemid, rating, review)
     if 'type' and 'price' and 'desc' and 'id' in request.args:
-        return render_template('item.html', type=request.args['type'], price=request.args['price'],
+        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        try:
+            cursor = client.cursor()
+            query = "SELECT R.Comments, P.Named, R.Ratings FROM Reviews R, Person P " \
+                    "WHERE ItemID = %s AND R.CustomerID = P.ID"
+            cursor.execute(query, request.args['id'])
+            reviews = cursor.fetchall()
+            avgrating = 0
+            for review in reviews:
+                avgrating += review[2]
+            avgrating /= len(reviews)
+            avgrating = round(avgrating, 2)
+        except Exception:
+            print("Could not retrieve Reviews Table data")
+        finally:
+            client.close()
+        return render_template('item.html', rating=avgrating, reviews=reviews, type=request.args['type'], price=request.args['price'],
                                desc=request.args['desc'], id=request.args['id'], loggedin=loggedinname,
-                               employee=None, title=request.args['type'], styles='', bodyclass='bg-light')
-    else:
-        return render_template('item.html', loggedin=loggedinname, title='[Item Name]', styles='', bodyclass='bg-light')
+                               employee=None, title=request.args['type'], styles='item.css', bodyclass='bg-light')
+    return render_template('item.html', loggedin=loggedinname, title='[Item Name]', styles='item.css', bodyclass='bg-light')
 
 
 @app.route("/profile.html")
@@ -334,12 +354,17 @@ def history():
             itemid = request.form['itemid']
             insertShoppingCart(loggedinid, itemid, 1)
         elif 'review' in request.form:
+            itemid = request.form['itemids']
+            rating = request.form['rating']
             review = request.form['review']
+            insertReview(loggedinid, itemid, rating, review)
         elif 'return' in request.form:
             itemid = request.form['item']
             orderid = request.form['order']
-            quantity = request.form['quantity']
             comments = request.form['comments']
+            order = getOrderedItemsTuple(orderid, itemid)
+            print(order)
+            quantity = order[0][2]
             insertReturnment(orderid, itemid, quantity, comments)
     result = None
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
@@ -350,6 +375,8 @@ def history():
                 "WHERE O.CustomerID = %s AND O.OrderNum = S.OrderID AND S.ItemID = I.ItemID"
         cursor.execute(query, loggedinid)
         result = cursor.fetchall()
+        returns = getReturnmentTable()
+        #reviews
     except Exception:
         print("Can not retrieve specified information")
     finally:

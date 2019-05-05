@@ -50,8 +50,15 @@
                         <button type="button" class="btn btn-secondary">Add to Wish List</button>
                     </p>
                     {% endif %}
-                    <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
-                    4.0 stars
+                    {% if rating != 0 %}
+                    <div class="ratings">
+                        <div class="empty-stars"></div>
+                        <div class="full-stars" style="width:{{ (rating/5)*100 }}%"></div>
+                    </div>
+                      {{ rating }} Stars
+                    {% else %}
+                        Rating N/A
+                    {% endif %}
                 </div>
             </div>
             <!-- /.card -->
@@ -61,27 +68,21 @@
                     Product Reviews
                 </div>
                 <div class="card-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore,
-                        similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum.
-                        Sequi mollitia, necessitatibus quae sint natus.</p>
-                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                    <button type="button" class="btn btn-danger btn-sm float-right">Delete Review</button>
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore,
-                        similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum.
-                        Sequi mollitia, necessitatibus quae sint natus.</p>
-                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                    <button type="button" class="btn btn-danger btn-sm float-right">Delete Review</button>
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore,
-                        similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum.
-                        Sequi mollitia, necessitatibus quae sint natus.</p>
-                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                    <button type="button" class="btn btn-danger btn-sm float-right">Delete Review</button>
-                    <hr>
-                    <button type="button" href="#reviewModal" class="btn btn-success" data-toggle="modal"
-                            data-target="#reviewModal">Leave a Review
-                    </button>
+                    {% if reviews %}
+                        {% for review in reviews %}
+                            <p>{{ review[0] }}</p>
+                            <small class="text-muted">Posted by {{ review[1] }}</small>
+                            <button type="button" class="btn btn-danger btn-sm float-right">Delete Review</button>
+                            <hr>
+                        {% endfor %}
+                    {% else %}
+                    <p> No Reviews Yet</p>
+                    {% endif %}
+                    {% if loggedin %}
+                        <button type="button" href="#reviewModal" class="btn btn-success" data-toggle="modal"
+                                data-target="#reviewModal">Leave a Review
+                        </button>
+                    {% endif %}
                 </div>
             </div>
             <!-- /.card -->
@@ -104,17 +105,25 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <textarea class="form-control" id="reviewArea" rows="5" placeholder="Review Here"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Leave Review</button>
-            </div>
+            <form class="rating" method="POST" action="">
+                <div class="modal-body">
+                <div class="form-group">
+                      <fieldset class="rating">
+                        <input type="radio" id="star5" name="rating" value=5 /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
+                        <input type="radio" id="star4" name="rating" value=4 /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+                        <input type="radio" id="star3" name="rating" value=3 /><label class = "full" for="star3" title="Meh - 3 stars"></label>
+                        <input type="radio" id="star2" name="rating" value=2 /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+                        <input type="radio" id="star1" name="rating" value=1 /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+                    </fieldset>
+                    <textarea class="form-control" id="reviewArea" rows="5" placeholder="Review Here" name="review" value="{{ request.form.review }}"></textarea>
+                    <input type="hidden" name="itemid" value={{ id }}>
+                  </div>
+                </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" name="review" value="Leave Review">
+                  </div>
+            </form>
         </div>
     </div>
 </div>
