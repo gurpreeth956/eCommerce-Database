@@ -40,7 +40,7 @@
                             <form method="POST" action="">
                             <input type="hidden" name="itemid" value={{ value[2] }}>
                             <input type="submit" class="btn btn-primary" name="cart" value="Buy it Again">
-                            <a  class="btn btn-secondary"  class="btn btn-success" href="#" data-toggle="modal" data-target="#reviewModal{{ value[2] }}">Leave a Review</a>
+                            <a  class="btn btn-secondary"  class="btn btn-success" href="#" data-toggle="modal" data-target="#reviewModal{{ value[2] }}{{ value[5] }}">Leave a Review</a>
                             <a  class="btn btn-danger"  class="btn btn-success" href="#" data-toggle="modal" data-target="#returnModal{{ value[5] }}{{ value[2] }}">Return Item</a>
                             </form>
                         </div>
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-    <div class="modal fade" id="reviewModal{{ value[2] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="reviewModal{{ value[2] }}{{ value[5] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -63,11 +63,11 @@
                 <div class="modal-body">
                 <div class="form-group">
                       <fieldset class="rating">
-                        <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
-                        <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
-                        <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
-                        <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
-                        <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+                        <input type="radio" id="star5{{ value[2] }}{{ value[5] }}" name="rating" value="5" /><label class = "full" for="star5{{ value[2] }}{{ value[5] }}" title="Awesome - 5 stars"></label>
+                        <input type="radio" id="star4{{ value[2] }}{{ value[5] }}" name="rating" value="4" /><label class = "full" for="star4{{ value[2] }}{{ value[5] }}" title="Pretty good - 4 stars"></label>
+                        <input type="radio" id="star3{{ value[2] }}{{ value[5] }}" name="rating" value="3" /><label class = "full" for="star3{{ value[2] }}{{ value[5] }}" title="Meh - 3 stars"></label>
+                        <input type="radio" id="star2{{ value[2] }}{{ value[5] }}" name="rating" value="2" /><label class = "full" for="star2{{ value[2] }}{{ value[5] }}" title="Kinda bad - 2 stars"></label>
+                        <input type="radio" id="star1{{ value[2] }}{{ value[5] }}" name="rating" value="1" /><label class = "full" for="star1{{ value[2] }}{{ value[5] }}" title="Sucks big time - 1 star"></label>
                     </fieldset>
                     <textarea class="form-control" id="reviewArea" rows="5" placeholder="Review Here" name="review" value="{{ request.form.review }}"></textarea>
                     <input type="hidden" name="itemids" value={{ value[2] }}>
