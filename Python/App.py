@@ -149,53 +149,53 @@ def checkout():
             shipzip = request.form['zipShip']
 
             client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
-            #try:
-            cursor = client.cursor()
-            query = "SELECT CustomerID, ItemID, Quantity FROM ShoppingCart WHERE CustomerID = %s"
-            cursor.execute(query, loggedinid)
-            results = cursor.fetchall()
+            try:
+                cursor = client.cursor()
+                query = "SELECT CustomerID, ItemID, Quantity FROM ShoppingCart WHERE CustomerID = %s"
+                cursor.execute(query, loggedinid)
+                results = cursor.fetchall()
 
-            # Create Orders Entity
-            table = getOrdersTable()
-            orderid = len(table) + 1
-            query = "INSERT INTO Orders(OrderNum, CustomerID, OrderDate, Completed, OrderName, OrderEmail) \
-                            values(%s, %s, %s, %s, %s, %s)"
-            cursor.execute(query, (orderid, loggedinid, dt.today().strftime('%Y-%m-%d'), 'N', name, email))  # MAKE PENDING PAGE FOR ORDERS
+                # Create Orders Entity
+                table = getOrdersTable()
+                orderid = len(table) + 1
+                query = "INSERT INTO Orders(OrderNum, CustomerID, OrderDate, Completed, OrderName, OrderEmail) \
+                                values(%s, %s, %s, %s, %s, %s)"
+                cursor.execute(query, (orderid, loggedinid, dt.today().strftime('%Y-%m-%d'), 'N', name, email))  # MAKE PENDING PAGE FOR ORDERS
 
-            # Create Shipment Entity
-            customer = getCustomerTuple(loggedinid)
-            fee = '5'
-            for row in customer:
-                if row[2] == 'Y':
-                    fee = '0'
-            query = "INSERT INTO Shipment(OrderID, Address1, Address2, State, Country, Zip, Fee, Company, ShipName) values(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(query, (orderid, shipaddress1, shipaddress2, shipstate, shipcountry, shipzip, fee, 'UPS', shipname))
+                # Create Shipment Entity
+                customer = getCustomerTuple(loggedinid)
+                fee = '5'
+                for row in customer:
+                    if row[2] == 'Y':
+                        fee = '0'
+                query = "INSERT INTO Shipment(OrderID, Address1, Address2, State, Country, Zip, Fee, Company, ShipName) values(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(query, (orderid, shipaddress1, shipaddress2, shipstate, shipcountry, shipzip, fee, 'UPS', shipname))
 
-            # Create Payment Entity
-            query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp, Address1, Address2, State, Country, Zip) \
-                    values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(query, (orderid, cardName, cardNum, cardType, datetime.datetime.strptime('01' + cardExp, '%d%m/%y').date(),
-            billaddress1, billaddress2, billstate, billcountry, billzip))
+                # Create Payment Entity
+                query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp, Address1, Address2, State, Country, Zip) \
+                        values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(query, (orderid, cardName, cardNum, cardType, datetime.datetime.strptime('01' + cardExp, '%d%m/%y').date(),
+                billaddress1, billaddress2, billstate, billcountry, billzip))
 
-            # Create OrderedItems Entity
-            for row in results:
-                query = "INSERT INTO OrderedItems(OrderID, ItemID, Quantity) values(%s, %s, %s)"
-                cursor.execute(query, (orderid, row[1], row[2]))
-                query = "UPDATE Item SET Quantity = Quantity - %s WHERE ItemID = %s"
-                cursor.execute(query, (row[2], row[1]))
+                # Create OrderedItems Entity
+                for row in results:
+                    query = "INSERT INTO OrderedItems(OrderID, ItemID, Quantity) values(%s, %s, %s)"
+                    cursor.execute(query, (orderid, row[1], row[2]))
+                    query = "UPDATE Item SET Quantity = Quantity - %s WHERE ItemID = %s"
+                    cursor.execute(query, (row[2], row[1]))
 
-            # Delete orders from shopping cart
-            query = "DELETE FROM ShoppingCart WHERE CustomerID = %s"
-            cursor.execute(query, loggedinid)
+                # Delete orders from shopping cart
+                query = "DELETE FROM ShoppingCart WHERE CustomerID = %s"
+                cursor.execute(query, loggedinid)
 
-            client.commit()
-            ordersuccessful = True
-            lastorderid = orderid
-            #except Exception:
-             #   print("Could not complete order action")
-              #  client.rollback()
-            #finally:
-            client.close()
+                client.commit()
+                ordersuccessful = True
+                lastorderid = orderid
+            except Exception:
+                print("Could not complete order action")
+                client.rollback()
+            finally:
+                client.close()
         elif 'cardselect' in request.form:
             cardValue = [0, 0, 0, 0]
             cardValue[0] = request.form['selectedcardname']
@@ -382,7 +382,6 @@ def history():
             orderid = request.form['order']
             comments = request.form['comments']
             order = getOrderedItemsTuple(orderid, itemid)
-            print(order)
             quantity = order[0][2]
             insertReturnment(orderid, itemid, quantity, comments)
     result = None
@@ -394,8 +393,6 @@ def history():
                 "WHERE O.CustomerID = %s AND O.OrderNum = S.OrderID AND S.ItemID = I.ItemID"
         cursor.execute(query, loggedinid)
         result = cursor.fetchall()
-        returns = getReturnmentTable()
-        #reviews
     except Exception:
         print("Can not retrieve specified information")
     finally:
