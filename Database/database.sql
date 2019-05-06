@@ -159,7 +159,7 @@ CREATE TABLE Reviews (
         REFERENCES Customer (CustomerID)
         ON DELETE NO ACTION ON UPDATE CASCADE,
     FOREIGN KEY (ItemID)
-        REFERENCES OrderedItems (ItemID)
+        REFERENCES Item (ItemID)
         ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
