@@ -164,27 +164,27 @@ CREATE TABLE Reviews (
 );
 
 CREATE TABLE Addresses (
-	ID INT,
+	CustomerID INT,
     Address1 VARCHAR(200) NOT NULL,
     Address2 VARCHAR(200),
     State VARCHAR(50) NOT NULL,
     Country VARCHAR(50) NOT NULL,
     Zip VARCHAR(5) NOT NULL,
-    PRIMARY KEY (ID, Address1, Address2, State, Country, Zip),
-	FOREIGN KEY (ID)
-        REFERENCES Person (ID)
+    PRIMARY KEY (CustomerID, Address1, Address2, State, Country, Zip),
+	FOREIGN KEY (CustomerID)
+        REFERENCES Customer (CustomerID)
         ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 CREATE TABLE Cards (
-	ID INT,
+	CustomerID INT,
     CardName VARCHAR(20) NOT NULL,
     CardNum VARCHAR(16) NOT NULL,
     CardComp VARCHAR(20) NOT NULL,
     CardExp DATE NOT NULL,
-    PRIMARY KEY (ID, CardName, CardNum, CardComp, CardExp),
-	FOREIGN KEY (ID)
-        REFERENCES Person (ID)
+    PRIMARY KEY (CustomerID, CardName, CardNum, CardComp, CardExp),
+	FOREIGN KEY (CustomerID)
+        REFERENCES Customer (CustomerID)
         ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
@@ -392,3 +392,6 @@ INSERT INTO Returnment VALUES('4444', '1233', '4', 'Balls are broken');
 
 INSERT INTO Reviews VALUES('368192', '1233', '2', 'It would not turn on');
 INSERT INTO Reviews VALUES('592134', '18332', '5', 'It\'s pretty good');
+
+INSERT INTO Cards VALUES('7', 'Gurppp', '1111111111', 'VISA', '2020-11-25');
+INSERT INTO Cards VALUES('7', 'NotGurp', '1111111111', 'VISA', '2021-01-15');
