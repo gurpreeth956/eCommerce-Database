@@ -3,56 +3,56 @@
 {% block content %}
 {{ nav('wishlist') }}
 
-    <div class="jumbotron jumbotron-fluid">
-      <div class="container">
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
         <h1 class="display-4">Wish List</h1>
-      </div>
     </div>
+</div>
 <div class="container">
 
 
-        {% if values != None %}
-            {% for value in values %}
-            <div class="card">
-                <div class="row no-gutters">
-                    <div class="col-auto">
-                        <img src="static/images/items/{{ value[0] }}.png" class="img-fluid" alt="">
+    {% if values != None %}
+    {% for value in values %}
+    <div class="card">
+        <div class="row no-gutters">
+            <div class="col-auto">
+                <img src="static/images/items/{{ value[0] }}.png" class="img-fluid" alt="">
+            </div>
+            <div class="col">
+                <div class="card-block px-2">
+                    <div class="float-left">
+                        <h3 class="card-title">{{ value[1] }}</h3>
                     </div>
-                    <div class="col">
-                        <div class="card-block px-2">
-                            <div class="float-left">
-                                <h3 class="card-title">{{ value[1] }}</h3>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="float-left">
-                                <p class="card-text">${{ value[2] }}</p>
-                            </div>
-                            <div class="float-right">
-                                <p>
-                                    <form method="POST">
-                                        <input type="hidden" name="item" value={{ value[0] }}>
-                                        <input type="submit" class="btn btn-primary" name="cart" value="Buy Now">
-                                        <input type="submit" class="btn btn-danger" name="remove" value="Remove">
-                                    </form>
-                                </p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
+                    <div class="clearfix"></div>
+                    <div class="float-left">
+                        <p class="card-text">${{ value[2] }}</p>
                     </div>
+                    <div class="float-right">
+                        <p>
+                        <form method="POST">
+                            <input type="hidden" name="item" value={{ value[0] }}>
+                            <input type="submit" class="btn btn-primary" name="cart" value="Buy Now">
+                            <input type="submit" class="btn btn-danger" name="remove" value="Remove">
+                        </form>
+                        </p>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
             </div>
-            {% endfor %}
-        {% else %}
-            <p> No Items in Wishlist</p>
-        {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p> No Items in Wishlist</p>
+    {% endif %}
 </div>
-  <!-- /.container -->
+<!-- /.container -->
 
-  <!-- Footer -->
-  <footer class="py-5 bg-dark">
+<!-- Footer -->
+<footer class="py-5 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
     </div>
     <!-- /.container -->
-  </footer>
+</footer>
 {% endblock content %}

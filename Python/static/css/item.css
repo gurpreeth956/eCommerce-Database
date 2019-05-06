@@ -1,37 +1,34 @@
-@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
-
-.card{
-        margin: 0 auto; /* Added */
-        float: none; /* Added */
-        margin-bottom: 10px; /* Added */
-        max-height:150px;
-}
-
 footer{
    margin-top:3rem;
 }
 
-.jumbotron {
-    width:100%;
-    margin:0;
-    margin-bottom:3rem;
+.ratings {
+    position: relative;
+    top: -4px;
+    vertical-align: middle;
+    display: inline-block;
+    color: #b1b1b1;
+    overflow: hidden;
+}
+.full-stars {
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #fde16d;
+}
+.empty-stars:before, .full-stars:before {
+    content:"\2605\2605\2605\2605\2605";
+    font-size: 15pt;
+}
+.empty-stars:before {
+    -webkit-text-stroke: 1px #848484;
+}
+.full-stars:before {
+    -webkit-text-stroke: 1px orange;
 }
 
-.img-fluid{
-    max-height:150px;
-}
-
-.modal-body img-fluid{
-    max-width:75px;
-}
-
-small, h3{
-    margin-top:1rem;
-}
-
-a {
-
-}
 
 fieldset, label { margin: 0; padding: 0; }
 h1 { font-size: 1.5em; margin: 10px; }

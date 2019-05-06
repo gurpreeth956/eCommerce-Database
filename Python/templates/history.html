@@ -3,15 +3,16 @@
 {% block content %}
 {{ nav('history') }}
 
-    <div class="jumbotron jumbotron-fluid">
-      <div class="container">
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
         <h1 class="display-4">Order History</h1>
-      </div>
     </div>
+</div>
 
 <div class="container">
     {% if values != None %}
         {% for value in values %}
+        <h3>Order #: {{ value[5] }}</h3>
         <div class="card">
             <div class="row no-gutters">
                 <div class="col-auto">
@@ -32,84 +33,93 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="float-left">
-                            <p class="card-text">${{ value[4] }}</p>
+                            <p class="card-text">Quantity: {{ value[6] }}</p>
+                            <p class="card-text">${{ value[4] * value[6] }}</p>
                         </div>
                         <div class="float-right">
-                            <button type="button" class="btn btn-primary">Buy it Again</button>
-                            <button type="button" class="btn btn-secondary" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
-                            <button type="button" class="btn btn-danger" href="#reviewModal" class="btn btn-success" data-toggle="modal" data-target="#returnModal">Return Item</button>
+                            <form method="POST" action="">
+                            <input type="hidden" name="itemid" value={{ value[2] }}>
+                            <input type="submit" class="btn btn-primary" name="cart" value="Buy it Again">
+                            <a  class="btn btn-secondary"  class="btn btn-success" href="#" data-toggle="modal" data-target="#reviewModal{{ value[2] }}">Leave a Review</a>
+                            <a  class="btn btn-danger"  class="btn btn-success" href="#" data-toggle="modal" data-target="#returnModal{{ value[5] }}{{ value[2] }}">Return Item</a>
+                            </form>
                         </div>
                         <div class="clearfix"></div>
                     </div>
+                    <div class="clearfix"></div>
                 </div>
             </div>
         </div>
+    <div class="modal fade" id="reviewModal{{ value[2] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reviewModalLabel">Leave a Review</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <form class="rating" method="POST" action="">
+                <div class="modal-body">
+                <div class="form-group">
+                      <fieldset class="rating">
+                        <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
+                        <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+                        <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
+                        <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+                        <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+                    </fieldset>
+                    <textarea class="form-control" id="reviewArea" rows="5" placeholder="Review Here" name="review" value="{{ request.form.review }}"></textarea>
+                    <input type="hidden" name="itemids" value={{ value[2] }}>
+                  </div>
+                </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" name="review" value="Leave Review">
+                  </div>
+            </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="returnModal{{ value[5] }}{{ value[2] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="returnModalLabel">Return Item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <form method="POST" action="/history.html">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="description">Why are you returning this item?</label>
+                    <textarea class="form-control" id="description" rows="5" placeholder = "Description" name="comments" value="{{ request.form.comments }}"></textarea>
+                </div>
+                <input type="hidden" name="item" value={{ value[2] }}>
+                <input type="hidden" name="order" value={{ value[5] }}>-
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <input type="submit" class="btn btn-primary" name="return" value="Submit Return">
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
         {% endfor %}
     {% else %}
         <p> No Orders</p>
     {% endif %}
 </div>
+<!-- /.container -->
 
-<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="reviewModalLabel">Leave a Review</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-            <div class="form-group">
-                <textarea class="form-control" id="reviewArea" rows="5" placeholder="Review Here"></textarea>
-              </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Leave Review</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="returnModalLabel">Return Item</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-            <div class="form-group">
-                <label for="quantity">Quantity</label>
-                <input type="quantity" class="form-control" id="quantity" aria-describedby="emailHelp">
-            </div>
-            <div class="form-group">
-                <label for="description">Why are you returning this item?</label>
-                <textarea class="form-control" id="description" rows="5" placeholder = "Description"></textarea>
-              </div>
-
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Leave Review</button>
-      </div>
-    </div>
-  </div>
-</div>
-  <!-- /.container -->
-
-  <!-- Footer -->
-  <footer class="py-5 bg-dark">
+<!-- Footer -->
+<footer class="py-5 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
     </div>
     <!-- /.container -->
-  </footer>
+</footer>
 {% endblock content %}

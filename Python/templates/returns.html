@@ -2,97 +2,132 @@
 {% from "macros.html" import nav with context %}
 {% block content %}
 {{ nav('returns') }}
-
-<div class="jumbotron jumbotron-fluid">
-      <div class="container">
-        <h1 class="display-4">Returns</h1>
-      </div>
-    </div>
-
-<div class="container">
-        <div class="card">
-            <div class="row no-gutters">
-                <div class="col-auto">
-                    <img src="static/images/thanos.jpg" class="img-fluid" alt="">
-                </div>
-                <div class="col">
-                    <div class="card-block px-2">
-                        <div class="float-left">
-                            <h3 class="card-title">Pants</h3>
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="display-4">Returns</h1>
+          </div>
+        </div>
+{% if employee %}
+    {% if values != None %}
+        {% for value in values %}
+            <div class="container">
+                    <div class="card">
+                        <div class="row no-gutters">
+                            <div class="col-auto">
+                                <img src="static/images/items/{{ value[1] }}.png" class="img-fluid" alt="">
+                            </div>
+                            <div class="col">
+                                <div class="card-block px-2">
+                                    <div class="float-left">
+                                        <h3 class="card-title">Order #: {{ value[0] }}</h3>
+                                    </div>
+                                    <div class="float-right">
+                                        <small class="text-muted float-right">Returned by Raymond on 3/1/17</small>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="float-left">
+                                        <p class="card-text">{{ value[4] }}</p>
+                                        <p class="card-text">${{ value[5] * value[2] }}</p>
+                                    </div>
+                                    <div class="float-right">
+                                        <a href="#" class="btn btn-danger float-right" data-toggle="modal" data-target="#employeeReturnModal">Review</a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="float-right">
-                            <small class="text-muted float-right">Returned by Raymond on 3/1/17</small>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="float-left">
-                            <p class="card-text">$25.00</p>
-                        </div>
-                        <div class="float-right">
-                            <a href="#" class="btn btn-danger float-right" data-toggle="modal" data-target="#returnModal">Review</a>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
+                  </div>
             </div>
-      </div>
-    <div class="card">
-            <div class="row no-gutters">
-                <div class="col-auto">
-                    <img src="static/images/thanos.jpg" class="img-fluid" alt="">
+
+            <!-- Return Modal -->
+            <div class="modal fade" id="employeeReturnModal" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="employeeReturnModalLabel">Review Return</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <h4>Quantity: {{ value[2] }}</h4>
+                      <h5>Reason for Return:</h5>
+                      <p>{{ value[3] }}</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Reject</button>
+                    <button type="button" class="btn btn-success">Approve</button>
+                  </div>
                 </div>
-                <div class="col">
-                    <div class="card-block px-2">
-                        <div class="float-left">
-                            <h3 class="card-title">Pants</h3>
-                        </div>
-                        <div class="float-right">
-                            <small class="text-muted float-right">Returned by Raymond on 3/1/17</small>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="float-left">
-                            <p class="card-text">$25.00</p>
-                        </div>
-                        <div class="float-right">
-                            <a href="#" class="btn btn-danger float-right" data-toggle="modal" data-target="#returnModal">Review</a>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
+              </div>
             </div>
-      </div>
+        {% endfor %}
+    {% else %}
+    <p>No Returns</p>
+    {% endif %}
+{% else %}
+    {% if values != None %}
+        {% for value in values %}
+            <div class="container">
+                    <div class="card">
+                        <div class="row no-gutters">
+                            <div class="col-auto">
+                                <img src="static/images/items/{{ value[1] }}.png" class="img-fluid" alt="">
+                            </div>
+                            <div class="col">
+                                <div class="card-block px-2">
+                                    <div class="float-left">
+                                        <h3 class="card-title">Order #: {{ value[0] }}</h3>
+                                    </div>
+                                    <div class="float-right">
+                                        <small class="text-muted float-right">Returned by Raymond on 3/1/17</small>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="float-left">
+                                        <p class="card-text">{{ value[4] }}</p>
+                                        <p class="card-text">${{ value[2] * value[5] }}</p>
+                                    </div>
+                                    <div class="float-right">
+                                        <a href="#" class="btn btn-danger float-right" data-toggle="modal" data-target="#returnModal{{ value[0] }}{{ value[1] }}">Review</a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+            </div>
 
-    </div>
-</div>
-
-<!-- Return Modal -->
-<div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="returnModalLabel">Review Return</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <h4>Quantity:</h4>
-          <p>1</p>
-          <h5>Reason for Return:</h5>
-          <p>Dick was too big for pants.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Reject</button>
-        <button type="button" class="btn btn-success">Approve</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
+            <!-- Return Modal -->
+            <div class="modal fade" id="returnModal{{ value[0] }}{{ value[1] }}" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="returnModalLabel">Review Return</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <h5>Quantity:</h5>
+                      <p>{{ value[2] }}</p>
+                      <h5>Reason for Return:</h5>
+                      <p>{{ value[3] }}</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        {% endfor %}
+    {% else %}
+    <p>No Returns</p>
+    {% endif %}
+{% endif %}
 <footer class="py-5 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
     </div>
     <!-- /.container -->
-  </footer>
+</footer>
 {% endblock content %}

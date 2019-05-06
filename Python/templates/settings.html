@@ -3,68 +3,73 @@
 {% block content %}
 {{ nav('home') }}
 
-    <div class="jumbotron jumbotron-fluid">
-      <div class="container">
-        <h1 class="display-4">My Profile</h1>
-      </div>
-    </div>
-
+<div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <div class="profile-image text-center">
-            <img src="static/images/thanos.jpg" class="rounded-circle" alt="Cinque Terre" width="296" height="236">
+        <h1 class="display-4">My Profile</h1>
+    </div>
+</div>
+
+<div class="container">
+    <form>
+        <div class="form-group">
+            <label for="inputName" class="sr-only">Name</label>
+            <input type="name" id="inputName" class="form-control" placeholder="Name" name="name"
+                   value="{{ request.form.name }}" required>
         </div>
-
-        <form>
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="customFile" placeholder="Choose new profile image">
-              <label class="custom-file-label" for="customFile">Choose new profile image</label>
-            </div>
-            <div class="form-group">
-                <label for="inputEmail" class="sr-only">Email</label>
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email"  name = "email" value = "{{ request.form.email }}" required>
-            </div>
-            <div class="form-group">
-                <label for="inputNumber" class="sr-only">Phone Number</label>
-                <input type="number" id="inputNumber" class="form-control" placeholder="Phone Number"  name = "number" value = "{{ request.form.number }}" required>
-            </div>
-            <h4>Change Password</h4>
-            <div class="form-group">
-                <label for="inputPassword" class="sr-only">Old Password</label>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Old Password"  name = "password" value = "{{ request.form.password }}" required>
-                <label for="newPassword" class="sr-only">New Password</label>
-                <input type="newPassword" id="newPassword" class="form-control" placeholder="New Password" name = "newPassword" value = "{{ request.form.newPassword }}" required>
-                <label for="verifyPassword" class="sr-only">Verify Password</label>
-                <input type="verifyPassword" id="verifyPassword" class="form-control" placeholder="Verify Password" name = "verifyPassword" value = "{{ request.form.verifyPassword }}" required>
-            </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
-            <button class="btn btn-lg btn-danger btn-block" type="submit" data-toggle="modal" data-target="#deleteModal">Delete Account</button>
-        </form>
-    </div>
-
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Confirm</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <div class="form-group">
+            <label for="inputEmail" class="sr-only">Email</label>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email" name="email"
+                   value="{{ request.form.email }}" required>
+        </div>
+        <div class="form-group">
+            <label for="inputNumber" class="sr-only">Phone Number</label>
+            <input type="number" id="inputNumber" class="form-control" placeholder="Phone Number" name="number"
+                   value="{{ request.form.number }}" required>
+        </div>
+        <h4>Change Password</h4>
+        <div class="form-group">
+            <label for="inputPassword" class="sr-only">Old Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Old Password" name="password"
+                   value="{{ request.form.password }}" required>
+            <label for="newPassword" class="sr-only">New Password</label>
+            <input type="newPassword" id="newPassword" class="form-control" placeholder="New Password"
+                   name="newPassword" value="{{ request.form.newPassword }}" required>
+            <label for="verifyPassword" class="sr-only">Verify Password</label>
+            <input type="verifyPassword" id="verifyPassword" class="form-control" placeholder="Verify Password"
+                   name="verifyPassword" value="{{ request.form.verifyPassword }}" required>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
+        <button class="btn btn-lg btn-danger btn-block" type="submit" data-toggle="modal" data-target="#deleteModal">
+            Delete Account
         </button>
-      </div>
-      <div class="modal-body">
-        <h5>Are you sure you want to delete your account?</h5>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger">Delete Account</button>
-      </div>
+    </form>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you want to delete your account?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger">Delete Account</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <footer class="py-5 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
     </div>
     <!-- /.container -->
-  </footer>
+</footer>
 {% endblock content %}
