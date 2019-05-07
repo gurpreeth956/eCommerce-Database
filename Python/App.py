@@ -17,12 +17,12 @@ lastorderid = None
 
 @app.route("/")
 def home():
-    global loggedinid, loggedinname, lastorderid
+    global loggedinid, loggedinname, lastorderid,employee
     if 'logoff' in request.args:
         loggedinid = None
         loggedinname = None
         lastorderid = None
-    return render_template('index.html', loggedin=loggedinname, title='Home', styles='album.css', bodyclass='bg-light')
+    return render_template('index.html', employee=employee, loggedin=loggedinname, title='Home', styles='album.css', bodyclass='bg-light')
 
 
 @app.route("/signup.html", methods=['GET', 'POST'])
@@ -71,7 +71,7 @@ def login():
 
 @app.route("/checkout.html", methods=['GET', 'POST'])
 def checkout():
-    global loggedinid, lastorderid
+    global loggedinid, lastorderid, employee
     ordersuccessful = False
     items = None
     cards = None
@@ -294,12 +294,13 @@ def checkout():
         return redirect('/thankyou.html')
     return render_template('checkout.html', loggedin=loggedinname, items=items, quantity=quantity, total=total,
                            discount=discount, shipment=shipment, addbtn=addbtn, cards=cards, addresses=addresses,
-                           cardvalues=cardValue, addressValue=addressValue,
+                           cardvalues=cardValue, addressValue=addressValue, employee=employee,
                            title='Shopping Cart', styles='checkout.css', bodyclass='bg-light')
 
 
 @app.route("/shop.html", methods=['GET', 'POST'])
 def shop():
+    global employee
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -317,13 +318,13 @@ def shop():
     finally:
         client.close()
 
-    return render_template('shop.html', loggedin=loggedinname, title='Shop', category=category, data=result, styles='',
+    return render_template('shop.html', employee=employee, loggedin=loggedinname, title='Shop', category=category, data=result, styles='',
                            bodyclass='bg-light')
 
 
 @app.route("/item.html", methods=['GET', 'POST'])
 def item():
-    global loggedinid
+    global loggedinid, employee
     reviews = None
     avgrating = 0
     if request.method == 'POST':
@@ -354,14 +355,15 @@ def item():
             print("Could not retrieve Reviews Table data")
         finally:
             client.close()
-        return render_template('item.html', rating=avgrating, reviews=reviews, type=request.args['type'], price=request.args['price'],
+        return render_template('item.html', employee=employee, rating=avgrating, reviews=reviews, type=request.args['type'], price=request.args['price'],
                                desc=request.args['desc'], id=request.args['id'], loggedin=loggedinname,
-                               employee=None, title=request.args['type'], styles='item.css', bodyclass='bg-light')
+                               title=request.args['type'], styles='item.css', bodyclass='bg-light')
     return render_template('item.html', loggedin=loggedinname, title='[Item Name]', styles='item.css', bodyclass='bg-light')
 
 
 @app.route("/profile.html")
 def profile():
+    global employee
     result = ['NO USER']
     if loggedinid != None:
         client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
@@ -376,13 +378,13 @@ def profile():
             client.close()
     else:
         return redirect('/')
-    return render_template('profile.html', name=result, loggedin=loggedinname, title='Profile', styles='',
+    return render_template('profile.html', employee=employee, name=result, loggedin=loggedinname, title='Profile', styles='',
                            bodyclass='bg-light')
 
 
 @app.route("/history.html", methods=['GET', 'POST'])
 def history():
-    global loggedinid
+    global loggedinid, employee
     if request.method == 'POST':
         if 'cart' in request.form:
             itemid = request.form['itemid']
@@ -412,13 +414,13 @@ def history():
         print("Can not retrieve specified information")
     finally:
         client.close()
-    return render_template('history.html', values=result, loggedin=loggedinname, title='Order History',
+    return render_template('history.html', values=result, employee=employee, loggedin=loggedinname, title='Order History',
                            styles='returns.css', bodyclass='bg-light')
 
 
 @app.route("/wishlist.html", methods=['GET', 'POST'])
 def wishlist():
-    global loggedinid
+    global loggedinid, employee
     if request.method == 'POST':
         itemid = request.form['item']
         if 'cart' in request.form:
@@ -448,12 +450,13 @@ def wishlist():
         print("Can not retrieve wishlist information")
     finally:
         client.close()
-    return render_template('wishlist.html', values=result, loggedin=loggedinname, title='Wish List',
+    return render_template('wishlist.html', values=result, employee=employee, loggedin=loggedinname, title='Wish List',
                            styles='returns.css', bodyclass='bg-light')
 
 
 @app.route("/premium.html", methods=['GET', 'POST'])
 def premium():
+    global employee
     hasmembership = False
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
@@ -482,7 +485,7 @@ def premium():
         finally:
             client.close()
         return redirect('/profile.html')
-    return render_template('premium.html', loggedin=loggedinname, hasmembership=hasmembership, title='Premium',
+    return render_template('premium.html', employee=employee, loggedin=loggedinname, hasmembership=hasmembership, title='Premium',
                            styles='wishlist.css', bodyclass='bg-light')
 
 
@@ -526,12 +529,13 @@ def address():
             finally:
                 client.close()
         return redirect('/address.html')
-    return render_template('address.html', loggedin=loggedinname, items=results, title='Address',
+    return render_template('address.html', loggedin=loggedinname, items=results, title='Address', employee=employee, 
                            styles='wishlist.css', bodyclass='bg-light')
 
 
 @app.route("/payment.html", methods=['GET', 'POST'])
 def payment():
+    global employee
     results = None
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
@@ -567,23 +571,72 @@ def payment():
             finally:
                 client.close()
         return redirect('/payment.html')
-    return render_template('payment.html', loggedin=loggedinname, items=results, title='Payment', styles='wishlist.css',
+    return render_template('payment.html', employee=employee, loggedin=loggedinname, items=results, title='Payment', styles='wishlist.css',
                            bodyclass='bg-light')
 
 
-@app.route("/settings.html")
+@app.route("/settings.html", methods=['GET', 'POST'])
 def settings():
-    result = ['NO USER']
+    global loggedinid, loggedinname, lastorderid, employee
+    if request.method == 'POST':
+        if 'delete' in request.form:
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                cursor = client.cursor()
+                query = "DELETE FROM Customer WHERE CustomerID = %s"
+                cursor.execute(query, loggedinid)
+                client.commit()
+                loggedinid = None
+                loggedinname = None
+                lastorderid = None
+                return redirect('/')
+            except Exception:
+                print("Could not delete Customer")
+                client.rollback()
+            finally:
+                client.close()
+        elif 'save' in request.form:
+            customerpass = getCustomerTuple(loggedinid)[0][1]
+            name = request.form['name']
+            email = request.form['email']
+            number = request.form['number']
+            password = request.form['password']
+            newPassword = request.form['newPassword']
+            verifyPassword = request.form['verifyPassword']
+            if customerpass == password and newPassword == verifyPassword:
+                client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+                try:
+                    cursor = client.cursor()
+                    query = "UPDATE Customer SET Userpass = %s WHERE CustomerID = %s"
+                    cursor.execute(query, (newPassword, loggedinid))
+                    client.commit()
+                except Exception:
+                    print("Can not update Customer information")
+                finally:
+                    client.close()
+                client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+                try:
+                    cursor = client.cursor()
+                    query = "UPDATE Person SET Email = %s, Named = %s, Phone = %s WHERE ID = %s"
+                    cursor.execute(query, (email, name, number, loggedinid))
+                    client.commit()
+                    loggedinname = name
+                except Exception:
+                        print("Can not update Person information")
+                finally:
+                    client.close()
+            return redirect('/profile.html')
     if loggedinid != None:
         result = getPersonTuple(loggedinid)
     else:
         return redirect('/')
-    return render_template('settings.html', loggedin=loggedinname, value=result, title='Settings', styles='settings.css',
+    return render_template('settings.html', employee=employee, loggedin=loggedinname, value=result, title='Settings', styles='settings.css',
                            bodyclass='bg-light')
 
 
 @app.route("/returns.html")
 def returns():
+    global employee
     result = None
     if employee:
         result = getReturnmentTable()
@@ -620,13 +673,13 @@ def thankyou():
             print("Could not retrieve specified OrderedItems Entity")
         finally:
             client.close()
-    return render_template('thankyou.html', loggedin=loggedinname, results=results, orderid=lastorderid,
+    return render_template('thankyou.html', employee=employee, loggedin=loggedinname, results=results, orderid=lastorderid,
                            title='Thank You', styles='thankyou.css', bodyclass='bg-light')
 
 
 @app.route("/pendingorder.html")
 def pendingorder():
-    return render_template('pendingorder.html', loggedin=loggedinname, title='Pending Orders', styles='returns.css',
+    return render_template('pendingorder.html', employee=employee, loggedin=loggedinname, title='Pending Orders', styles='returns.css',
                            bodyclass='bg-light')
 
 

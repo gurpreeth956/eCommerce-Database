@@ -10,7 +10,7 @@
 </div>
 
 <div class="container">
-    <form>
+    <form method="POST" action="">
         <div class="form-group">
             <label for="inputName" class="sr-only">Name</label>
             <input type="name" id="inputName" class="form-control" placeholder="Name" name="name"
@@ -38,8 +38,8 @@
             <input type="verifyPassword" id="verifyPassword" class="form-control" placeholder="Verify Password"
                    name="verifyPassword" value="{{ request.form.verifyPassword }}" required>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
-        <button class="btn btn-lg btn-danger btn-block" type="submit" data-toggle="modal" data-target="#deleteModal">
+        <button class="btn btn-lg btn-primary btn-block" name="save" type="submit">Save Changes</button>
+        <button class="btn btn-lg btn-danger btn-block" data-toggle="modal" data-target="#deleteModal">
             Delete Account
         </button>
     </form>
@@ -59,17 +59,13 @@
                 <h5>Are you sure you want to delete your account?</h5>
             </div>
             <div class="modal-footer">
+                <form method="POST" action="">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger">Delete Account</button>
+                <input type="submit" name="delete" value="Delete Account" class="btn btn-danger">
+                </form>
             </div>
         </div>
     </div>
 </div>
 
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
-    </div>
-    <!-- /.container -->
-</footer>
 {% endblock content %}
