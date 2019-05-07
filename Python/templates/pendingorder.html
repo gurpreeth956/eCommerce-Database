@@ -1,7 +1,7 @@
 {% extends "layouts.html" %}
 {% from "macros.html" import nav with context %}
 {% block content %}
-{{ nav('') }}
+{{ nav('pending') }}
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1 class="display-4">Pending Orders</h1>
@@ -148,11 +148,4 @@
     </div>
 </div>
 
-
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
-    </div>
-    <!-- /.container -->
-</footer>
 {% endblock content %}
