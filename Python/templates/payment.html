@@ -18,10 +18,10 @@
                     <div class="card mb-4" style="width: 18rem;">
                         <div class="card-body">
                             <form method="POST">
-                                <input type="hidden" name="cardname" value={{ item[1] }}>
-                                <input type="hidden" name="cardnum" value={{ item[2] }}>
-                                <input type="hidden" name="cardcomp" value={{ item[3] }}>
-                                <input type="hidden" name="cardexp" value={{ item[4] }}>
+                                <input type="hidden" name="cardname" value="{{ item[1] }}">
+                                <input type="hidden" name="cardnum" value="{{ item[2] }}">
+                                <input type="hidden" name="cardcomp" value="{{ item[3] }}">
+                                <input type="hidden" name="cardexp" value="{{ item[4] }}">
                             <h5 class="card-title">{{ item[3] }} - {{ item[2] }}</h5>
                             <p class="card-text">{{ item[1] }}<br>Expires {{ item[4] }}</p>
                             <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#editModal" class="card-link">Edit</button>
@@ -83,7 +83,7 @@
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form class="modal-content" method="POST" = action="">
+            <form class="modal-content" method="POST" action="">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addModalTitle">Edit Card Info</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

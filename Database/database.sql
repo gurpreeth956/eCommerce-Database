@@ -170,7 +170,7 @@ CREATE TABLE Addresses (
     State VARCHAR(50) NOT NULL,
     Country VARCHAR(50) NOT NULL,
     Zip VARCHAR(5) NOT NULL,
-    PRIMARY KEY (CustomerID, Address1, Address2, State, Country, Zip),
+    PRIMARY KEY (CustomerID, Address1, State, Country, Zip),
 	FOREIGN KEY (CustomerID)
         REFERENCES Customer (CustomerID)
         ON DELETE NO ACTION ON UPDATE CASCADE
@@ -393,5 +393,5 @@ INSERT INTO Returnment VALUES('4444', '1233', '4', 'Balls are broken');
 INSERT INTO Reviews VALUES('368192', '1233', '2', 'It would not turn on');
 INSERT INTO Reviews VALUES('592134', '18332', '5', 'It\'s pretty good');
 
-INSERT INTO Cards VALUES('7', 'Gurppp', '1111111111', 'VISA', '2020-11-25');
-INSERT INTO Cards VALUES('7', 'NotGurp', '1111111111', 'VISA', '2021-01-15');
+#INSERT INTO Cards VALUES('7', 'Gurppp', '1111111111', 'VISA', '2020-11-25');
+#INSERT INTO Cards VALUES('7', 'NotGurp', '1111111111', 'VISA', '2021-01-15');

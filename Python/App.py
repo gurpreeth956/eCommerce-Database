@@ -75,12 +75,14 @@ def checkout():
     ordersuccessful = False
     items = None
     cards = None
+    addresses = None
     quantity = 0
     total = 0
     discount = 0
     shipment = 5
     addbtn = True
     cardValue = [None, None, None, None]
+    addressValue = [None, None, None, None, None]
 
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
@@ -122,6 +124,11 @@ def checkout():
         query = "SELECT CustomerID, CardName, CardNum, CardComp, CardExp FROM Cards WHERE CustomerID = %s"
         cursor.execute(query, loggedinid)
         cards = cursor.fetchall()
+
+        # Get customer addresses
+        query = "SELECT CustomerID, Address1, Address2, State, Country, Zip FROM Addresses WHERE CustomerID = %s"
+        cursor.execute(query, loggedinid)
+        addresses = cursor.fetchall()
     except Exception:
         print('Could not get shopping cart and/or address/cards data')
     finally:
@@ -202,6 +209,13 @@ def checkout():
             cardValue[1] = request.form['selectedcardnum']
             cardValue[2] = request.form['selectedcardexp']
             cardValue[3] = request.form['selectedcardcomp']
+        elif 'addressselect' in request.form:
+            addressValue = [0, 0, 0, 0, 0]
+            addressValue[0] = request.form['selectedaddress1']
+            addressValue[1] = request.form['selectedaddress2']
+            addressValue[2] = request.form['selectedstate']
+            addressValue[3] = request.form['selectedcountry']
+            addressValue[4] = request.form['selectedzip']
         else:
             itemid = request.form['itemid']
             client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
@@ -279,8 +293,8 @@ def checkout():
     if ordersuccessful:
         return redirect('/thankyou.html')
     return render_template('checkout.html', loggedin=loggedinname, items=items, quantity=quantity, total=total,
-                           discount=discount, shipment=shipment, addbtn=addbtn, cards=cards,
-                           cardvalues=cardValue,
+                           discount=discount, shipment=shipment, addbtn=addbtn, cards=cards, addresses=addresses,
+                           cardvalues=cardValue, addressValue=addressValue,
                            title='Shopping Cart', styles='checkout.css', bodyclass='bg-light')
 
 
@@ -310,6 +324,8 @@ def shop():
 @app.route("/item.html", methods=['GET', 'POST'])
 def item():
     global loggedinid
+    reviews = None
+    avgrating = 0
     if request.method == 'POST':
         if 'cart' in request.form:
             itemid = request.form['item']
@@ -330,7 +346,6 @@ def item():
                     "WHERE ItemID = %s AND R.CustomerID = P.ID"
             cursor.execute(query, request.args['id'])
             reviews = cursor.fetchall()
-            avgrating = 0
             for review in reviews:
                 avgrating += review[2]
             avgrating /= len(reviews)
@@ -471,10 +486,48 @@ def premium():
                            styles='wishlist.css', bodyclass='bg-light')
 
 
-@app.route("/address.html")
+@app.route("/address.html", methods=['GET', 'POST'])
 def address():
-    return render_template('address.html', loggedin=loggedinname, title='Address', styles='wishlist.css',
-                           bodyclass='bg-light')
+    results = None
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT CustomerID, Address1, Address2, State, Country, Zip FROM Addresses WHERE CustomerID = %s"
+        cursor.execute(query, loggedinid)
+        results = cursor.fetchall()
+    except Exception:
+        print("Could not retrieve specified Addresses Entity")
+    finally:
+        client.close()
+    if request.method == 'POST':
+        if 'add' in request.form:
+            address = request.form['address']
+            address2 = request.form['address2']
+            state = request.form['state']
+            country = request.form['country']
+            zip = request.form['zip']
+            insertAddresses(loggedinid, address, address2, state, country, zip)
+        elif 'delete' in request.form:
+            address1 = request.form['address1']
+            address2 = request.form['address2']
+            state = request.form['state']
+            country = request.form['country']
+            zip = request.form['zip']
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                cursor = client.cursor()
+                query = "DELETE FROM Addresses WHERE CustomerID = %s AND Address1 = %s" \
+                        "AND State = %s AND Country = %s AND Zip = %s"
+                cursor.execute(query, (loggedinid, address1, state, country, zip))
+                client.commit()
+            except Exception:
+                print("Could not delete Addresses Entity")
+                client.rollback()
+            finally:
+                client.close()
+        return redirect('/address.html')
+    return render_template('address.html', loggedin=loggedinname, items=results, title='Address',
+                           styles='wishlist.css', bodyclass='bg-light')
 
 
 @app.route("/payment.html", methods=['GET', 'POST'])
@@ -487,7 +540,7 @@ def payment():
         cursor.execute(query, loggedinid)
         results = cursor.fetchall()
     except Exception:
-        print("Could not retrieve specified Returnment Entity")
+        print("Could not retrieve specified Cards Entity")
     finally:
         client.close()
     if request.method == 'POST':
@@ -1173,7 +1226,7 @@ def getCardsTuple(customerid, cardname, cardnum, cardcomp, cardexp):
         result = cursor.fetchall()
         return result
     except Exception:
-        print("Could not retrieve specified Reviews Entity")
+        print("Could not retrieve specified Cards Entity")
     finally:
         client.close()
 
@@ -1187,7 +1240,51 @@ def getCardsTable():
         results = cursor.fetchall()
         return results
     except Exception:
-        print("Could not retrieve Reviews Table data")
+        print("Could not retrieve Cards Table data")
+    finally:
+        client.close()
+
+
+# Cards Table
+def insertAddresses(customerid, address1, address2, state, country, zip):
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "INSERT INTO Addresses(CustomerID, Address1, Address2, State, Country, Zip) values(%s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (customerid, address1, address2, state, country, zip))
+        client.commit()
+    except Exception:
+        print("Could not add entity to Addresses Table")
+        client.rollback()
+    finally:
+        client.close()
+
+
+def getAddressesTuple(customerid, address1, state, country, zip):
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT CustomerID, Address1, Address2, State, Country, Zip FROM Addresses " \
+                "WHERE CusotmerID = %s AND Address1 = %s AND State = %s AND Country = %s AND Zip = %s"
+        cursor.execute(query, (customerid, address1, state, country, zip))
+        result = cursor.fetchall()
+        return result
+    except Exception:
+        print("Could not retrieve specified Addresses Entity")
+    finally:
+        client.close()
+
+
+def getAddressesTable():
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT CustomerID, Address1, Address2, State, Country, Zip FROM Addresses"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    except Exception:
+        print("Could not retrieve Addresses Table data")
     finally:
         client.close()
 

@@ -6,18 +6,9 @@
 <div class="container">
 
     <div class="row">
-
-        <div class="col-lg-3">
-            <h1 class="my-4">Shop Name</h1>
-            <div class="list-group">
-                <a href="#" class="list-group-item active">Category 1</a>
-                <a href="#" class="list-group-item">Category 2</a>
-                <a href="#" class="list-group-item">Category 3</a>
-            </div>
-        </div>
         <!-- /.col-lg-3 -->
 
-        <div class="col-lg-9">
+        <div class="col-md-12">
 
             <div class="card mt-4">
                 <img class="card-img-top img-fluid" src="static/images/items/{{ id }}.png" alt="">
@@ -29,7 +20,7 @@
                     <p>
                         {% if loggedin %}
                     <form method="POST">
-                        <input type="hidden" name="item" value={{ id }}>
+                        <input type="hidden" name="item" value="{{ id }}">
                         <input type="submit" class="btn btn-primary" name="cart" value="Add to Cart">
                         <input type="submit" class="btn btn-secondary" name="wishlist" value="Add to Wishlist">
                     </form>
@@ -116,7 +107,7 @@
                         <input type="radio" id="star1" name="rating" value=1 /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
                     </fieldset>
                     <textarea class="form-control" id="reviewArea" rows="5" placeholder="Review Here" name="review" value="{{ request.form.review }}"></textarea>
-                    <input type="hidden" name="itemid" value={{ id }}>
+                    <input type="hidden" name="itemid" value="{{ id }}">
                   </div>
                 </div>
                   <div class="modal-footer">
