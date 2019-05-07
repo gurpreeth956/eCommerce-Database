@@ -11,21 +11,39 @@
 
 <div class="container">
     <form method="POST" action="">
-        <div class="form-group">
-            <label for="inputName" class="sr-only">Name</label>
-            <input type="name" id="inputName" class="form-control" placeholder="Name" name="name"
-                   value="{{ request.form.name }}" required>
-        </div>
-        <div class="form-group">
-            <label for="inputEmail" class="sr-only">Email</label>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Email" name="email"
-                   value="{{ request.form.email }}" required>
-        </div>
-        <div class="form-group">
-            <label for="inputNumber" class="sr-only">Phone Number</label>
-            <input type="number" id="inputNumber" class="form-control" placeholder="Phone Number" name="number"
-                   value="{{ request.form.number }}" required>
-        </div>
+        {% if value[0][0] != None %}
+            <div class="form-group">
+                <label for="inputName" class="sr-only">Name</label>
+                <input type="name" id="inputName" class="form-control" placeholder="Name" name="name"
+                       value="{{ value[0][2] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail" class="sr-only">Email</label>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email" name="email"
+                       value="{{ value[0][1] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="inputNumber" class="sr-only">Phone Number</label>
+                <input type="number" id="inputNumber" class="form-control" placeholder="Phone Number" name="number"
+                       value="{{ value[0][4] }}" required>
+            </div>
+        {% else %}
+            <div class="form-group">
+                <label for="inputName" class="sr-only">Name</label>
+                <input type="name" id="inputName" class="form-control" placeholder="Name" name="name"
+                       value="{{ request.form.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail" class="sr-only">Email</label>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email" name="email"
+                       value="{{ request.form.email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="inputNumber" class="sr-only">Phone Number</label>
+                <input type="number" id="inputNumber" class="form-control" placeholder="Phone Number" name="number"
+                       value="{{ request.form.number }}" required>
+            </div>
+        {% endif %}
         <h4>Change Password</h4>
         <div class="form-group">
             <label for="inputPassword" class="sr-only">Old Password</label>

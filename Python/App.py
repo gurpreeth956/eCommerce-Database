@@ -578,6 +578,7 @@ def payment():
 @app.route("/settings.html", methods=['GET', 'POST'])
 def settings():
     global loggedinid, loggedinname, lastorderid, employee
+    result = [[None, None, None, None, None, None, None]]
     if request.method == 'POST':
         if 'delete' in request.form:
             client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
@@ -630,8 +631,8 @@ def settings():
         result = getPersonTuple(loggedinid)
     else:
         return redirect('/')
-    return render_template('settings.html', employee=employee, loggedin=loggedinname, value=result, title='Settings', styles='settings.css',
-                           bodyclass='bg-light')
+    return render_template('settings.html', employee=employee, loggedin=loggedinname, value=result,
+                           title='Settings', styles='settings.css', bodyclass='bg-light')
 
 
 @app.route("/returns.html")
