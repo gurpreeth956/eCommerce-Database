@@ -45,9 +45,11 @@ def insertOrders():
     #try:
     cursor = client.cursor()
     newmem = 'Y'
-    query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item " \
-            "WHERE Quantity <> 0"
+    query = "UPDATE Item SET Quantity = 5, Price = 5, ItemType = 's', Seller = 't', " \
+            "ItemDesc = 'what', Category = 'rrr' WHERE ItemID = 1"
     cursor.execute(query)
+
+    client.commit()
     results = cursor.fetchall()
     for row in results:
         print(row[0])

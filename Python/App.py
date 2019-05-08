@@ -321,10 +321,10 @@ def shop():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item WHERE Quantity <> 0"
+        query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller, Category FROM Item WHERE Quantity <> 0"
         cursor.execute(query)
         if 'category' in request.args:
-            query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item " \
+            query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller, Category FROM Item " \
                     "WHERE Quantity <> 0 AND Category = %s"
             cursor.execute(query, request.args['category'])
         result = cursor.fetchall()
@@ -361,6 +361,7 @@ def shop():
                 client.commit()
             except Exception:
                 print("Can not delete discount entity")
+                client.rollback()
             finally:
                 client.close()
         return redirect('/shop.html')
@@ -385,6 +386,42 @@ def item():
             rating = request.form['rating']
             review = request.form['review']
             insertReview(loggedinid, itemid, rating, review)
+        elif 'deleteitem' in request.form:
+            itemid = request.form['item']
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                cursor = client.cursor()
+                query = "UPDATE Item SET Quantity = 0 WHERE ItemID = %s"
+                cursor.execute(query, itemid)
+                client.commit()
+            except Exception:
+                print("Can not update item information")
+                client.rollback()
+            finally:
+                client.close()
+                return redirect('/shop.html')
+        elif 'edititem' in request.form:
+            itemid = request.form['id']
+            quantity = request.form['quantity']
+            price = request.form['price']
+            type = request.form['name']
+            seller = request.form['seller']
+            desc = request.form['desc']
+            category = request.form['category']
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                print(type, quantity)
+                cursor = client.cursor()
+                query = "UPDATE Item SET Quantity = %s, Price = %s, ItemType = %s, Seller = %s, " \
+                        "ItemDesc = %s, Category = %s WHERE ItemID = %s"
+                cursor.execute(query, (quantity, price, type, seller, desc, category, itemid))
+                client.commit()
+            except Exception:
+                print("Can not update item information")
+                client.rollback()
+            finally:
+                client.close()
+                return redirect('/shop.html')
     if 'type' and 'price' and 'desc' and 'id' in request.args:
         client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
         try:
@@ -401,9 +438,10 @@ def item():
             print("Could not retrieve Reviews Table data")
         finally:
             client.close()
-        return render_template('item.html', employee=employee, rating=avgrating, reviews=reviews, type=request.args['type'], price=request.args['price'],
-                               desc=request.args['desc'], id=request.args['id'], loggedin=loggedinname,
-                               title=request.args['type'], styles='item.css', bodyclass='bg-light')
+        return render_template('item.html', employee=employee, rating=avgrating, reviews=reviews, type=request.args['type'],
+                               price=request.args['price'], desc=request.args['desc'], id=request.args['id'],
+                               category=request.args['category'], seller=request.args['seller'], quantity=request.args['quantity'],
+                               loggedin=loggedinname, title=request.args['type'], styles='item.css', bodyclass='bg-light')
     return render_template('item.html', loggedin=loggedinname, title='[Item Name]', styles='item.css', bodyclass='bg-light')
 
 
@@ -480,6 +518,7 @@ def wishlist():
                 client.commit()
             except Exception:
                 print("Can not delete wishlist entity")
+                client.rollback()
             finally:
                 client.close()
     result = None
@@ -527,6 +566,7 @@ def premium():
             client.commit()
         except Exception:
             print("Can not update membership information")
+            client.rollback()
         finally:
             client.close()
         return redirect('/profile.html')
@@ -655,20 +695,13 @@ def settings():
                     cursor = client.cursor()
                     query = "UPDATE Customer SET Userpass = %s WHERE CustomerID = %s"
                     cursor.execute(query, (newPassword, loggedinid))
-                    client.commit()
-                except Exception:
-                    print("Can not update Customer information")
-                finally:
-                    client.close()
-                client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
-                try:
-                    cursor = client.cursor()
                     query = "UPDATE Person SET Email = %s, Named = %s, Phone = %s WHERE ID = %s"
                     cursor.execute(query, (email, name, number, loggedinid))
                     client.commit()
                     loggedinname = name
                 except Exception:
-                        print("Can not update Person information")
+                    print("Can not update Customer information")
+                    client.rollback()
                 finally:
                     client.close()
             return redirect('/profile.html')

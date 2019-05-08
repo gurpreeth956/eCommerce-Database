@@ -14,7 +14,7 @@
                 <img class="card-img-top img-fluid" src="static/images/items/{{ id }}.png" alt="">
                 <div class="card-body">
                     {% if type %}
-                    <h3 class="card-title">{{ type }}</h3>
+                    <h3 class="card-title">{{ type }} - {{ seller }}</h3>
                     <h4>${{ price }}</h4>
                     <p class="card-text">{{ desc }}</p>
                     <p>
@@ -28,10 +28,12 @@
                     {% endif %}
                     {% endif %}
                     {% if employee %}
-                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal">Edit
-                        Item
-                    </button>
-                    <button type="button" class="btn btn-danger">Delete Item</button>
+                        <form method="POST">
+                            <input type="hidden" name="item" value="{{ id }}">
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal">
+                                Edit Item</button>
+                            <button type="submit" name="deleteitem" class="btn btn-danger">Delete Item</button>
+                        </form>
                     {% endif %}
                     </p>
                     {% else %}
@@ -84,7 +86,6 @@
         <!-- /.col-lg-9 -->
 
     </div>
-
 </div>
 
 <!-- Review Modal -->
@@ -125,7 +126,8 @@
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <form class="modal-content" method="POST" action="">
+            <input type="hidden" name="id" value="{{ id }}">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalTitle">Edit Item</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -133,56 +135,49 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
                     <div class="form-row">
                         <div class="form-group col-md-8">
                             <label for="inputName">Name</label>
-                            <input type="name" class="form-control" id="inputName" placeholder="Name">
+                            <input type="name" class="form-control" id="inputName" placeholder="Name"
+                                   name="name" value="{{ type }}" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="inputPrice">Price</label>
-                            <input type="price" class="form-control" id="inputPrice" placeholder="Price">
+                            <input type="price" class="form-control" id="inputPrice" placeholder="Price"
+                                   name="price" value="{{ price }}" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputSeller">Seller Name</label>
-                        <input type="seller" class="form-control" id="inputSeller" placeholder="Seller Name">
+                        <input type="seller" class="form-control" id="inputSeller" placeholder="Seller Name"
+                                name="seller" value="{{ seller }}" required>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="type">Category</label>
-                            <select class="custom-select d-block w-100" id="type" name="cardType"
-                                    value="{{ request.form.cardType }}" required>
-                                <option value="">Choose...</option>
-                                <option>Shirts</option>
-                                <option>Pants</option>
-                                <option>Shoes</option>
-                            </select>
+                        <div class="form-group col-md-8">
+                            <label for="inputCategory">Category</label>
+                            <input type="text" class="form-control" id="inputCategory"
+                                    name="category" value="{{ category }}" required>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="inputCategory">Image</label>
-                            <div class="custom-file">
-                                <label class="custom-file-label" for="customFile">Image</label>
-                                <input type="file" class="custom-file-input" id="customFile" placeholder="Image">
-                            </div>
-                        </div>
-                        <div class="form-group col-md-2">
                             <label for="inputQuantity">Quantity</label>
-                            <input type="text" class="form-control" id="inputQuantity">
+                            <input type="text" class="form-control" id="inputQuantity"
+                                    name="quantity" value="{{ quantity }}" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-group">
                             <label for="inputReview">Description</label>
-                            <textarea class="form-control" id="inputReview" rows="5" placeholder=""></textarea>
+                            <textarea class="form-control" id="inputReview" rows="5" placeholder=""
+                                name="desc">{{ desc }}</textarea>
                         </div>
                     </div>
-                </form>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="edititem" class="btn btn-primary">Edit Item</button>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Edit Item</button>
-            </div>
+        </form>
         </div>
     </div>
 </div>
