@@ -703,9 +703,62 @@ def thankyou():
                            title='Thank You', styles='thankyou.css', bodyclass='bg-light')
 
 
-@app.route("/pendingorder.html")
+@app.route("/pendingorder.html", methods=['GET', 'POST'])
 def pendingorder():
-    return render_template('pendingorder.html', employee=employee, loggedin=loggedinname, title='Pending Orders', styles='returns.css',
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT OrderNum, CustomerID, OrderDate FROM Orders WHERE Completed = 'N'"
+        cursor.execute(query)
+        orderinfo = cursor.fetchall()
+    except Exception:
+        print("Could not retrieve specified OrderedItems Entity")
+    finally:
+        client.close()
+    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    try:
+        cursor = client.cursor()
+        query = "SELECT A.OrderID, A.ItemID, A.Quantity, I.ItemType, I.Price, I.ItemDesc " \
+                "FROM OrderedItems A, Item I WHERE A.ItemID = I.ItemID"
+        cursor.execute(query)
+        items = cursor.fetchall()
+    except Exception:
+        print("Could not retrieve specified OrderedItems Entity")
+    finally:
+        client.close()
+    shipments = getShipmentTable()
+    orders = []
+    for ordered in orderinfo:
+        order = []
+        order.append(ordered[0])
+        order.append(ordered[1])
+        order.append(ordered[2])
+        itemlist = []
+        total = 0
+        for item in items:
+            if item[0] == order[0]:
+                itemlist.append(item)
+                total += (item[4]*item[2])
+        order.append(itemlist)
+        order.append(total)
+        for shipment in shipments:
+            if shipment[0] == order[0]:
+                order.append(shipment)
+        orders.append(order)
+    if request.method == 'POST':
+        if 'complete' in request.form:
+            orderid = request.form['order']
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                cursor = client.cursor()
+                query = "UPDATE Orders SET Completed = 'Y' WHERE OrderNum = %s"
+                cursor.execute(query, orderid)
+                client.commit()
+            except Exception:
+                print("Can not update Completed in Orders")
+            finally:
+                client.close()
+    return render_template('pendingorder.html', orders=orders, employee=employee, loggedin=loggedinname, title='Pending Orders', styles='returns.css',
                            bodyclass='bg-light')
 
 
@@ -1184,7 +1237,7 @@ def getShipmentTable():
     try:
         cursor = client.cursor()
         query = "SELECT OrderID, Address1, Address2, State, Country, Zip, Fee, Company, ShipName FROM SHIPMENT"
-        cursor.execute(query, orderid)
+        cursor.execute(query)
         results = cursor.fetchall()
         return results
     except Exception:
