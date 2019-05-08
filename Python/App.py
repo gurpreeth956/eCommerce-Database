@@ -316,13 +316,16 @@ def checkout():
 @app.route("/shop.html", methods=['GET', 'POST'])
 def shop():
     global employee
+    result = None
+    category = None
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item"
+        query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item WHERE Quantity <> 0"
         cursor.execute(query)
         if 'category' in request.args:
-            query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item WHERE Category = %s"
+            query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item " \
+                    "WHERE Quantity <> 0 AND Category = %s"
             cursor.execute(query, request.args['category'])
         result = cursor.fetchall()
         query = "SELECT Category FROM Item GROUP BY Category"
@@ -332,9 +335,37 @@ def shop():
         print("Can not retrieve specified Item Entity")
     finally:
         client.close()
-
-    return render_template('shop.html', employee=employee, loggedin=loggedinname, title='Shop', category=category, data=result, styles='',
-                           bodyclass='bg-light')
+    if request.method == 'POST':
+        if 'additem' in request.form:
+            itemtable = getItemTable()
+            itemid = len(itemtable)
+            itemquantity = request.form['itemquantity']
+            itemprice = request.form['itemprice']
+            itemtype = request.form['itemtype']
+            itemseller = request.form['itemseller']
+            itemdesc = request.form['itemdesc']
+            itemcategory = request.form['itemcat']
+            insertItem(itemid, itemquantity, itemprice, itemtype, itemseller, itemdesc, itemcategory)
+        if 'adddis' in request.form:
+            discountid = request.form['discountid']
+            percent = request.form['percent']
+            insertDiscount(discountid, percent, 'Y')
+        if 'deletedis' in request.form:
+            discountidtodelete = request.form['discountidtodelete']
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                invalid = 'N'
+                cursor = client.cursor()
+                query = "UPDATE Discount SET Valid = %s WHERE DiscountID = %s"
+                cursor.execute(query, (invalid, discountidtodelete))
+                client.commit()
+            except Exception:
+                print("Can not delete discount entity")
+            finally:
+                client.close()
+        return redirect('/shop.html')
+    return render_template('shop.html', employee=employee, loggedin=loggedinname, title='Shop', category=category,
+                           data=result, styles='', bodyclass='bg-light')
 
 
 @app.route("/item.html", methods=['GET', 'POST'])
@@ -442,14 +473,13 @@ def wishlist():
             insertShoppingCart(loggedinid, itemid, 1)
         elif 'remove' in request.form:
             client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
-
             try:
                 cursor = client.cursor()
                 query = "DELETE FROM WishList WHERE CustomerID = %s AND ItemID = %s"
                 cursor.execute(query, (loggedinid, itemid))
                 client.commit()
             except Exception:
-                print("Can not retrieve specified information")
+                print("Can not delete wishlist entity")
             finally:
                 client.close()
     result = None
@@ -849,7 +879,7 @@ def insertItem(itemid, quantity, price, itemtype, seller, itemdesc, category):
     try:
         cursor = client.cursor()
         query = "INSERT INTO Item(ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category) \
-            values(%s, %s, %s, %s, %s, %s)"
+            values(%s, %s, %s, %s, %s, %s, %s)"
         cursor.execute(query, (itemid, quantity, price, itemtype, seller, itemdesc, category))
         client.commit()
     except Exception:
@@ -975,12 +1005,12 @@ def getWishListTable():
 
 
 # Discount Table
-def insertDiscount(discountid, discountprice, excdate):
+def insertDiscount(discountid, discountpercent, valid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO Discount(DiscountID, DiscountPrice, ExpDate) values(%s, %s, %s)"
-        cursor.execute(query, (discountid, discountprice, excdate))
+        query = "INSERT INTO Discount(DiscountID, DiscountPercent, Valid) values(%s, %s, %s)"
+        cursor.execute(query, (discountid, discountpercent, valid))
         client.commit()
     except Exception:
         print("Could not add entity to Discount Table")
@@ -993,7 +1023,7 @@ def getDiscountTuple(discountid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT DiscountID, DiscountPrice, ExpDate FROM Discount WHERE DiscountID = %s"
+        query = "SELECT DiscountID, DiscountPercent, Valid FROM Discount WHERE DiscountID = %s"
         cursor.execute(query, discountid)
         result = cursor.fetchall()
         return result
@@ -1007,7 +1037,7 @@ def getDiscountTable():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT DiscountID, DiscountPrice, ExpDate FROM Discount"
+        query = "SELECT DiscountID, DiscountPercent, Valid FROM Discount"
         cursor.execute(query)
         results = cursor.fetchall()
         return results

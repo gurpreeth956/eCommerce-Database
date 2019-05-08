@@ -45,13 +45,12 @@ def insertOrders():
     #try:
     cursor = client.cursor()
     newmem = 'Y'
-    query = "SELECT R.OrderID, R.ItemID, R.Quantity, R.Comments, I.ItemType, I.Price " \
-            "FROM Returnment R, Orders O, Item I " \
-            "WHERE O.OrderNum = R.OrderID AND O.CustomerID = %s AND I.ItemID = R.ItemID"
+    query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller FROM Item " \
+            "WHERE Quantity <> 0"
     cursor.execute(query)
     results = cursor.fetchall()
     for row in results:
-        print(row[0], row[1], row[2], row[3], row[4], row[5])
+        print(row[0])
     #except Exception:
      #   print("Could not add entity to Orders Table")
      #   client.rollback()

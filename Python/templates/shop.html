@@ -17,12 +17,15 @@
             </div>
 
             {% if employee %}
-            <button style="margin-top:1rem;" data-toggle="modal" data-target="#addItemModal" type="button"
-                    class="btn btn-success btn-lg">Add Item
-            </button>
-            <button style="margin-top:1rem;" data-toggle="modal" data-target="#addDiscountModal" type="button"
-                    class="btn btn-primary btn-lg">Add Discount
-            </button>
+                <button style="margin-top:1rem;" data-toggle="modal" data-target="#addItemModal" type="submit" name
+                        class="btn btn-success btn-lg">Add Item
+                </button>
+                <button style="margin-top:1rem;" data-toggle="modal" data-target="#addDiscountModal" type="button"
+                        class="btn btn-primary btn-lg">Add Discount
+                </button>
+                <button style="margin-top:1rem;" data-toggle="modal" data-target="#deleteDiscountModal" type="button"
+                        class="btn btn-danger">Delete Discount
+                </button>
             {% endif %}
 
         </div>
@@ -87,7 +90,7 @@
 <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalTitle"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <form class="modal-content" method="POST" action="">
             <div class="modal-header">
                 <h5 class="modal-title" id="addItemModalTitle">Add Item</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -95,57 +98,60 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
                     <div class="form-row">
                         <div class="form-group col-md-8">
                             <label for="inputName">Name</label>
-                            <input type="name" class="form-control" id="inputName" placeholder="Name">
+                            <input type="name" class="form-control" id="inputName" placeholder="Name"
+                                    name="itemname" value="{{ request.form.itemname }}" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="inputPrice">Price</label>
-                            <input type="price" class="form-control" id="inputPrice" placeholder="Price">
+                            <input type="price" class="form-control" id="inputPrice" placeholder="Price"
+                                    name="itemprice" value="{{ request.form.itemprice }}" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputSeller">Seller Name</label>
-                        <input type="seller" class="form-control" id="inputSeller" placeholder="Seller Name">
+                        <input type="seller" class="form-control" id="inputSeller" placeholder="Seller Name"
+                                name="itemseller" value="{{ request.form.itemseller }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputType">Item Name</label>
+                        <input type="type" class="form-control" id="inputType" placeholder="Item Name"
+                               name="itemtype" value="{{ request.form.itemtype }}" required>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="type">Category</label>
-                            <select class="custom-select d-block w-100" id="type" name="cardType"
-                                    value="{{ request.form.cardType }}" required>
-                                <option value="">Choose...</option>
-                                <option>Shirts</option>
-                                <option>Pants</option>
-                                <option>Shoes</option>
-                            </select>
-                        </div>
                         <div class="form-group col-md-4">
+                            <label for="inputCategory">Category</label>
+                            <input type="type" class="form-control" id="inputCategory" placeholder="Category"
+                                    name="itemcat" value="{{ request.form.itemcat }}" required>
+                        </div>
+                        <!--<div class="form-group col-md-4">
                             <label for="customFile">Image</label>
                             <div class="custom-file">
                                 <label class="custom-file-label" for="customFile">Image</label>
                                 <input type="file" class="custom-file-input" id="customFile" placeholder="Image">
                             </div>
-                        </div>
+                        </div>-->
                         <div class="form-group col-md-2">
                             <label for="inputQuantity">Quantity</label>
-                            <input type="text" class="form-control" id="inputQuantity">
+                            <input type="text" class="form-control" id="inputQuantity"
+                                    name="itemquantity" value="{{ request.form.itemquantity }}" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-group">
                             <label for="inputReview">Description</label>
-                            <textarea class="form-control" id="inputReview" rows="5" placeholder=""></textarea>
+                            <textarea class="form-control" id="inputReview" rows="5" placeholder=""
+                                    name="itemdesc" value="{{ request.form.itemdesc }}"></textarea>
                         </div>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add Item</button>
+                <button type="submit" name="additem" class="btn btn-primary">Add Item</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -154,7 +160,7 @@
 <div class="modal fade" id="addDiscountModal" tabindex="-1" role="dialog" aria-labelledby="addDiscountModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <form class="modal-content" method="POST" action="">
             <div class="modal-header">
                 <h5 class="modal-title" id="addDiscountModalLabel">Add Discount</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -162,23 +168,54 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
                     <div class="form-row">
-                        <div class="form-group col-md-8">
+                        <div class="form-group col-md-6">
                             <label for="inputCode">Code</label>
-                            <input type="code" class="form-control" id="inputCode" placeholder="Code">
+                            <input type="code" class="form-control" id="inputCode" placeholder="Code"
+                                    name="discountid" value="{{ request.form.discountid }}" required>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputPercent">Percent Off</label>
-                            <input type="percent" class="form-control" id="inputPercent" placeholder="Percent">
+                        <div class="form-group col-md-6">
+                            <label for="inputPercent">Percent(decimal)</label>
+                            <input type="percent" class="form-control" id="inputPercent" placeholder="Percent Off"
+                                    name="percent" value="{{ request.form.percent }}" required>
                         </div>
                     </div>
-                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="adddis" class="btn btn-primary">Add Discount</button>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add Discount</button>
+        </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteDiscountModal" tabindex="-1" role="dialog" aria-labelledby="deleteDiscountModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form class="modal-content" method="POST" action="">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteDiscountModalLabel">Delete Discount</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="inputCode">Enter Code</label>
+                            <input type="code" class="form-control" id="inputCode" placeholder="Code"
+                                    name="discountidtodelete" value="{{ request.form.discountidtodelete }}" required>
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="deletedis" class="btn btn-danger">Delete Discount</button>
+                </div>
+            </div>
+        </form>
         </div>
     </div>
 </div>

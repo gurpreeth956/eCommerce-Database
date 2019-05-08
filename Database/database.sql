@@ -355,7 +355,7 @@ INSERT INTO Employee VALUES('1', '1111@g.com', NULL, 'secure');
 
 INSERT INTO Item VALUES('1233', '500', '123.00', 'IPhone X', 'Apple', 'A fancy phone', 'Phone');
 INSERT INTO Item VALUES('18332', '90', '90.00', 'Soccer Ball', 'Tottenham', 'A ball that wins nothing', 'Sports');
-INSERT INTO Item VALUES('81234', '200', '10.00', 'Diamond', 'PewDiePie', NULL, 'Gamnig');
+INSERT INTO Item VALUES('81234', '200', '10.00', 'Diamond', 'PewDiePie', NULL, 'Gaming');
 INSERT INTO Item VALUES('1', '20', '50.00', 'Sweater', 'Adidas', 'A gray sweater that will keep you warm and stylish', 'Sweater');
 INSERT INTO Item VALUES('2', '8', '80.00', 'Bayern Jersey', 'Adidas', 'A Bayern Munich home jersey from 2017-2018 season', 'Sports');
 INSERT INTO Item VALUES('3', '5', '120.00', 'Soccer Cleets', 'Nike', 'Black and gold soccer cleets that are durable', 'Sports');
