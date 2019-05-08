@@ -22,11 +22,12 @@ CREATE TABLE Customer (
     
 CREATE TABLE Employee (
     ID INT NOT NULL,
-    EmployeeID INT,
-    Supervisor INT,
-    PRIMARY KEY (EmployeeID),
+    EmployeeEmail VARCHAR(50) NOT NULL,
+    Supervisor VARCHAR(50),
+    Userpass VARCHAR(30) NOT NULL,
+    PRIMARY KEY (EmployeeEmail),
     FOREIGN KEY (Supervisor)
-        REFERENCES Employee (EmployeeID)
+        REFERENCES Employee (EmployeeEmail)
         ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY (ID)
         REFERENCES Person (ID)
@@ -170,7 +171,7 @@ CREATE TABLE Addresses (
     State VARCHAR(50) NOT NULL,
     Country VARCHAR(50) NOT NULL,
     Zip VARCHAR(5) NOT NULL,
-    PRIMARY KEY (CustomerID, Address1, State, Country, Zip),
+    PRIMARY KEY (CustomerID, Address1, , State, Country, Zip),
 	FOREIGN KEY (CustomerID)
         REFERENCES Customer (CustomerID)
         ON DELETE NO ACTION ON UPDATE CASCADE
@@ -341,14 +342,16 @@ INSERT INTO	Person VALUES('592134', 'sam.televi@gmail.com', 'James', '1992-05-14
 INSERT INTO	Person VALUES('845523', 'mars.nasa@gmail.com', 'Tenmond', '2001-11-25', '9179179173', '2017-03-26', 'Y');
 INSERT INTO	Person VALUES('359803', 'plane.wire@gmail.com', 'Rayzin', '1967-10-12', '9179179174', '2018-01-27', 'Y');
 INSERT INTO	Person VALUES('432591', 'thom.sanjr@gmail.com', 'Thomsan', '1912-02-07', '4545454545', '2015-05-15', 'Y');
+INSERT INTO Person VALUES('1', 'gsingh@gmail.com', 'Gur Singh', '1999-01-20', '1234567890', '2019-05-01', 'Y');
 
 INSERT INTO Customer VALUES('368192', 'password', 'N');
 INSERT INTO Customer VALUES('251059', 'wordpass', 'N');
 INSERT INTO Customer VALUES('592134', 'secretive', 'Y');
 
-INSERT INTO Employee VALUES('432591', '7645', NULL);
-INSERT INTO Employee VALUES('845523', '1265', '7645');
-INSERT INTO Employee VALUES('359803', '4552', '7645');
+INSERT INTO Employee VALUES('432591', 'test@g.com', NULL, 'pass');
+INSERT INTO Employee VALUES('845523', 'num2@g.com', 'test@g.com', 'pass');
+INSERT INTO Employee VALUES('359803', 'some@g.com', NULL, 'pass');
+INSERT INTO Employee VALUES('1', '1111@g.com', NULL, 'secure');
 
 INSERT INTO Item VALUES('1233', '500', '123.00', 'IPhone X', 'Apple', 'A fancy phone', 'Phone');
 INSERT INTO Item VALUES('18332', '90', '90.00', 'Soccer Ball', 'Tottenham', 'A ball that wins nothing', 'Sports');

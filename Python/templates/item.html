@@ -19,11 +19,13 @@
                     <p class="card-text">{{ desc }}</p>
                     <p>
                         {% if loggedin %}
-                    <form method="POST">
-                        <input type="hidden" name="item" value="{{ id }}">
-                        <input type="submit" class="btn btn-primary" name="cart" value="Add to Cart">
-                        <input type="submit" class="btn btn-secondary" name="wishlist" value="Add to Wishlist">
-                    </form>
+                    {% if not employee %}
+                        <form method="POST">
+                            <input type="hidden" name="item" value="{{ id }}">
+                            <input type="submit" class="btn btn-primary" name="cart" value="Add to Cart">
+                            <input type="submit" class="btn btn-secondary" name="wishlist" value="Add to Wishlist">
+                        </form>
+                    {% endif %}
                     {% endif %}
                     {% if employee %}
                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal">Edit

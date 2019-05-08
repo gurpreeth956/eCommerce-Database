@@ -16,12 +16,14 @@
                 {% endfor %}
             </div>
 
+            {% if employee %}
             <button style="margin-top:1rem;" data-toggle="modal" data-target="#addItemModal" type="button"
                     class="btn btn-success btn-lg">Add Item
             </button>
             <button style="margin-top:1rem;" data-toggle="modal" data-target="#addDiscountModal" type="button"
                     class="btn btn-primary btn-lg">Add Discount
             </button>
+            {% endif %}
 
         </div>
         <!-- /.col-lg-3 -->

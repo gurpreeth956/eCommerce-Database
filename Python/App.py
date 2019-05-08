@@ -44,12 +44,13 @@ def signup():
 
 @app.route("/signin.html", methods=['GET', 'POST'])
 def login():
-    global loggedinid, loggedinname
+    global loggedinid, loggedinname, employee
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
         client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
         try:
+            # Check if customer
             cursor = client.cursor()
             query = "SELECT P.Email, C.CustomerID, C.Userpass, P.Named FROM Customer C, Person P " \
                     "WHERE C.CustomerID = P.ID"
@@ -59,14 +60,28 @@ def login():
                 if customer[0] == email and customer[2] == password:
                     loggedinid = customer[1]
                     loggedinname = customer[3]
+                    employee = False
                     break
             if loggedinid != None:
                 return redirect('/')
+            else:
+                # Check if employee
+                query = "SELECT E.EmployeeEmail, E.Userpass, P.Named FROM Employee E, Person P WHERE E.ID = P.ID"
+                cursor.execute(query)
+                results = cursor.fetchall()
+                for employee in results:
+                    if employee[0] == email and employee[1] == password:
+                        loggedinid = employee[0]
+                        loggedinname = employee[2]
+                        employee = True
+                        break
+            if loggedinid != None:
+                return redirect('/')
         except Exception:
-            print("Can not retrieve specified Customer Entity")
+            print("Can not retrieve specified Customer/Employee Entity")
         finally:
             client.close()
-    return render_template('signin.html', title='Log In', styles='signin.css', bodyclass='text-center')
+    return render_template('signin.html', employee=employee, title='Log In', styles='signin.css', bodyclass='text-center')
 
 
 @app.route("/checkout.html", methods=['GET', 'POST'])
@@ -640,7 +655,17 @@ def returns():
     global employee
     result = None
     if employee:
-        result = getReturnmentTable()
+        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        try:
+            cursor = client.cursor()
+            query = "SELECT R.OrderID, R.ItemID, R.Quantity, R.Comments, I.ItemType, I.Price " \
+                    "FROM Returnment R, Orders O, Item I WHERE O.OrderNum = R.OrderID AND I.ItemID = R.ItemID"
+            cursor.execute(query)
+            result = cursor.fetchall()
+        except Exception:
+            print("Could not retrieve specified Returnment Entity")
+        finally:
+            client.close()
     else:
         client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
         try:
@@ -776,12 +801,12 @@ def getCustomerTable():
 
 
 # Employee Table
-def insertEmployee(idvar, employeeid, supervisor):
+def insertEmployee(idvar, employeeemail, supervisor, password):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO Employee(ID, EmployeeID, Supervisor) values(%s, %s, %s)"
-        cursor.execute(query, (idvar, employeeid, supervisor))
+        query = "INSERT INTO Employee(ID, EmployeeEmail, Supervisor, Userpass) values(%s, %s, %s, %s)"
+        cursor.execute(query, (idvar, employeeemail, supervisor, password))
         client.commit()
     except Exception:
         print("Could not add entity to Employee Table")
@@ -794,7 +819,7 @@ def getEmployeeTuple(employeeid):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT ID, EmployeeID, Supervisor FROM Employee WHERE EmployeeID = %s"
+        query = "SELECT ID, EmployeeEmail, Supervisor, Userpass FROM Employee WHERE EmployeeEmail = %s"
         cursor.execute(query, employeeid)
         result = cursor.fetchall()
         return result
@@ -808,7 +833,7 @@ def getEmployeeTable():
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "SELECT ID, EmployeeID, Supervisor FROM Employee"
+        query = "SELECT ID, EmployeeEmail, Supervisor, Userpass FROM Employee"
         cursor.execute(query)
         results = cursor.fetchall()
         return results
