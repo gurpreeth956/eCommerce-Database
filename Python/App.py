@@ -422,11 +422,24 @@ def item():
             finally:
                 client.close()
                 return redirect('/shop.html')
+        elif 'deleteReview' in request.form:
+            customerid = request.form['customer']
+            itemid = request.form['reviewitemid']
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                cursor = client.cursor()
+                query = "DELETE FROM Reviews WHERE CustomerID = %s AND ItemID = %s"
+                cursor.execute(query, (customerid, itemid))
+                client.commit()
+            except Exception:
+                print("Can not delete Review")
+            finally:
+                client.close()
     if 'type' and 'price' and 'desc' and 'id' in request.args:
         client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
         try:
             cursor = client.cursor()
-            query = "SELECT R.Comments, P.Named, R.Ratings FROM Reviews R, Person P " \
+            query = "SELECT R.Comments, P.Named, R.Ratings, R.CustomerID FROM Reviews R, Person P " \
                     "WHERE ItemID = %s AND R.CustomerID = P.ID"
             cursor.execute(query, request.args['id'])
             reviews = cursor.fetchall()
@@ -789,6 +802,19 @@ def thankyou():
 
 @app.route("/pendingorder.html", methods=['GET', 'POST'])
 def pendingorder():
+    if request.method == 'POST':
+        if 'complete' in request.form:
+            orderid = request.form['order']
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                cursor = client.cursor()
+                query = "UPDATE Orders SET Completed = 'Y' WHERE OrderNum = %s"
+                cursor.execute(query, orderid)
+                client.commit()
+            except Exception:
+                print("Can not update Completed in Orders")
+            finally:
+                client.close()
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
@@ -829,19 +855,6 @@ def pendingorder():
             if shipment[0] == order[0]:
                 order.append(shipment)
         orders.append(order)
-    if request.method == 'POST':
-        if 'complete' in request.form:
-            orderid = request.form['order']
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
-            try:
-                cursor = client.cursor()
-                query = "UPDATE Orders SET Completed = 'Y' WHERE OrderNum = %s"
-                cursor.execute(query, orderid)
-                client.commit()
-            except Exception:
-                print("Can not update Completed in Orders")
-            finally:
-                client.close()
     return render_template('pendingorder.html', orders=orders, employee=employee, loggedin=loggedinname, title='Pending Orders', styles='returns.css',
                            bodyclass='bg-light')
 
