@@ -67,13 +67,19 @@
                         {% for review in reviews %}
                             <p>{{ review[0] }}</p>
                             <small class="text-muted">Posted by {{ review[1] }}</small>
-                            <button type="button" class="btn btn-danger btn-sm float-right">Delete Review</button>
+                            {% if employee %}
+                                <form method="POST" action="">
+                                    <input type="hidden" name="customer" value="{{ review[3] }}">
+                                    <input type="hidden" name="reviewitemid" value="{{ id }}">
+                                    <input type="submit" class="btn btn-danger btn-sm float-right" name="deleteReview" value="Delete Review">
+                                </form>
+                            {% endif %}
                             <hr>
                         {% endfor %}
                     {% else %}
                     <p> No Reviews Yet</p>
                     {% endif %}
-                    {% if loggedin %}
+                    {% if loggedin and employee == False %}
                         <button type="button" href="#reviewModal" class="btn btn-success" data-toggle="modal"
                                 data-target="#reviewModal">Leave a Review
                         </button>
