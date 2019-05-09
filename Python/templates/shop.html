@@ -100,9 +100,9 @@
             <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col-md-8">
-                            <label for="inputName">Name</label>
-                            <input type="name" class="form-control" id="inputName" placeholder="Name"
-                                    name="itemname" value="{{ request.form.itemname }}" required>
+                            <label for="inputType">Item Name</label>
+                            <input type="type" class="form-control" id="inputType" placeholder="Item Name"
+                                   name="itemtype" value="{{ request.form.itemtype }}" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="inputPrice">Price</label>
@@ -114,11 +114,6 @@
                         <label for="inputSeller">Seller Name</label>
                         <input type="seller" class="form-control" id="inputSeller" placeholder="Seller Name"
                                 name="itemseller" value="{{ request.form.itemseller }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputType">Item Name</label>
-                        <input type="type" class="form-control" id="inputType" placeholder="Item Name"
-                               name="itemtype" value="{{ request.form.itemtype }}" required>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">

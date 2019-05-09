@@ -338,7 +338,7 @@ def shop():
     if request.method == 'POST':
         if 'additem' in request.form:
             itemtable = getItemTable()
-            itemid = len(itemtable)
+            itemid = len(itemtable) + 1
             itemquantity = request.form['itemquantity']
             itemprice = request.form['itemprice']
             itemtype = request.form['itemtype']
