@@ -171,7 +171,7 @@ CREATE TABLE Addresses (
     State VARCHAR(50) NOT NULL,
     Country VARCHAR(50) NOT NULL,
     Zip VARCHAR(5) NOT NULL,
-    PRIMARY KEY (CustomerID, Address1, , State, Country, Zip),
+    PRIMARY KEY (CustomerID, Address1, State, Country, Zip),
 	FOREIGN KEY (CustomerID)
         REFERENCES Customer (CustomerID)
         ON DELETE NO ACTION ON UPDATE CASCADE
