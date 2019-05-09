@@ -141,7 +141,8 @@ CREATE TABLE Returnment (
     ItemID INT,
     Quantity INT,
     Comments VARCHAR(200) NOT NULL,
-    PRIMARY KEY (OrderID , ItemID , Quantity),
+    Approval CHAR(1),
+    PRIMARY KEY (OrderID , ItemID),
     FOREIGN KEY (OrderID)
         REFERENCES OrderedItems (OrderID)
         ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -295,6 +296,25 @@ BEGIN
     END IF;
 END$
 
+#Returnment Approval
+CREATE TRIGGER Insert_Approval BEFORE INSERT ON Returnment
+FOR EACH ROW
+BEGIN
+    IF NEW.Approval NOT IN ('Y', 'N', NULL)
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'Completed must be Y, N, or NULL';
+    END IF;
+END$
+
+CREATE TRIGGER Update_Approval BEFORE UPDATE ON Returnment
+FOR EACH ROW
+BEGIN
+    IF NEW.Approval NOT IN ('Y', 'N', NULL)
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'Updated Approval must be Y, N, or NULL';
+    END IF;
+END$
+
 #Review Ratings
 CREATE TRIGGER Insert_Ratings_1_to_5 BEFORE INSERT ON Reviews
 FOR EACH ROW
@@ -391,7 +411,7 @@ INSERT INTO Shipment VALUES('4444', 'First', 'Second', 'NY', 'USA', '11117', '10
 INSERT INTO Shipment VALUES('21344', 'Queens', 'City', 'NY', 'USA', '33633', '5', 'UPS', 'Bill2');
 INSERT INTO Shipment VALUES('332', 'Sacremento', NULL, 'Cal', 'USA', '11117', '3', 'FEDEX', 'Bill');
 
-INSERT INTO Returnment VALUES('4444', '1233', '4', 'Balls are broken');
+INSERT INTO Returnment VALUES('4444', '1233', '4', 'Balls are broken', NULL);
 
 INSERT INTO Reviews VALUES('368192', '1233', '2', 'It would not turn on');
 INSERT INTO Reviews VALUES('592134', '18332', '5', 'It\'s pretty good');

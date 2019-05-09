@@ -713,16 +713,36 @@ def settings():
                            title='Settings', styles='settings.css', bodyclass='bg-light')
 
 
-@app.route("/returns.html")
+@app.route("/returns.html", methods=['GET', 'POST'])
 def returns():
     global employee
     result = None
     if employee:
+        if request.method == 'POST':
+            orderid = request.form['orderid']
+            itemid = request.form['itemid']
+            approval = 'NULL'
+            if 'reject' in request.form:
+                approval = 'N'
+            elif 'approve' in request.form:
+                approval = 'Y'
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                cursor = client.cursor()
+                query = "UPDATE Returnment SET Approval = %s WHERE OrderID = %s AND ItemID = %s"
+                cursor.execute(query, (approval, orderid, itemid))
+                result = cursor.fetchall()
+                client.commit()
+            except Exception:
+                print("Could not update Approval in Returnment Entity")
+            finally:
+                client.close()
         client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
         try:
             cursor = client.cursor()
-            query = "SELECT R.OrderID, R.ItemID, R.Quantity, R.Comments, I.ItemType, I.Price " \
-                    "FROM Returnment R, Orders O, Item I WHERE O.OrderNum = R.OrderID AND I.ItemID = R.ItemID"
+            query = "SELECT R.OrderID, R.ItemID, R.Quantity, R.Comments, R.Approval, I.ItemType, I.Price, " \
+                    "O.CustomerID, O.OrderDate FROM Returnment R, Orders O, Item I " \
+                    "WHERE O.OrderNum = R.OrderID AND I.ItemID = R.ItemID"
             cursor.execute(query)
             result = cursor.fetchall()
         except Exception:
@@ -733,11 +753,12 @@ def returns():
         client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
         try:
             cursor = client.cursor()
-            query = "SELECT R.OrderID, R.ItemID, R.Quantity, R.Comments, I.ItemType, I.Price " \
+            query = "SELECT R.OrderID, R.ItemID, R.Quantity, R.Comments, I.ItemType, I.Price, R.Approval, O.OrderDate " \
                     "FROM Returnment R, Orders O, Item I " \
                     "WHERE O.OrderNum = R.OrderID AND O.CustomerID = %s AND I.ItemID = R.ItemID"
             cursor.execute(query, loggedinid)
             result = cursor.fetchall()
+            print(result)
         except Exception:
             print("Could not retrieve specified Returnment Entity")
         finally:
@@ -1314,7 +1335,7 @@ def insertReturnment(orderid, itemid, quantity, comments):
     client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
     try:
         cursor = client.cursor()
-        query = "INSERT INTO Returnment(OrderID, ItemID, Quantity, Comments) values(%s, %s, %s, %s)"
+        query = "INSERT INTO Returnment(OrderID, ItemID, Quantity, Comments, Approval) values(%s, %s, %s, %s, NULL)"
         cursor.execute(query, (orderid, itemid, quantity, comments))
         client.commit()
     except Exception:
