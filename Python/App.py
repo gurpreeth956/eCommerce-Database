@@ -422,11 +422,24 @@ def item():
             finally:
                 client.close()
                 return redirect('/shop.html')
+        elif 'deleteReview' in request.form:
+            customerid = request.form['customer']
+            itemid = request.form['reviewitemid']
+            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            try:
+                cursor = client.cursor()
+                query = "DELETE FROM Reviews WHERE CustomerID = %s AND ItemID = %s"
+                cursor.execute(query, (customerid, itemid))
+                client.commit()
+            except Exception:
+                print("Can not delete Review")
+            finally:
+                client.close()
     if 'type' and 'price' and 'desc' and 'id' in request.args:
         client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
         try:
             cursor = client.cursor()
-            query = "SELECT R.Comments, P.Named, R.Ratings FROM Reviews R, Person P " \
+            query = "SELECT R.Comments, P.Named, R.Ratings, R.CustomerID FROM Reviews R, Person P " \
                     "WHERE ItemID = %s AND R.CustomerID = P.ID"
             cursor.execute(query, request.args['id'])
             reviews = cursor.fetchall()
