@@ -15,12 +15,19 @@
                 <li>
                     <a class="nav-item nav-link" href="/shop.html">Shop</a>
                 </li>
-                <li>
-                    <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
-                </li>
+                {% if not employee %}
+                    <li>
+                        <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
+                    </li>
+                {% endif %}
                 <li>
                     <a class="nav-item nav-link" href="/returns.html">Returns</a>
                 </li>
+                {% if employee %}
+                    <li>
+                        <a class="nav-item nav-link" href="/pendingorder.html">Pending Orders</a>
+                    </li>
+                {% endif %}
             </ul>
             {% elif active == 'shop' %}
             <ul class="navbar-nav">
@@ -30,12 +37,19 @@
                 <li>
                     <a class="nav-item nav-link active" href="/shop.html">Shop</a>
                 </li>
-                <li>
-                    <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
-                </li>
+                {% if not employee %}
+                    <li>
+                        <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
+                    </li>
+                {% endif %}
                 <li>
                     <a class="nav-item nav-link" href="/returns.html">Returns</a>
                 </li>
+                {% if employee %}
+                    <li>
+                        <a class="nav-item nav-link" href="/pendingorder.html">Pending Orders</a>
+                    </li>
+                {% endif %}
             </ul>
             {% elif active == 'shoppingcart' %}
             <ul class="navbar-nav">
@@ -45,12 +59,19 @@
                 <li>
                     <a class="nav-item nav-link" href="/shop.html">Shop</a>
                 </li>
-                <li>
-                    <a class="nav-item nav-link active" href="/checkout.html">Shopping Cart</a>
-                </li>
+                {% if not employee %}
+                    <li>
+                        <a class="nav-item nav-link active" href="/checkout.html">Shopping Cart</a>
+                    </li>
+                {% endif %}
                 <li>
                     <a class="nav-item nav-link" href="/returns.html">Returns</a>
                 </li>
+                {% if employee %}
+                    <li>
+                        <a class="nav-item nav-link" href="/pendingorder.html">Pending Orders</a>
+                    </li>
+                {% endif %}
             </ul>
             {% elif active == 'returns' %}
             <ul class="navbar-nav">
@@ -60,11 +81,38 @@
                 <li>
                     <a class="nav-item nav-link" href="/shop.html">Shop</a>
                 </li>
-                <li>
-                    <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
-                </li>
+                {% if not employee %}
+                    <li>
+                        <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
+                    </li>
+                {% endif %}
                 <li>
                     <a class="nav-item nav-link active" href="/returns.html">Returns</a>
+                </li>
+                {% if employee %}
+                    <li>
+                        <a class="nav-item nav-link" href="/pendingorder.html">Pending Orders</a>
+                    </li>
+                {% endif %}
+            </ul>
+            {% elif active == 'pending' %}
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-item nav-link" href="/">Home</a>
+                </li>
+                <li>
+                    <a class="nav-item nav-link" href="/shop.html">Shop</a>
+                </li>
+                {% if not employee %}
+                    <li>
+                        <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a class="nav-item nav-link" href="/returns.html">Returns</a>
+                </li>
+                <li>
+                    <a class="nav-item nav-link active" href="/pendingorder.html">Pending Orders</a>
                 </li>
             </ul>
             {% else %}
@@ -75,12 +123,19 @@
                 <li>
                     <a class="nav-item nav-link" href="/shop.html">Shop</a>
                 </li>
-                <li>
-                    <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
-                </li>
+                {% if not employee %}
+                    <li>
+                        <a class="nav-item nav-link" href="/checkout.html">Shopping Cart</a>
+                    </li>
+                {% endif %}
                 <li>
                     <a class="nav-item nav-link" href="/returns.html">Returns</a>
                 </li>
+                {% if employee %}
+                    <li>
+                        <a class="nav-item nav-link" href="/pendingorder.html">Pending Orders</a>
+                    </li>
+                {% endif %}
             </ul>
             {% endif %}
             {% else %}
@@ -123,27 +178,31 @@
                     {{ loggedin }}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    {% if not employee %}
                     {% if active == 'profile' %}
-                    <a class="dropdown-item active" href="profile.html"><span class="fa fa-user"></span> Profile</a>
-                    <a class="dropdown-item" href="history.html">Orders</a>
-                    <a class="dropdown-item" href="wishlist.html">Wish List</a>
-                    <a class="dropdown-item" href="/?logoff=true">Log Off</a>
-                    {% elif active == 'history' %}
-                    <a class="dropdown-item" href="profile.html"><span class="fa fa-user"></span> Profile</a>
-                    <a class="dropdown-item active" href="history.html">Orders</a>
-                    <a class="dropdown-item" href="wishlist.html">Wish List</a>
-                    <a class="dropdown-item" href="/?logoff=true">Log Off</a>
-                    {% elif active == 'wishlist' %}
-                    <a class="dropdown-item" href="profile.html"><span class="fa fa-user"></span> Profile</a>
-                    <a class="dropdown-item" href="history.html">Orders</a>
-                    <a class="dropdown-item active" href="wishlist.html">Wish List</a>
-                    <a class="dropdown-item" href="/?logoff=true">Log Off</a>
-                    {% else %}
-                    <a class="dropdown-item" href="profile.html"><span class="fa fa-user"></span> Profile</a>
-                    <a class="dropdown-item" href="history.html">Orders</a>
+                        <a class="dropdown-item active" href="profile.html"><span class="fa fa-user"></span> Profile</a>
+                        <a class="dropdown-item" href="history.html">Orders</a>
+                        <a class="dropdown-item" href="wishlist.html">Wish List</a>
+                        <a class="dropdown-item" href="/?logoff=true">Log Off</a>
+                        {% elif active == 'history' %}
+                        <a class="dropdown-item" href="profile.html"><span class="fa fa-user"></span> Profile</a>
+                        <a class="dropdown-item active" href="history.html">Orders</a>
+                        <a class="dropdown-item" href="wishlist.html">Wish List</a>
+                        <a class="dropdown-item" href="/?logoff=true">Log Off</a>
+                        {% elif active == 'wishlist' %}
+                        <a class="dropdown-item" href="profile.html"><span class="fa fa-user"></span> Profile</a>
+                        <a class="dropdown-item" href="history.html">Orders</a>
+                        <a class="dropdown-item active" href="wishlist.html">Wish List</a>
+                        <a class="dropdown-item" href="/?logoff=true">Log Off</a>
+                        {% else %}
+                        <a class="dropdown-item" href="profile.html"><span class="fa fa-user"></span> Profile</a>
+                        <a class="dropdown-item" href="history.html">Orders</a>
 
-                    <a class="dropdown-item" href="wishlist.html">Wish List</a>
-                    <a class="dropdown-item" href="/?logoff=true">Log Off</a>
+                        <a class="dropdown-item" href="wishlist.html">Wish List</a>
+                        <a class="dropdown-item" href="/?logoff=true">Log Off</a>
+                    {% endif %}
+                    {% else %}
+                        <a class="dropdown-item" href="/?logoff=true">Log Off</a>
                     {% endif %}
                 </div>
             </li>

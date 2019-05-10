@@ -24,7 +24,7 @@
                 <small class="text-muted">{{ item[2] }}</small>
                 <p>
                   <form method="POST">
-                  <input type="hidden" name="itemid" value={{ item[4] }}>
+                  <input type="hidden" name="itemid" value="{{ item[4] }}">
                   {% if item[1] < item[5] %}
                     <button type="submit" class="btn btn-primary" name="add">+</button>
                   {% else %}
@@ -53,15 +53,6 @@
               <strong>{{ total }}</strong>
             </li>
           </ul>
-
-            <form class="card p-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Promo code">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-secondary">Redeem</button>
-                    </div>
-                </div>
-            </form>
         </div>
 
         <div class="col-md-8 order-md-1">
@@ -93,54 +84,107 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="address">Address</label>
-                    <input type="text" class="form-control" id="address" placeholder="1234 Main St" name="address"
-                           value="{{ request.form.address }}" required>
-                    <div class="invalid-feedback">
-                        Please enter your shipping address.
+                {% if addressValue[0] != None %}
+                    <div class="mb-3">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" placeholder="1234 Main St" name="address"
+                               value="{{ addressValue[0] }}" required>
+                        <div class="invalid-feedback">
+                            Please enter your shipping address.
+                        </div>
                     </div>
-                </div>
 
-                <div class="mb-3">
-                    <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
-                    <input type="text" class="form-control" id="address2" placeholder="Apartment or suite"
-                           name="address2" value="{{ request.form.address2 }}">
-                </div>
+                    <div class="mb-3">
+                        <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                        <input type="text" class="form-control" id="address2" placeholder="Apartment or suite"
+                               name="address2" value="{{ addressValue[1] }}">
+                    </div>
 
-                <div class="row">
-                    <div class="col-md-5 mb-3">
-                        <label for="country">Country</label>
-                        <select class="custom-select d-block w-100" id="country" name="country"
-                                value="{{ request.form.country }}" required>
-                            <option name="country">United States</option>
-                            <option>Canada</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            Please select a valid country.
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            <label for="country">Country</label>
+                            <select class="custom-select d-block w-100" id="country" name="country"
+                                    value="{{ request.form.country }}" required>
+                                <option value="{{ addressValue[3] }} ">{{ addressValue[3] }}</option>
+                                <option>Canada</option>
+                                <option>United States</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a valid country.
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="state">State</label>
+                            <select class="custom-select d-block w-100" id="state" name="state"
+                                    value="{{ request.form.state }}" required>
+                                <option value="{{ addressValue[2] }} ">{{ addressValue[2] }}</option>
+                                <option>California</option>
+                                <option>New York</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="zip">Zip</label>
+                            <input type="text" class="form-control" id="zip" placeholder="" name="zip"
+                                   value="{{ addressValue[4] }}" required>
+                            <div class="invalid-feedback">
+                                Zip code required.
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="state">State</label>
-                        <select class="custom-select d-block w-100" id="state" name="state"
-                                value="{{ request.form.state }}" required>
-                            <option name="state">Alaska</option>
-                            <option>California</option>
-                            <option>New York</option>
-                        </select>
+                {% else %}
+                    <div class="mb-3">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" placeholder="1234 Main St" name="address"
+                               value="{{ request.form.address }}" required>
                         <div class="invalid-feedback">
-                            Please provide a valid state.
+                            Please enter your shipping address.
                         </div>
                     </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="zip">Zip</label>
-                        <input type="text" class="form-control" id="zip" placeholder="" name="zip"
-                               value="{{ request.form.zip }}" required>
-                        <div class="invalid-feedback">
-                            Zip code required.
+
+                    <div class="mb-3">
+                        <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                        <input type="text" class="form-control" id="address2" placeholder="Apartment or suite"
+                               name="address2" value="{{ request.form.address2 }}">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            <label for="country">Country</label>
+                            <select class="custom-select d-block w-100" id="country" name="country"
+                                    value="{{ request.form.country }}" required>
+                                <option value="">Choose...</option>
+                                <option>Canada</option>
+                                <option>United States</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a valid country.
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="state">State</label>
+                            <select class="custom-select d-block w-100" id="state" name="state"
+                                    value="{{ request.form.state }}" required>
+                                <option value="">Choose...</option>
+                                <option>California</option>
+                                <option>New York</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="zip">Zip</label>
+                            <input type="text" class="form-control" id="zip" placeholder="" name="zip"
+                                   value="{{ request.form.zip }}" required>
+                            <div class="invalid-feedback">
+                                Zip code required.
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
                 <hr class="mb-4">
 
                 <h4 class="mb-3">Shipping address</h4>
@@ -172,54 +216,107 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="address1">Address</label>
-                    <input type="text" class="form-control" id="address1" placeholder="1234 Main St"
-                           name="addressShip" value="{{ request.form.addressShip }}" required>
-                    <div class="invalid-feedback">
-                        Please enter your shipping address.
+                {% if addressValue[0] != None %}
+                    <div class="mb-3">
+                        <label for="address1">Address</label>
+                        <input type="text" class="form-control" id="address1" placeholder="1234 Main St"
+                               name="addressShip" value="{{ addressValue[0] }}" required>
+                        <div class="invalid-feedback">
+                            Please enter your shipping address.
+                        </div>
                     </div>
-                </div>
 
-                <div class="mb-3">
-                    <label for="address3">Address 2 <span class="text-muted">(Optional)</span></label>
-                    <input type="text" class="form-control" id="address3" placeholder="Apartment or suite"
-                           name="address2Ship" value="{{ request.form.address2Ship }}">
-                </div>
+                    <div class="mb-3">
+                        <label for="address3">Address 2 <span class="text-muted">(Optional)</span></label>
+                        <input type="text" class="form-control" id="address3" placeholder="Apartment or suite"
+                               name="address2Ship" value="{{ addressValue[1] }}">
+                    </div>
 
-                <div class="row">
-                    <div class="col-md-5 mb-3">
-                        <label for="country1">Country</label>
-                        <select class="custom-select d-block w-100" id="country1" name="countryShip"
-                                value="{{ request.form.countryShip }}" required>
-                            <option name="country">United States</option>
-                            <option>Canada</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            Please select a valid country.
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            <label for="country1">Country</label>
+                            <select class="custom-select d-block w-100" id="country1" name="countryShip"
+                                    value="{{ request.form.countryShip }}" required>
+                                <option value="{{ addressValue[3] }}">{{ addressValue[3] }}</option>
+                                <option>Canada</option>
+                                <option>United States</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a valid country.
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="state1">State</label>
+                            <select class="custom-select d-block w-100" id="state1" name="stateShip"
+                                    value="{{ request.form.stateShip }}" required>
+                                <option value="{{ addressValue[2] }}">{{ addressValue[2] }}</option>
+                                <option>California</option>
+                                <option>New York</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="zip1">Zip</label>
+                            <input type="text" class="form-control" id="zip1" placeholder="" name="zipShip"
+                                   value="{{ addressValue[4] }}" required>
+                            <div class="invalid-feedback">
+                                Zip code required.
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="state1">State</label>
-                        <select class="custom-select d-block w-100" id="state1" name="stateShip"
-                                value="{{ request.form.stateShip }}" required>
-                            <option name="state">Alaska</option>
-                            <option>California</option>
-                            <option>New York</option>
-                        </select>
+                {% else %}
+                    <div class="mb-3">
+                        <label for="address1">Address</label>
+                        <input type="text" class="form-control" id="address1" placeholder="1234 Main St"
+                               name="addressShip" value="{{ request.form.addressShip }}" required>
                         <div class="invalid-feedback">
-                            Please provide a valid state.
+                            Please enter your shipping address.
                         </div>
                     </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="zip1">Zip</label>
-                        <input type="text" class="form-control" id="zip1" placeholder="" name="zipShip"
-                               value="{{ request.form.zipShip }}" required>
-                        <div class="invalid-feedback">
-                            Zip code required.
+
+                    <div class="mb-3">
+                        <label for="address3">Address 2 <span class="text-muted">(Optional)</span></label>
+                        <input type="text" class="form-control" id="address3" placeholder="Apartment or suite"
+                               name="address2Ship" value="{{ request.form.address2Ship }}">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            <label for="country1">Country</label>
+                            <select class="custom-select d-block w-100" id="country1" name="countryShip"
+                                    value="{{ request.form.countryShip }}" required>
+                                <option value="">Choose...</option>
+                                <option>Canada</option>
+                                <option>United States</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a valid country.
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="state1">State</label>
+                            <select class="custom-select d-block w-100" id="state1" name="stateShip"
+                                    value="{{ request.form.stateShip }}" required>
+                                <option value="">Choose...</option>
+                                <option>California</option>
+                                <option>New York</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="zip1">Zip</label>
+                            <input type="text" class="form-control" id="zip1" placeholder="" name="zipShip"
+                                   value="{{ request.form.zipShip }}" required>
+                            <div class="invalid-feedback">
+                                Zip code required.
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
 
                 <hr class="mb-4">
                 <div class="float-left">
@@ -272,7 +369,7 @@
                         <label for="type">Card Type</label>
                         <select class="custom-select d-block w-100" id="type" name="cardType"
                                 value="{{ cardvalues[3] }}" required>
-                            <option value="">Choose...</option>
+                            <option value="{{ cardvalues[3] }}">{{ cardvalues[3] }}</option>
                             <option>Visa</option>
                             <option>Discover</option>
                             <option>MasterCard</option>
@@ -352,48 +449,26 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
+                    {% if addresses != None %}
+                        {% for item in addresses %}
                         <div class="col-md-6">
                             <div class="card mb-4" style="width: 18rem;">
                                 <div class="card-body">
-                                    <h5 class="card-title">Thanos Purpleman</h5>
-                                    <p class="card-text">100 Thanos Farm</br>Squash Patch, Farm State</br>Thanos
-                                        Country</p>
-                                    <button type="button" class="btn btn-primary">Select Address</button>
+                                    <form method="POST">
+                                    <h5 class="card-title">{{ item[1] }}</h5>
+                                    <p class="card-text">{{ item[2] }}</br>{{ item[3] }}</br> {{ item[4] }}</br>{{ item[5] }}</p>
+                                        <input type="hidden" name="selectedaddress1" value="{{ item[1] }}">
+                                        <input type="hidden" name="selectedaddress2" value="{{ item[2] }}">
+                                        <input type="hidden" name="selectedstate" value="{{ item[3] }}">
+                                        <input type="hidden" name="selectedcountry" value="{{ item[4] }}">
+                                        <input type="hidden" name="selectedzip" value="{{ item[5] }}">
+                                    <button type="submit" name="addressselect" class="btn btn-primary">Select Address</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card mb-4" style="width: 18rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Thanos Purpleman</h5>
-                                    <p class="card-text">100 Thanos Farm</br>Squash Patch, Farm State</br>Thanos
-                                        Country</p>
-                                    <button type="button" class="btn btn-primary">Select Address</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card mb-4" style="width: 18rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Thanos Purpleman</h5>
-                                    <p class="card-text">100 Thanos Farm</br>Squash Patch, Farm State</br>Thanos
-                                        Country</p>
-                                    <button type="button" class="btn btn-primary">Select Address</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card mb-4" style="width: 18rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Thanos Purpleman</h5>
-                                    <p class="card-text">100 Thanos Farm</br>Squash Patch, Farm State</br>Thanos
-                                        Country</p>
-                                    <button type="button" class="btn btn-primary">Select Address</button>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
+                    {% endif %}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -425,10 +500,10 @@
                                     <form method="POST">
                                         <h5 class="card-title">{{ item[3] }} - {{ item[2] }}</h5>
                                         <p class="card-text">{{ item[1] }}<br>Expires {{ item[4] }}</p>
-                                        <input type="hidden" name="selectedcardname" value={{ item[1] }}>
-                                        <input type="hidden" name="selectedcardnum" value={{ item[2] }}>
-                                        <input type="hidden" name="selectedcardcomp" value={{ item[3] }}>
-                                        <input type="hidden" name="selectedcardexp" value={{ item[4] }}>
+                                        <input type="hidden" name="selectedcardname" value="{{ item[1] }}">
+                                        <input type="hidden" name="selectedcardnum" value="{{ item[2] }}">
+                                        <input type="hidden" name="selectedcardcomp" value="{{ item[3] }}">
+                                        <input type="hidden" name="selectedcardexp" value="{{ item[4] }}">
                                         <button type="submit" class="btn btn-primary" name="cardselect">Select Card</button>
                                     </form>
                                 </div>
@@ -446,13 +521,6 @@
     </div>
 </div>
 
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden
-            2019</p>
-    </div>
-    <!-- /.container -->
-</footer>
 {% endblock content %}
 
 

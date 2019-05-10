@@ -12,36 +12,29 @@
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <div class="card mb-4" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Thanos Purpleman</h5>
-                        <p class="card-text">100 Thanos Farm</br>Squash Patch, Farm State</br>Thanos Country</p>
-                        <a data-toggle="modal" data-target="#editModal" href="#" class="card-link">Edit</a>
-                        <a href="#" class="card-link">Delete</a>
+            {% if items != None %}
+                {% for item in items %}
+                <div class="col-md-4">
+                    <div class="card mb-4" style="width: 18rem;">
+                        <div class="card-body">
+                            <form method="POST">
+                                <input type="hidden" name="address1" value="{{ item[1] }}">
+                                <input type="hidden" name="address2" value="{{ item[2] }}">
+                                <input type="hidden" name="state" value="{{ item[3] }}">
+                                <input type="hidden" name="country" value="{{ item[4] }}">
+                                <input type="hidden" name="zip" value="{{ item[5] }}">
+
+                                <h5 class="card-title">{{ item[1] }}</h5>
+                                <p class="card-text">{{ item[2] }}</br>{{ item[3] }}</br>{{ item[4] }}</br>{{ item[5] }}</p>
+                                <button class="btn btn-secondary btn-sm" name="delete" type="submit" class="card-link">Delete</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card mb-4" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Thanos Purpleman</h5>
-                        <p class="card-text">100 Thanos Farm</br>Squash Patch, Farm State</br>Thanos Country</p>
-                        <a data-toggle="modal" data-target="#editModal" href="#" class="card-link">Edit</a>
-                        <a href="#" class="card-link">Delete</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card mb-4" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Thanos Purpleman</h5>
-                        <p class="card-text">100 Thanos Farm</br>Squash Patch, Farm State</br>Thanos Country</p>
-                        <a data-toggle="modal" data-target="#editModal" href="#" class="card-link">Edit</a>
-                        <a href="#" class="card-link">Delete</a>
-                    </div>
-                </div>
-            </div>
+                {% endfor %}
+            {% else %}
+                <p> No current saved addresses</p>
+            {% endif %}
         </div>
         <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#addModal">Add Address
         </button>
@@ -110,64 +103,65 @@
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addModalTitle">Add Address</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
+        <form class="modal-content" method="POST" action="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalTitle">Add Address</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
                     <div class="form-group">
-                        <label for="inputCountry2" class="sr-only">Country</label>
-                        <input type="country" id="inputCountry2" class="form-control" placeholder="Country"
-                               name="country" value="{{ request.form.country }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputName2" class="sr-only">Full Name</label>
-                        <input type="name" id="inputName2" class="form-control" placeholder="Full Name" name="name"
-                               value="{{ request.form.name }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputAddress2" class="sr-only">Street Address</label>
-                        <input type="address" id="inputAddress2" class="form-control" placeholder="Street Address"
+                        <label for="inputAddress1" class="sr-only">Street Address</label>
+                        <input type="address" id="inputAddress1" class="form-control" placeholder="Street Address"
                                name="address" value="{{ request.form.address }}" required>
-                        <label for="inputApartment2" class="sr-only">Apartment, suite, unit, building, floor,
-                            ect.</label>
-                        <input type="apartment" id="inputApartment2" class="form-control"
-                               placeholder="Apartment, suite, unit, building, floor, ect." name="apartment"
-                               value="{{ request.form.apartment }}" required>
+                        <div class="invalid-feedback">
+                            Please select a valid address.
+                        </div>
+                        <label for="inputAddress2" class="sr-only">Apartment, floor, ect. (Optional)</label>
+                        <input type="apartment" id="inputAddress2" class="form-control"
+                               placeholder="Apartment, floor, ect. (Optional)" name="address2"
+                               value="{{ request.form.address2 }}">
                     </div>
                     <div class="form-group">
-                        <label for="inputCity2" class="sr-only">City</label>
-                        <input type="city" id="inputCity2" class="form-control" placeholder="City" name="city"
-                               value="{{ request.form.city }}" required>
+                        <label for="state1">State</label>
+                        <select class="custom-select d-block w-100" id="state1" name="state"
+                                value="{{ request.form.state }}" required>
+                            <option name="state">Alaska</option>
+                            <option>California</option>
+                            <option>New York</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please provide a valid state.
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputState2" class="sr-only">State</label>
-                        <input type="state" id="inputState2" class="form-control" placeholder="State" name="country"
-                               value="{{ request.form.state }}" required>
+                        <label for="country1">Country</label>
+                        <select class="custom-select d-block w-100" id="country1" name="country"
+                                value="{{ request.form.country }}" required>
+                            <option name="country">United States</option>
+                            <option>Canada</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a valid country.
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="inputZip2" class="sr-only">Zip Code</label>
                         <input type="zip" id="inputZip2" class="form-control" placeholder="Zip Code" name="zip"
                                value="{{ request.form.zip }}" required>
+                        <div class="invalid-feedback">
+                            Please select a valid zip code.
+                        </div>
                     </div>
-                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button name="add" type="submit" class="btn btn-primary">Add Address</button>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add Address</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
-<!-- Footer -->
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
-    </div>
-    <!-- /.container -->
-</footer>
 {% endblock content %}

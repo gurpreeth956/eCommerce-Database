@@ -22,11 +22,12 @@ CREATE TABLE Customer (
     
 CREATE TABLE Employee (
     ID INT NOT NULL,
-    EmployeeID INT,
-    Supervisor INT,
-    PRIMARY KEY (EmployeeID),
+    EmployeeEmail VARCHAR(50) NOT NULL,
+    Supervisor VARCHAR(50),
+    Userpass VARCHAR(30) NOT NULL,
+    PRIMARY KEY (EmployeeEmail),
     FOREIGN KEY (Supervisor)
-        REFERENCES Employee (EmployeeID)
+        REFERENCES Employee (EmployeeEmail)
         ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY (ID)
         REFERENCES Person (ID)
@@ -140,7 +141,8 @@ CREATE TABLE Returnment (
     ItemID INT,
     Quantity INT,
     Comments VARCHAR(200) NOT NULL,
-    PRIMARY KEY (OrderID , ItemID , Quantity),
+    Approval CHAR(1),
+    PRIMARY KEY (OrderID , ItemID),
     FOREIGN KEY (OrderID)
         REFERENCES OrderedItems (OrderID)
         ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -170,7 +172,7 @@ CREATE TABLE Addresses (
     State VARCHAR(50) NOT NULL,
     Country VARCHAR(50) NOT NULL,
     Zip VARCHAR(5) NOT NULL,
-    PRIMARY KEY (CustomerID, Address1, Address2, State, Country, Zip),
+    PRIMARY KEY (CustomerID, Address1, State, Country, Zip),
 	FOREIGN KEY (CustomerID)
         REFERENCES Customer (CustomerID)
         ON DELETE NO ACTION ON UPDATE CASCADE
@@ -294,6 +296,25 @@ BEGIN
     END IF;
 END$
 
+#Returnment Approval
+CREATE TRIGGER Insert_Approval BEFORE INSERT ON Returnment
+FOR EACH ROW
+BEGIN
+    IF NEW.Approval NOT IN ('Y', 'N', NULL)
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'Completed must be Y, N, or NULL';
+    END IF;
+END$
+
+CREATE TRIGGER Update_Approval BEFORE UPDATE ON Returnment
+FOR EACH ROW
+BEGIN
+    IF NEW.Approval NOT IN ('Y', 'N', NULL)
+    THEN
+        SIGNAL SQLSTATE '45000' SET message_text = 'Updated Approval must be Y, N, or NULL';
+    END IF;
+END$
+
 #Review Ratings
 CREATE TRIGGER Insert_Ratings_1_to_5 BEFORE INSERT ON Reviews
 FOR EACH ROW
@@ -341,18 +362,20 @@ INSERT INTO	Person VALUES('592134', 'sam.televi@gmail.com', 'James', '1992-05-14
 INSERT INTO	Person VALUES('845523', 'mars.nasa@gmail.com', 'Tenmond', '2001-11-25', '9179179173', '2017-03-26', 'Y');
 INSERT INTO	Person VALUES('359803', 'plane.wire@gmail.com', 'Rayzin', '1967-10-12', '9179179174', '2018-01-27', 'Y');
 INSERT INTO	Person VALUES('432591', 'thom.sanjr@gmail.com', 'Thomsan', '1912-02-07', '4545454545', '2015-05-15', 'Y');
+INSERT INTO Person VALUES('1', 'gsingh@gmail.com', 'Gur Singh', '1999-01-20', '1234567890', '2019-05-01', 'Y');
 
 INSERT INTO Customer VALUES('368192', 'password', 'N');
 INSERT INTO Customer VALUES('251059', 'wordpass', 'N');
 INSERT INTO Customer VALUES('592134', 'secretive', 'Y');
 
-INSERT INTO Employee VALUES('432591', '7645', NULL);
-INSERT INTO Employee VALUES('845523', '1265', '7645');
-INSERT INTO Employee VALUES('359803', '4552', '7645');
+INSERT INTO Employee VALUES('432591', 'test@g.com', NULL, 'pass');
+INSERT INTO Employee VALUES('845523', 'num2@g.com', 'test@g.com', 'pass');
+INSERT INTO Employee VALUES('359803', 'some@g.com', NULL, 'pass');
+INSERT INTO Employee VALUES('1', '1111@g.com', NULL, 'secure');
 
 INSERT INTO Item VALUES('1233', '500', '123.00', 'IPhone X', 'Apple', 'A fancy phone', 'Phone');
 INSERT INTO Item VALUES('18332', '90', '90.00', 'Soccer Ball', 'Tottenham', 'A ball that wins nothing', 'Sports');
-INSERT INTO Item VALUES('81234', '200', '10.00', 'Diamond', 'PewDiePie', NULL, 'Gamnig');
+INSERT INTO Item VALUES('81234', '200', '10.00', 'Diamond', 'PewDiePie', NULL, 'Gaming');
 INSERT INTO Item VALUES('1', '20', '50.00', 'Sweater', 'Adidas', 'A gray sweater that will keep you warm and stylish', 'Sweater');
 INSERT INTO Item VALUES('2', '8', '80.00', 'Bayern Jersey', 'Adidas', 'A Bayern Munich home jersey from 2017-2018 season', 'Sports');
 INSERT INTO Item VALUES('3', '5', '120.00', 'Soccer Cleets', 'Nike', 'Black and gold soccer cleets that are durable', 'Sports');
@@ -388,10 +411,10 @@ INSERT INTO Shipment VALUES('4444', 'First', 'Second', 'NY', 'USA', '11117', '10
 INSERT INTO Shipment VALUES('21344', 'Queens', 'City', 'NY', 'USA', '33633', '5', 'UPS', 'Bill2');
 INSERT INTO Shipment VALUES('332', 'Sacremento', NULL, 'Cal', 'USA', '11117', '3', 'FEDEX', 'Bill');
 
-INSERT INTO Returnment VALUES('4444', '1233', '4', 'Balls are broken');
+INSERT INTO Returnment VALUES('4444', '1233', '4', 'Balls are broken', NULL);
 
 INSERT INTO Reviews VALUES('368192', '1233', '2', 'It would not turn on');
 INSERT INTO Reviews VALUES('592134', '18332', '5', 'It\'s pretty good');
 
-INSERT INTO Cards VALUES('7', 'Gurppp', '1111111111', 'VISA', '2020-11-25');
-INSERT INTO Cards VALUES('7', 'NotGurp', '1111111111', 'VISA', '2021-01-15');
+#INSERT INTO Cards VALUES('7', 'Gurppp', '1111111111', 'VISA', '2020-11-25');
+#INSERT INTO Cards VALUES('7', 'NotGurp', '1111111111', 'VISA', '2021-01-15');

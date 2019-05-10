@@ -22,15 +22,24 @@
                                         <h3 class="card-title">Order #: {{ value[0] }}</h3>
                                     </div>
                                     <div class="float-right">
-                                        <small class="text-muted float-right">Returned by Raymond on 3/1/17</small>
+                                        <small class="text-muted float-right">Returned by Customer #{{ value[7] }} on {{  value[8] }}</small>
                                     </div>
                                     <div class="clearfix"></div>
                                     <div class="float-left">
-                                        <p class="card-text">{{ value[4] }}</p>
-                                        <p class="card-text">${{ value[5] * value[2] }}</p>
+                                        <p class="card-text">{{ value[5] }}</p>
+                                        <p class="card-text">${{ value[6] * value[2] }}</p>
+                                    </div>
+                                    <div class="float-center" >
+                                        {% if value[4] == 'Y' %}
+                                        <h4 class="tab"> Return Status: <font color="Green">Approved</font></h4>
+                                        {% elif value[4] == 'N' %}
+                                        <h4 class="tab"> Return Status: <font color="Red">Denied</font></h4>
+                                        {% else %}
+                                            <h4 class="tab"> Return Status: Pending</h4>
+                                        {% endif %}
                                     </div>
                                     <div class="float-right">
-                                        <a href="#" class="btn btn-danger float-right" data-toggle="modal" data-target="#employeeReturnModal">Review</a>
+                                        <a href="#" class="btn btn-danger float-right" data-toggle="modal" data-target="#employeeReturnModal{{ value[0] }}{{ value[1] }}">Review</a>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
@@ -40,7 +49,7 @@
             </div>
 
             <!-- Return Modal -->
-            <div class="modal fade" id="employeeReturnModal" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel" aria-hidden="true">
+            <div class="modal fade" id="employeeReturnModal{{ value[0] }}{{ value[1] }}" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -55,8 +64,13 @@
                       <p>{{ value[3] }}</p>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Reject</button>
-                    <button type="button" class="btn btn-success">Approve</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <form method="POST" action="">
+                          <input type="hidden" name="orderid" value="{{ value[0] }}">
+                          <input type="hidden" name="itemid" value="{{ value[1] }}">
+                          <input type="submit" class="btn btn-danger" name="reject" value="Reject">
+                          <input type="submit" class="btn btn-success" name="approve" value="Approve">
+                      </form>
                   </div>
                 </div>
               </div>
@@ -80,12 +94,21 @@
                                         <h3 class="card-title">Order #: {{ value[0] }}</h3>
                                     </div>
                                     <div class="float-right">
-                                        <small class="text-muted float-right">Returned by Raymond on 3/1/17</small>
+                                        <small class="text-muted float-right">Returned by {{ loggedin }} on {{ value[7] }}</small>
                                     </div>
                                     <div class="clearfix"></div>
                                     <div class="float-left">
                                         <p class="card-text">{{ value[4] }}</p>
                                         <p class="card-text">${{ value[2] * value[5] }}</p>
+                                    </div>
+                                    <div class="float-center" >
+                                        {% if value[6] == 'Y' %}
+                                        <h4 class="tab"> Return Status: <font color="Green">Approved</font></h4>
+                                        {% elif value[6] == 'N' %}
+                                        <h4 class="tab"> Return Status: <font color="Red">Denied</font></h4>
+                                        {% else %}
+                                            <h4 class="tab"> Return Status: Pending</h4>
+                                        {% endif %}
                                     </div>
                                     <div class="float-right">
                                         <a href="#" class="btn btn-danger float-right" data-toggle="modal" data-target="#returnModal{{ value[0] }}{{ value[1] }}">Review</a>
@@ -124,10 +147,4 @@
     <p>No Returns</p>
     {% endif %}
 {% endif %}
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Raymond Huang, Gurpreeth Singh, Tenzin Loden 2019</p>
-    </div>
-    <!-- /.container -->
-</footer>
 {% endblock content %}
