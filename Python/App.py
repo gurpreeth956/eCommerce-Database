@@ -410,7 +410,6 @@ def item():
             category = request.form['category']
             client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
             try:
-                print(type, quantity)
                 cursor = client.cursor()
                 query = "UPDATE Item SET Quantity = %s, Price = %s, ItemType = %s, Seller = %s, " \
                         "ItemDesc = %s, Category = %s WHERE ItemID = %s"
