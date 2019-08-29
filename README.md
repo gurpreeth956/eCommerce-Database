@@ -2,7 +2,7 @@
 
 - Gurpreeth, Raymond, Tenzin
 
-Website and Database for eCommerce using Flask and SQL. We used MySQL Workbench for the database and PyCharm for Flask. Boostrap was utilized to design all the web pages.
+Website and Database for eCommerce using Flask and SQL. We used MySQL Workbench for the database and PyCharm for Python and Flask. Boostrap was utilized to design all the web pages.
 
 Some General Features:
 - Included a sign up and login feature for both employees and customers
