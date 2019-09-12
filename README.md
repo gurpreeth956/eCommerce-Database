@@ -1,4 +1,4 @@
-# eCommerce Database - CSE305 Database Project
+# eCommerce Database Project
 
 - Gurpreeth, Raymond, Tenzin
 
