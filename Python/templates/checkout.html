@@ -69,7 +69,7 @@
                     <div class="col-md-6 mb-3">
                         <label for="firstName">First name</label>
                         <input type="text" class="form-control" id="firstName" placeholder="" name="firstName"
-                               value="{{ request.form.firstName }}" required>
+                               value="{{ request.form.firstName|safe }}" required>
                         <div class="invalid-feedback">
                             Valid first name is required.
                         </div>
