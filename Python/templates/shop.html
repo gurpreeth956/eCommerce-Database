@@ -3,8 +3,12 @@
 {% block content %}
 {{ nav('shop') }}
 
-<div class="container">
 
+<div class="container">
+    <form method="POST">
+        <input type="text" class="form-control" id="text_search" name="text_search">
+        <button type="submit" name="search" class="btn btn-primary">Search</button>
+</form>
     <div class="row">
 
         <div class="col-lg-3">

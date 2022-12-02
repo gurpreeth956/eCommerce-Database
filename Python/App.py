@@ -48,7 +48,7 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
         try:
             # Check if customer
             cursor = client.cursor()
@@ -99,7 +99,7 @@ def checkout():
     cardValue = [None, None, None, None]
     addressValue = [None, None, None, None, None]
 
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         # For things on the right side of the checkout page
         cursor = client.cursor()
@@ -170,7 +170,7 @@ def checkout():
             shipcountry = request.form['countryShip']
             shipzip = request.form['zipShip']
 
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
             try:
                 cursor = client.cursor()
                 query = "SELECT CustomerID, ItemID, Quantity FROM ShoppingCart WHERE CustomerID = %s"
@@ -233,7 +233,7 @@ def checkout():
             addressValue[4] = request.form['selectedzip']
         else:
             itemid = request.form['itemid']
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
             try:
                 # For things on the right side of the checkout page
                 cursor = client.cursor()
@@ -313,12 +313,16 @@ def checkout():
                            title='Shopping Cart', styles='checkout.css', bodyclass='bg-light')
 
 
+
+
 @app.route("/shop.html", methods=['GET', 'POST'])
 def shop():
     global employee
     result = None
     category = None
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+
+    
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT ItemType, Price, ItemDesc, ItemID, Quantity, Seller, Category FROM Item WHERE Quantity <> 0"
@@ -352,7 +356,7 @@ def shop():
             insertDiscount(discountid, percent, 'Y')
         if 'deletedis' in request.form:
             discountidtodelete = request.form['discountidtodelete']
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
             try:
                 invalid = 'N'
                 cursor = client.cursor()
@@ -364,6 +368,10 @@ def shop():
                 client.rollback()
             finally:
                 client.close()
+        elif 'search' in request.form:
+            searchText = request.form['text_search']
+            print(searchText)
+            return render_template('search_result.html', text = searchText)
         return redirect('/shop.html')
     return render_template('shop.html', employee=employee, loggedin=loggedinname, title='Shop', category=category,
                            data=result, styles='', bodyclass='bg-light')
@@ -388,7 +396,7 @@ def item():
             insertReview(loggedinid, itemid, rating, review)
         elif 'deleteitem' in request.form:
             itemid = request.form['item']
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
             try:
                 cursor = client.cursor()
                 query = "UPDATE Item SET Quantity = 0 WHERE ItemID = %s"
@@ -408,7 +416,7 @@ def item():
             seller = request.form['seller']
             desc = request.form['desc']
             category = request.form['category']
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
             try:
                 print(type, quantity)
                 cursor = client.cursor()
@@ -425,7 +433,7 @@ def item():
         elif 'deleteReview' in request.form:
             customerid = request.form['customer']
             itemid = request.form['reviewitemid']
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
             try:
                 cursor = client.cursor()
                 query = "DELETE FROM Reviews WHERE CustomerID = %s AND ItemID = %s"
@@ -436,7 +444,7 @@ def item():
             finally:
                 client.close()
     if 'type' and 'price' and 'desc' and 'id' in request.args:
-        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
         try:
             cursor = client.cursor()
             query = "SELECT R.Comments, P.Named, R.Ratings, R.CustomerID FROM Reviews R, Person P " \
@@ -463,7 +471,7 @@ def profile():
     global employee
     result = ['NO USER']
     if loggedinid != None:
-        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
         try:
             cursor = client.cursor()
             query = "SELECT Named FROM Person WHERE ID = %s"
@@ -499,7 +507,7 @@ def history():
             quantity = order[0][2]
             insertReturnment(orderid, itemid, quantity, comments)
     result = None
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT O.OrderDate, O.Completed, I.ItemID, I.ItemType, I.Price, S.OrderID, S.Quantity " \
@@ -523,7 +531,7 @@ def wishlist():
         if 'cart' in request.form:
             insertShoppingCart(loggedinid, itemid, 1)
         elif 'remove' in request.form:
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
             try:
                 cursor = client.cursor()
                 query = "DELETE FROM WishList WHERE CustomerID = %s AND ItemID = %s"
@@ -535,7 +543,7 @@ def wishlist():
             finally:
                 client.close()
     result = None
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT I.ItemID, I.ItemType, I.Price " \
@@ -555,7 +563,7 @@ def wishlist():
 def premium():
     global employee
     hasmembership = False
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT HasMembership FROM Customer WHERE CustomerID = %s"
@@ -570,7 +578,7 @@ def premium():
     finally:
         client.close()
     if request.method == 'POST':
-        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
         try:
             newmem = 'Y'
             cursor = client.cursor()
@@ -590,7 +598,7 @@ def premium():
 @app.route("/address.html", methods=['GET', 'POST'])
 def address():
     results = None
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, Address1, Address2, State, Country, Zip FROM Addresses WHERE CustomerID = %s"
@@ -614,7 +622,7 @@ def address():
             state = request.form['state']
             country = request.form['country']
             zip = request.form['zip']
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
             try:
                 cursor = client.cursor()
                 query = "DELETE FROM Addresses WHERE CustomerID = %s AND Address1 = %s" \
@@ -635,13 +643,14 @@ def address():
 def payment():
     global employee
     results = None
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, CardName, CardNum, CardComp, CardExp FROM Cards WHERE CustomerID = %s"
         cursor.execute(query, loggedinid)
         results = cursor.fetchall()
-    except Exception:
+    except Exception as e:
+        print(e)
         print("Could not retrieve specified Cards Entity")
     finally:
         client.close()
@@ -657,13 +666,14 @@ def payment():
             cardnum = request.form['cardnum']
             cardcomp = request.form['cardcomp']
             cardexp = request.form['cardexp']
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
             try:
                 cursor = client.cursor()
                 query = "DELETE FROM Cards WHERE CustomerID = %s AND CardName = %s AND CardNum = %s AND CardComp = %s AND CardExp = %s"
                 cursor.execute(query, (loggedinid, cardname, cardnum, cardcomp, cardexp))
                 client.commit()
-            except Exception:
+            except Exception as e:
+                print(e)
                 print("Could not delete Cards Entity")
                 client.rollback()
             finally:
@@ -679,7 +689,7 @@ def settings():
     result = [[None, None, None, None, None, None, None]]
     if request.method == 'POST':
         if 'delete' in request.form:
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
             try:
                 cursor = client.cursor()
                 query = "DELETE FROM Customer WHERE CustomerID = %s"
@@ -703,7 +713,7 @@ def settings():
             newPassword = request.form['newPassword']
             verifyPassword = request.form['verifyPassword']
             if customerpass == password and newPassword == verifyPassword:
-                client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+                client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
                 try:
                     cursor = client.cursor()
                     query = "UPDATE Customer SET Userpass = %s WHERE CustomerID = %s"
@@ -739,7 +749,7 @@ def returns():
                 approval = 'N'
             elif 'approve' in request.form:
                 approval = 'Y'
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
             try:
                 cursor = client.cursor()
                 query = "UPDATE Returnment SET Approval = %s WHERE OrderID = %s AND ItemID = %s"
@@ -750,7 +760,7 @@ def returns():
                 print("Could not update Approval in Returnment Entity")
             finally:
                 client.close()
-        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
         try:
             cursor = client.cursor()
             query = "SELECT R.OrderID, R.ItemID, R.Quantity, R.Comments, R.Approval, I.ItemType, I.Price, " \
@@ -763,7 +773,7 @@ def returns():
         finally:
             client.close()
     else:
-        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
         try:
             cursor = client.cursor()
             query = "SELECT R.OrderID, R.ItemID, R.Quantity, R.Comments, I.ItemType, I.Price, R.Approval, O.OrderDate " \
@@ -785,7 +795,7 @@ def thankyou():
     if lastorderid == None:
         return redirect('/')
     else:
-        client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+        client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
         try:
             cursor = client.cursor()
             query = "SELECT O.ItemID, O.Quantity, I.Price, I.ItemType, I.ItemDesc " \
@@ -805,7 +815,7 @@ def pendingorder():
     if request.method == 'POST':
         if 'complete' in request.form:
             orderid = request.form['order']
-            client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+            client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
             try:
                 cursor = client.cursor()
                 query = "UPDATE Orders SET Completed = 'Y' WHERE OrderNum = %s"
@@ -815,7 +825,7 @@ def pendingorder():
                 print("Can not update Completed in Orders")
             finally:
                 client.close()
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT OrderNum, CustomerID, OrderDate FROM Orders WHERE Completed = 'N'"
@@ -825,7 +835,7 @@ def pendingorder():
         print("Could not retrieve specified OrderedItems Entity")
     finally:
         client.close()
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT A.OrderID, A.ItemID, A.Quantity, I.ItemType, I.Price, I.ItemDesc " \
@@ -865,7 +875,7 @@ BELOW ARE ALL THE METHODS FOR GETTING AND SETTING DATA FROM THE DATABASE
 
 
 def insertPerson(idvar, email, name, birthdate, phone, datejoined, isemployee):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Person(ID, Email, Named, DateOfBirth, Phone, DateJoined, IsEmployee)\
@@ -880,7 +890,7 @@ def insertPerson(idvar, email, name, birthdate, phone, datejoined, isemployee):
 
 
 def getPersonTuple(idvar):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT ID, Email, Named, DateOfBirth, Phone, DateJoined, IsEmployee FROM Person WHERE ID = %s"
@@ -894,7 +904,7 @@ def getPersonTuple(idvar):
 
 
 def getPersonTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT ID, Email, Named, DateOfBirth, Phone, DateJoined, IsEmployee FROM Person"
@@ -909,7 +919,7 @@ def getPersonTable():
 
 # Customer Table
 def insertCustomer(idvar, userpass, hasmembership):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Customer(CustomerID, Userpass, HasMembership) values(%s, %s, %s)"
@@ -923,7 +933,7 @@ def insertCustomer(idvar, userpass, hasmembership):
 
 
 def getCustomerTuple(idvar):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, Userpass, HasMembership FROM Customer WHERE CustomerID = %s"
@@ -937,7 +947,7 @@ def getCustomerTuple(idvar):
 
 
 def getCustomerTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, Userpass, HasMembership FROM Customer"
@@ -952,7 +962,7 @@ def getCustomerTable():
 
 # Employee Table
 def insertEmployee(idvar, employeeemail, supervisor, password):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Employee(ID, EmployeeEmail, Supervisor, Userpass) values(%s, %s, %s, %s)"
@@ -966,7 +976,7 @@ def insertEmployee(idvar, employeeemail, supervisor, password):
 
 
 def getEmployeeTuple(employeeid):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT ID, EmployeeEmail, Supervisor, Userpass FROM Employee WHERE EmployeeEmail = %s"
@@ -980,7 +990,7 @@ def getEmployeeTuple(employeeid):
 
 
 def getEmployeeTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT ID, EmployeeEmail, Supervisor, Userpass FROM Employee"
@@ -995,7 +1005,7 @@ def getEmployeeTable():
 
 # Item Table
 def insertItem(itemid, quantity, price, itemtype, seller, itemdesc, category):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Item(ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category) \
@@ -1010,7 +1020,7 @@ def insertItem(itemid, quantity, price, itemtype, seller, itemdesc, category):
 
 
 def getItemTuple(itemid):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category FROM Item WHERE ItemID = %s"
@@ -1024,7 +1034,7 @@ def getItemTuple(itemid):
 
 
 def getItemTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT ItemID, Quantity, Price, ItemType, Seller, ItemDesc, Category FROM Item"
@@ -1039,7 +1049,7 @@ def getItemTable():
 
 # ShoppingCart Table
 def insertShoppingCart(customerid, itemid, quantity):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO ShoppingCart(CustomerID, ItemID, Quantity) values(%s, %s, %s)"
@@ -1053,8 +1063,8 @@ def insertShoppingCart(customerid, itemid, quantity):
 
 
 def getShoppingCartTuple(customerid, itemid):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, ItemID, Quantity FROM ShoppingCart WHERE CustomerID = %s AND ItemID = %s"
@@ -1068,7 +1078,7 @@ def getShoppingCartTuple(customerid, itemid):
 
 
 def getShoppingCartTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, ItemID, Quantity FROM ShoppingCart"
@@ -1083,7 +1093,7 @@ def getShoppingCartTable():
 
 # WishList Table
 def insertWishList(customerid, itemid):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO WishList(CustomerID, ItemID) values(%s, %s)"
@@ -1097,7 +1107,7 @@ def insertWishList(customerid, itemid):
 
 
 def getWishListTuple(customerid, itemid):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, ItemID FROM WishList WHERE CustomerID = %s AND ItemID = %s"
@@ -1111,7 +1121,7 @@ def getWishListTuple(customerid, itemid):
 
 
 def getWishListTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, ItemID FROM WishList"
@@ -1126,7 +1136,7 @@ def getWishListTable():
 
 # Discount Table
 def insertDiscount(discountid, discountpercent, valid):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Discount(DiscountID, DiscountPercent, Valid) values(%s, %s, %s)"
@@ -1140,7 +1150,7 @@ def insertDiscount(discountid, discountpercent, valid):
 
 
 def getDiscountTuple(discountid):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT DiscountID, DiscountPercent, Valid FROM Discount WHERE DiscountID = %s"
@@ -1154,7 +1164,7 @@ def getDiscountTuple(discountid):
 
 
 def getDiscountTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT DiscountID, DiscountPercent, Valid FROM Discount"
@@ -1169,7 +1179,7 @@ def getDiscountTable():
 
 # Orders Table
 def insertOrders(orderid, customerid, orderdate, completed, ordername, orderemail):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Orders(OrderNum, CustomerID, OrderDate, Completed, OrderName, OrderEmail) \
@@ -1184,7 +1194,7 @@ def insertOrders(orderid, customerid, orderdate, completed, ordername, orderemai
 
 
 def getOrdersTuple(orderid):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT OrderNum, CustomerID, OrderDate, Completed, OrderName, OrderEmail FROM Orders \
@@ -1199,7 +1209,7 @@ def getOrdersTuple(orderid):
 
 
 def getOrdersTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT OrderNum, CustomerID, OrderDate, Completed, OrderName, OrderEmail FROM Orders"
@@ -1214,7 +1224,7 @@ def getOrdersTable():
 
 # OrderedItems Table
 def insertOrderedItems(orderid, itemid, quantity):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO OrderedItems(OrderID, ItemID, Quantity) values(%s, %s, %s)"
@@ -1228,7 +1238,7 @@ def insertOrderedItems(orderid, itemid, quantity):
 
 
 def getOrderedItemsTuple(orderid, itemid):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT OrderID, ItemID, Quantity FROM OrderedItems WHERE OrderID = %s AND ItemID = %s"
@@ -1242,7 +1252,7 @@ def getOrderedItemsTuple(orderid, itemid):
 
 
 def getOrderedItemsTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT OrderID, ItemID, Quantity FROM OrderedItems"
@@ -1257,7 +1267,7 @@ def getOrderedItemsTable():
 
 # Payment Table
 def insertPayment(orderid, cardname, cardnum, cardcomp, cardexp, address1, address2, state, country, zip):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Payment(OrderID, CardName, CardNum, CardComp, CardExp, Address1, Address2, State, Country, Zip) \
@@ -1272,7 +1282,7 @@ def insertPayment(orderid, cardname, cardnum, cardcomp, cardexp, address1, addre
 
 
 def getPaymentTuple(orderid):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT OrderID, CardName, CardNum, CardComp, CardExp, Address1, Address2, State, Country, Zip FROM Payment \
@@ -1287,7 +1297,7 @@ def getPaymentTuple(orderid):
 
 
 def getPaymentTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT OrderID, CardName, CardNum, CardComp, CardExp, Address1, Address2, State, Country, Zip FROM Payment"
@@ -1302,7 +1312,7 @@ def getPaymentTable():
 
 # Shipment Table
 def insertShipment(orderid, address1, address2, state, country, zip, fee, company, shipname):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Shipment(OrderID, Address1, Address2, State, Country, Zip, Fee, Company, ShipName) values(%s, %s, %s, %s, %s)"
@@ -1316,7 +1326,7 @@ def insertShipment(orderid, address1, address2, state, country, zip, fee, compan
 
 
 def getShipmentTuple(orderid):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT OrderID, Address1, Address2, State, Country, Zip, Fee, Company, ShipName FROM Shipment WHERE OrderID = %s"
@@ -1330,7 +1340,7 @@ def getShipmentTuple(orderid):
 
 
 def getShipmentTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT OrderID, Address1, Address2, State, Country, Zip, Fee, Company, ShipName FROM SHIPMENT"
@@ -1345,7 +1355,7 @@ def getShipmentTable():
 
 # Returnment Table
 def insertReturnment(orderid, itemid, quantity, comments):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Returnment(OrderID, ItemID, Quantity, Comments, Approval) values(%s, %s, %s, %s, NULL)"
@@ -1359,7 +1369,7 @@ def insertReturnment(orderid, itemid, quantity, comments):
 
 
 def getReturnmentTuple(orderid, itemid, quantity):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT OrderID, ItemID, Quantity, Comments FROM Returnment WHERE OrderID = %s AND ItemID = %s \
@@ -1374,7 +1384,7 @@ def getReturnmentTuple(orderid, itemid, quantity):
 
 
 def getReturnmentTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT OrderID, ItemID, Quantity, Comments FROM Returnment"
@@ -1389,7 +1399,7 @@ def getReturnmentTable():
 
 # Reviews Table
 def insertReview(customerid, itemid, ratings, comments):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Reviews(CustomerID, ItemID, Ratings, Comments) values(%s, %s, %s, %s)"
@@ -1403,7 +1413,7 @@ def insertReview(customerid, itemid, ratings, comments):
 
 
 def getReviewTuple(customerid, itemid):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, ItemID, Ratings, Comments FROM Reviews WHERE CusotmerID = %s AND ItemID = %s"
@@ -1417,7 +1427,7 @@ def getReviewTuple(customerid, itemid):
 
 
 def getReviewTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, ItemID, Ratings, Comments FROM Reviews"
@@ -1432,13 +1442,14 @@ def getReviewTable():
 
 # Cards Table
 def insertCards(customerid, cardname, cardnum, cardcomp, cardexp):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Cards(CustomerID, CardName, CardNum, CardComp, CardExp) values(%s, %s, %s, %s, %s)"
         cursor.execute(query, (customerid, cardname, cardnum, cardcomp, cardexp))
         client.commit()
-    except Exception:
+    except Exception as e:
+        print(e)
         print("Could not add entity to Cards Table")
         client.rollback()
     finally:
@@ -1446,7 +1457,7 @@ def insertCards(customerid, cardname, cardnum, cardcomp, cardexp):
 
 
 def getCardsTuple(customerid, cardname, cardnum, cardcomp, cardexp):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, CardName, CardNum, CardComp, CardExp FROM Cards " \
@@ -1461,7 +1472,7 @@ def getCardsTuple(customerid, cardname, cardnum, cardcomp, cardexp):
 
 
 def getCardsTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, CardName, CardNum, CardComp, CardExp FROM Cards"
@@ -1476,7 +1487,7 @@ def getCardsTable():
 
 # Cards Table
 def insertAddresses(customerid, address1, address2, state, country, zip):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "INSERT INTO Addresses(CustomerID, Address1, Address2, State, Country, Zip) values(%s, %s, %s, %s, %s, %s)"
@@ -1490,7 +1501,7 @@ def insertAddresses(customerid, address1, address2, state, country, zip):
 
 
 def getAddressesTuple(customerid, address1, state, country, zip):
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, Address1, Address2, State, Country, Zip FROM Addresses " \
@@ -1505,7 +1516,7 @@ def getAddressesTuple(customerid, address1, state, country, zip):
 
 
 def getAddressesTable():
-    client = pymysql.connect("localhost", "public", "password123", "eCommerce01")
+    client = pymysql.connect(host='localhost', user="root", password="", database="eCommerce01")
     try:
         cursor = client.cursor()
         query = "SELECT CustomerID, Address1, Address2, State, Country, Zip FROM Addresses"
