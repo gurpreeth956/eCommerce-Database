@@ -52,12 +52,19 @@ def login():
         try:
             # Check if customer
             cursor = client.cursor()
-            query = "SELECT P.Email, C.CustomerID, C.Userpass, P.Named FROM Customer C, Person P " \
-                    "WHERE C.CustomerID = P.ID"
-            cursor.execute(query)
+            # query = "SELECT P.Email, C.CustomerID, C.Userpass, P.Named FROM Customer C, Person P " \
+            #         "WHERE C.CustomerID = P.ID"
+
+            # Binary SQL Injection attack on login. Use a valid user email and password=1' OR '1=1
+            cursor.execute("SELECT P.Email, C.CustomerID, C.Userpass, P.Named FROM Customer C, Person P " \
+                    "WHERE C.CustomerID = P.ID AND C.Userpass='%s'"% (password))
+            # Defense mechanism: Using of parameterized queries to sanitize the input paramater
+            # Parameterized query of the previous query
+            # cursor.execute("SELECT P.Email, C.CustomerID, C.Userpass, P.Named FROM Customer C, Person P " \
+            #                "WHERE C.CustomerID = P.ID AND C.Userpass=%s", (password))
             results = cursor.fetchall()
             for customer in results:
-                if customer[0] == email and customer[2] == password:
+                if customer[0] == email:
                     loggedinid = customer[1]
                     loggedinname = customer[3]
                     employee = False
